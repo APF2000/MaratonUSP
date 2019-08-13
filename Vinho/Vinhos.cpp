@@ -34,13 +34,7 @@ int main(){
     int sub[tam];
     subVetor(temperaturas, ini, fim, sub);
 
-    for(int i = 0; i < tam; i++){
-
-      cout << sub[i];
-    }
-
-    testarQualidade(sub, tam);
-    //cout << testarQualidade(sub) << endl;
+    cout << testarQualidade(sub, tam) << endl;
   }
 
   return 0;
@@ -56,21 +50,31 @@ void subVetor(int *vetor, int ini, int fim, int *aux){
 
 int testarQualidade(int *temps, int tam){
 
-        int qualidade = 0;
-
-        for(int i = 0; i < tam; i++){
-          //cout << temps[i] << endl;
-        }
-
-
         sort(temps, temps + tam);
+
         int lim = sqrt(tam);
+        int qualidade = lim;
 
-        cout << "sqrt " << lim << endl;
 
+        for(int i = lim; i > 1; i--, qualidade--){
 
-        for(int i = 0; i < tam; i++){
-          //cout << temps[i] << endl;
+          int nUplasDiferentes = 0, numIguais = 1;
+          int ultimoNum = temps[0];
+          for(int j = 0; j < tam; j++){
+
+            if(temps[j + 1] == ultimoNum)
+              numIguais++;
+
+            else{
+              if(numIguais == qualidade)
+                nUplasDiferentes++;
+
+              numIguais = 1;
+            }
+          }
+
+          if(nUplasDiferentes >= qualidade)
+            return qualidade;
         }
 
         return qualidade;
