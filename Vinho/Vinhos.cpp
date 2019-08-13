@@ -2,9 +2,9 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-int testarQualidade(int temps[]);
+int testarQualidade(int temps[], int tam);
 
-int* subVetor(int *vetor, int ini, int fim);
+void subVetor(int *vetor, int ini, int fim, int *aux);
 
 int main(){
 
@@ -17,7 +17,6 @@ int main(){
 
   for(int i = 0; i < numDias; i++){
     cin >> temperaturas[i];
-    cout << temperaturas[i] << endl;
   }
 
   for(int i = 0; i < numParreiras; i++){
@@ -30,50 +29,48 @@ int main(){
     cin >> fim;
     fim -= 1;
 
-    cout << ini << " " << fim << endl;
 
-    int *sub = subVetor(temperaturas, ini, fim);
-    for(int i = 0; i < (fim - ini + 1); i++){
+    int tam = fim - ini + 1;
+    int sub[tam];
+    subVetor(temperaturas, ini, fim, sub);
+
+    for(int i = 0; i < tam; i++){
 
       cout << sub[i];
     }
 
-    cout << testarQualidade(sub) << endl;
+    testarQualidade(sub, tam);
+    //cout << testarQualidade(sub) << endl;
   }
 
   return 0;
 }
 
-int* subVetor(int *vetor, int ini, int fim){
-
-  int aux[fim - ini + 1];
+void subVetor(int *vetor, int ini, int fim, int *aux){
 
   for(int i = 0; i < (fim - ini + 1); i++){
 
     aux[i] = vetor[i + ini];
-    cout << aux[i] << endl;
   }
-
-
-  return aux;
 }
 
-int testarQualidade(int *temps){
+int testarQualidade(int *temps, int tam){
 
-        int tam = sizeof(*temps) / sizeof(temps[0]);
         int qualidade = 0;
 
         for(int i = 0; i < tam; i++){
-          cout << temps[i] << endl;
+          //cout << temps[i] << endl;
         }
 
 
         sort(temps, temps + tam);
         int lim = sqrt(tam);
 
+        cout << "sqrt " << lim << endl;
+
 
         for(int i = 0; i < tam; i++){
-          cout << temps[i] << endl;
+          //cout << temps[i] << endl;
         }
 
         return qualidade;
