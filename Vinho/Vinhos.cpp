@@ -50,6 +50,8 @@ void subVetor(int *vetor, int ini, int fim, int *aux){
 
 int testarQualidade(int *temps, int tam){
 
+        cout << "testandoqualidade" << endl;
+
         sort(temps, temps + tam);
 
         int lim = sqrt(tam);
@@ -73,7 +75,7 @@ int testarQualidade(int *temps, int tam){
             }
           }
 
-          if(nUplasDiferentes >= qualidade)
+          if(nUplasDiferentes <= qualidade)
             return qualidade;
         }
 
