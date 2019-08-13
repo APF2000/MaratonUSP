@@ -4,6 +4,8 @@ using namespace std;
 
 int testarQualidade(int temps[]);
 
+int* subVetor(int *vetor, int ini, int fim);
+
 int main(){
 
   int numDias, numParreiras;
@@ -15,6 +17,7 @@ int main(){
 
   for(int i = 0; i < numDias; i++){
     cin >> temperaturas[i];
+    cout << temperaturas[i] << endl;
   }
 
   for(int i = 0; i < numParreiras; i++){
@@ -27,25 +30,51 @@ int main(){
     cin >> fim;
     fim -= 1;
 
+    cout << ini << " " << fim << endl;
+
+    int *sub = subVetor(temperaturas, ini, fim);
+    for(int i = 0; i < (fim - ini + 1); i++){
+
+      cout << sub[i];
+    }
+
+    cout << testarQualidade(sub) << endl;
   }
 
   return 0;
 }
 
+int* subVetor(int *vetor, int ini, int fim){
 
-    int testarQualidade(int *temps){
+  int aux[fim - ini + 1];
 
-      int tam = sizeof(*temps) / sizeof(temps[0]);
-      int qualidade = 0;
+  for(int i = 0; i < (fim - ini + 1); i++){
+
+    aux[i] = vetor[i + ini];
+    cout << aux[i] << endl;
+  }
 
 
-      sort(temps, temps + tam);
-      int lim = sqrt(tam);
+  return aux;
+}
+
+int testarQualidade(int *temps){
+
+        int tam = sizeof(*temps) / sizeof(temps[0]);
+        int qualidade = 0;
+
+        for(int i = 0; i < tam; i++){
+          cout << temps[i] << endl;
+        }
 
 
-      for(int i = 0; i < tam; i++){
-        cout << temps[i] << endl;
-      }
+        sort(temps, temps + tam);
+        int lim = sqrt(tam);
 
-      return qualidade;
-    }
+
+        for(int i = 0; i < tam; i++){
+          cout << temps[i] << endl;
+        }
+
+        return qualidade;
+}
