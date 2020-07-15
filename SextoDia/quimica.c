@@ -10,6 +10,14 @@ typedef struct node
 	char substance[5];
 }node, *Node;
 
+
+int profundidade(Node root)
+{
+	if(root == NULL) return 0;
+
+	return 1 + max(profundidade(root->left), profundidade(root->right));
+}
+
 void print_tree(Node root, int tabs)
 {
 	int i;	
@@ -93,11 +101,28 @@ int max(int a, int b)
 	return b;
 }
 
-int profundidade(Node root)
+int min(int a, int b)
 {
-	if(root == NULL) return 0;
+	if(a < b) return a;
+	return b;
+}
 
-	return 1 + max(profundidade(root->left), profundidade(root->right));
+int qtde_recipientes(Node root)
+{
+	int esq, dir;
+	int q_min, q_max;
+
+	if(root == NULL) return 0;
+	if(root->left == NULL && root->right == NULL) return 0;
+
+	esq = qtde_recipientes(root->left);
+	dir = qtde_recipientes(root->right);	
+
+	q_max = max(esq, dir);
+	q_min = min(esq, dir);
+
+	if(q_max == q_min) return 1 + q_max;
+	else return q_max;
 }
 
 int main()
@@ -140,7 +165,9 @@ int main()
 			printf(")]\n");
 		}
 
-		print_tree(&nodes[n - 1], 0);
+		//print_tree(&nodes[n - 1], 0);
+
+		printf("Result : %d\n", qtde_recipientes(&nodes[n - 1]));
 
 		free(nodes);
 		scanf("%d", &n);
@@ -153,5 +180,21 @@ int main()
 
 7
 E + D -> T1 C + T1 -> T2 B + T1 -> T3 T2 + T3 -> T4 T1 + T4 -> T6 A + T4 -> T5 T5 + T6 -> P
+
+1
+2H + O -> Water
+
+5
+A + B -> T1
+C + D -> T2
+E + F -> T3
+T2 + T3 -> T4
+T4 + T1 -> P
+
+3
+a + b -> ab
+ab + c -> abc
+abc + d -> abcd
+0
 
 */
