@@ -48,7 +48,7 @@ void scan_formula(Node a, Node b, Node c)
 
 // Conecta os reagentes de uma fórmula aos seus antecessores
 // na lista de nós (nodes).
-void link_formulas(Node* all_nodes, Node new_node, int last_pos)
+void link_formulas(Node all_nodes, Node new_node, int last_pos)
 {
 	int i;
 	int right = 0, left = 0;
@@ -61,17 +61,17 @@ void link_formulas(Node* all_nodes, Node new_node, int last_pos)
 
 	for(i = last_pos - 1; i >= 0; i--)
 	{
-		if( strcmp((*all_nodes)[i].substance, new_sub_esq) == 0 )
+		if( strcmp(all_nodes[i].substance, new_sub_esq) == 0 )
 		{
 			left = 1;
 			free(new_node->left);
-			new_node->left = &(*all_nodes)[i]; 
+			new_node->left = &all_nodes[i]; 
 		}
-		if( strcmp((*all_nodes)[i].substance, new_sub_dir) == 0 )
+		if( strcmp(all_nodes[i].substance, new_sub_dir) == 0 )
 		{
 			right = 1;
 			free(new_node->right);
-			new_node->right = &(*all_nodes)[i];
+			new_node->right = &all_nodes[i];
 		}
 
 		if(left && right) return;		
@@ -81,7 +81,7 @@ void link_formulas(Node* all_nodes, Node new_node, int last_pos)
 		new_node->left->left = NULL;
 		new_node->left->right = NULL;
 	}
-	if(!right && (*all_nodes)[last_pos].right != NULL){
+	if(!right && new_node->right != NULL){
 		new_node->right->left = NULL;
 		new_node->right->right = NULL;
 	}
@@ -122,7 +122,7 @@ int main()
 			a.right = c;
 
 			scan_formula(&a, b, c);
-			link_formulas(&nodes, &a, i);
+			link_formulas(nodes, &a, i);
 
 			nodes[i] = a;
 		}
