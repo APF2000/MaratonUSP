@@ -11,6 +11,18 @@ typedef struct node
 }node, *Node;
 
 
+int max(int a, int b)
+{
+	if(a > b) return a;
+	return b;
+}
+
+int min(int a, int b)
+{
+	if(a < b) return a;
+	return b;
+}
+
 int profundidade(Node root)
 {
 	if(root == NULL) return 0;
@@ -95,18 +107,6 @@ void link_formulas(Node all_nodes, Node new_node, int last_pos)
 	}
 }
 
-int max(int a, int b)
-{
-	if(a > b) return a;
-	return b;
-}
-
-int min(int a, int b)
-{
-	if(a < b) return a;
-	return b;
-}
-
 int qtde_recipientes(Node root)
 {
 	int esq, dir;
@@ -152,7 +152,7 @@ int main()
 			nodes[i] = a;
 		}
 
-		printf("Profundidade da árvore: %d\n", profundidade(&nodes[n-1]));
+		/*printf("Profundidade da árvore: %d\n", profundidade(&nodes[n-1]));
 
 		printf("Agora os endereços das posições do vetor e para onde apontam\n");
 		for(i = 0; i < n; i++)
@@ -163,11 +163,11 @@ int main()
 			printf(",");
 			if(nodes[i].right != NULL) printf("%s", nodes[i].right->substance);
 			printf(")]\n");
-		}
+		}*/
 
 		//print_tree(&nodes[n - 1], 0);
 
-		printf("Result : %d\n", qtde_recipientes(&nodes[n - 1]));
+		printf("%s requires %d containers\n", nodes[n-1].substance, qtde_recipientes(&nodes[n - 1]) );
 
 		free(nodes);
 		scanf("%d", &n);
