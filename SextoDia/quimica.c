@@ -152,20 +152,6 @@ int main()
 			nodes[i] = a;
 		}
 
-		/*printf("Profundidade da árvore: %d\n", profundidade(&nodes[n-1]));
-
-		printf("Agora os endereços das posições do vetor e para onde apontam\n");
-		for(i = 0; i < n; i++)
-		{
-			printf("[(%d) -> (%d,%d)];", &nodes[i], nodes[i].left, nodes[i].right);
-			printf("[(%s) -> (", nodes[i].substance);
-			if(nodes[i].left != NULL) printf("%s", nodes[i].left->substance);
-			printf(",");
-			if(nodes[i].right != NULL) printf("%s", nodes[i].right->substance);
-			printf(")]\n");
-		}*/
-
-		//print_tree(&nodes[n - 1], 0);
 
 		printf("%s requires %d containers\n", nodes[n-1].substance, qtde_recipientes(&nodes[n - 1]) );
 
@@ -180,6 +166,81 @@ int main()
 
 7
 E + D -> T1 C + T1 -> T2 B + T1 -> T3 T2 + T3 -> T4 T1 + T4 -> T6 A + T4 -> T5 T5 + T6 -> P
+
+                                         p
+                      /-----------------/  \\\\\\\\\\\\\\\\\\\\
+                     T5                                       T6
+           //////////  \\\\\\\\                     //////////  \\\\\\\\\
+          A                    T4                  T1                    T4
+                          /////  \\\\          ///// \\\\           /////  \\\\\    
+                         T2         T3        E          D         T2           T3
+                     //// \\\     //  \\                         //  \\       //  \\
+                    T1      C    B     T1                       T1    C      B     T1
+                   /  \               /   \                    /  \               /  \    
+                  E   D              E    D                   E    D             E    D
+
+
+Caso cíclico (IMPOSSÍVEL?):
+CONTRA AS REGRAS?
+3
+A + T1 -> T2   
+T2 + B -> T1  
+T1 + T2 -> P
+
+                            P
+
+            T1                            T2
+
+    T2           B                   T1        A
+
+ T1   A                          T2     B
+
+
+Mais de uma reação leva ao mesmo produto (SEG-FAULT):
+5
+A + B -> T1
+C + D -> T2
+T2 + A -> T3
+T1 + C -> T3
+T2 + T3 -> P
+
+                                     p
+
+                T2                                        T3
+
+      C                  D                      T1                   C
+                  
+                                          A           B
+
+VS
+
+                                     p
+
+                T2                                        T3
+
+      C                  D                      T2                   A
+                  
+                                          C           D
+
+
+5
+F + G -> T1
+D + T1 -> T2
+T1 + T2 -> T3
+C + T3 -> T5
+A + B -> T4
+T4 + T5 -> P
+		                         p
+                       /////////////////   \\\\\\\\\\\\\\\\\
+		     T5                                     T4
+               //////  \\\\\                          //////  \\\\\
+	      T3           C                          A            B
+	  ////  \\\\
+	 T1       T2
+      ///  \\    // \\
+      F     G   D    T1
+                    /  \
+                   F    G
 
 1
 2H + O -> Water
