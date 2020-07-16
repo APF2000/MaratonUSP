@@ -79,32 +79,25 @@ void link_formulas(Node all_nodes, Node new_node, int last_pos)
 	strcpy(new_sub_esq, new_node->left->substance);
 	strcpy(new_sub_dir, new_node->right->substance);
 
-	printf("ANtes do for\n");
-
 	for(i = last_pos - 1; i >= 0; i--)
 	{
 		if( strcmp(all_nodes[i].substance, new_sub_esq) == 0 )
 		{
 			left = 1;
 
-			printf("Antes de jogar fora o pedaço de memoria\n");
 			//free(new_node->left);
-			printf("Depois de jogar fora o pedaço de memoria\n");
 			new_node->left = &all_nodes[i]; 
 		}
 		if( strcmp(all_nodes[i].substance, new_sub_dir) == 0 )
 		{
 			right = 1;
-			printf("Antes de jogar fora o pedaço de memoria\n");
 			//free(new_node->right);
-			printf("Depois de jogar fora o pedaço de memoria\n");
 			new_node->right = &all_nodes[i];
 		}
 
 		if(left && right) return;		
 	}
 
-	printf("Depois do for\n");
 
 	if(!left && new_node->left != NULL){
 		new_node->left->left = NULL;
@@ -149,9 +142,6 @@ int main()
 		nodes = malloc(n * sizeof(node));
 		for(i = 0; i < n; i++)
 		{
-			printf("O problema é na arvore %d\n", i);
-
-
 			b = malloc(sizeof(node));
 			c = malloc(sizeof(node));
 
@@ -159,15 +149,14 @@ int main()
 			a.right = c;
 
 			scan_formula(&a, b, c);
-
-			printf("Antes de linkar\n");
 			link_formulas(nodes, &a, i);
-			printf("Depois de linkar\n");
 
 			nodes[i] = a;
 		}
 
 		printf("%s requires %d containers\n", nodes[n-1].substance, qtde_recipientes(&nodes[n - 1]) );
+
+		print_tree(&nodes[n-1], 0);
 
 		free(nodes);
 		scanf("%d", &n);
@@ -237,7 +226,7 @@ VS
                                           C           D
 
 
-5
+6
 F + G -> T1
 D + T1 -> T2
 T1 + T2 -> T3
