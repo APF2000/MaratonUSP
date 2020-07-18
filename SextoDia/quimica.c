@@ -32,7 +32,7 @@ int profundidade(Node root)
 
 void print_tree(Node root, int tabs)
 {
-	int i;	
+	//int i;	
 
 	if(root == NULL)
 	{
@@ -81,17 +81,16 @@ void link_formulas(Node all_nodes, Node new_node, int last_pos)
 
 	for(i = last_pos - 1; i >= 0; i--)
 	{
-		if( strcmp(all_nodes[i].substance, new_sub_esq) == 0 )
+		if( strcmp(all_nodes[i].substance, new_sub_esq) == 0 && !left)
 		{
 			left = 1;
-
-			//free(new_node->left);
+			free(new_node->left);
 			new_node->left = &all_nodes[i]; 
 		}
-		if( strcmp(all_nodes[i].substance, new_sub_dir) == 0 )
+		if( strcmp(all_nodes[i].substance, new_sub_dir) == 0 && !right)
 		{
 			right = 1;
-			//free(new_node->right);
+			free(new_node->right);
 			new_node->right = &all_nodes[i];
 		}
 
@@ -134,7 +133,6 @@ int main()
 	node* nodes;
 
 	int n, i;
-	char seta[2];
 
 	scanf("%d", &n);
 	while(n != 0)
@@ -156,7 +154,7 @@ int main()
 
 		printf("%s requires %d containers\n", nodes[n-1].substance, qtde_recipientes(&nodes[n - 1]) );
 
-		print_tree(&nodes[n-1], 0);
+		//print_tree(&nodes[n-1], 0);
 
 		free(nodes);
 		scanf("%d", &n);
@@ -197,6 +195,13 @@ T1 + T2 -> P
     T2           B                   T1        A
 
  T1   A                          T2     B
+
+
+Dois reagentes levam a produtos diferentes
+3
+A + B -> T1
+A + B -> T2
+T1 + T2 -> P
 
 
 Mais de uma reação leva ao mesmo produto (SEG-FAULT):
