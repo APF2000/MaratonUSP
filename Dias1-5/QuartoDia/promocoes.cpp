@@ -40,6 +40,8 @@ bool sort_by_qtde(promo p1, promo p2){
 	if(p1.qtde != p2.qtde) return (p1.qtde > p2.qtde);
 	return (p1.valor > p2.valor);
 
+	// return (p1.valor / p1.qtde > p2.valor / p2.qtde);
+
 }
 
 

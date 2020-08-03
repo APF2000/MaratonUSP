@@ -197,11 +197,21 @@ T1 + T2 -> P
  T1   A                          T2     B
 
 
-Dois reagentes levam a produtos diferentes
-3
+Dois reagentes levam a produtos diferentes + duplicata
+4
 A + B -> T1
 A + B -> T2
+C + D -> T2
 T1 + T2 -> P
+
+
+Reações que não têm nada a ver com o produto final
+5
+A + B -> ABCDE
+C + T -> CET
+SEXO - AMOR -> VONTA
+AMOR - SEXO -> AMIZA
+ABCDE + CET -> FIM
 
 
 Mais de uma reação leva ao mesmo produto (SEG-FAULT):
