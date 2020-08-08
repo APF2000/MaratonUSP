@@ -57,6 +57,13 @@ int main()
 			{
 				promos.at(i)->calculados.push_back(-1);
 			}
+
+			for(int j = 0; j < m_latas; j++)
+			{
+				cout << "(" << j << ","; 
+				cout << promos.at(i)->calculados.at(j) << ");";
+			}
+			cout << "\n";
 		}
       
 		
