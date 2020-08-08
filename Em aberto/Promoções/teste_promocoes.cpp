@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
+#include <map>
 
 using namespace std;
 
@@ -9,15 +10,12 @@ class Nos {
 	public:
   		int qtde;
   		int valor;
-  		vector<int> calculados;
+  		map<int, int> calculados;
   
   		Nos(int qtde, int valor)
         {
         	this->qtde = qtde;
           	this->valor = valor;
-        
-          	//calculados = new vector<int>(max_latas);
-          	//this->calculados.at(0) = 100;
         }
 };
 
@@ -37,22 +35,14 @@ void print_vector(vector<Nos*> promos){
 
 }
 
+int max_lucro(vector<Nos*> promos)
+{
+	return 0;
+}
 
 int main()
 {
-
 	int n_promos, m_latas;
-  
-  	Nos* teste = new Nos(1, 2);
-  	//list<Nos*>* list_nos = new list<Nos*>()
-  	//for(int i; i < 10; i++){ teste->calculados.push_back(2 * i);}
-  	//cout << teste->calculados.at(3) << "\n";
-  
-    /*Nos **vecs = new Nos*[4];
-  	for (int i=0; i<4; i++)
-    {
-    	vecs[i] = new Nos(i+1,i-1)
-    }*/
 
 	while(cin >> n_promos >> m_latas){
 
@@ -68,6 +58,13 @@ int main()
 		
 		sort(promos.begin(), promos.end(), sort_by_qtde);
 		print_vector(promos);
+
+		promos.at(0)->calculados.insert(pair<int, int>(4, 20));
+		for(map<int, int>::iterator it = promos.at(0)->calculados.begin(); it < promos.at(0)->calculados.end(); it++){
+			cout << it->first << "\t" << it->second << "\n";
+		}
+
+		//int lucro = max_lucro(promos);
 	}
 
 	return 0;
