@@ -34,8 +34,15 @@ void print_vector(vector<Nos*> promos){
 
 }
 
-int max_lucro(vector<Nos*> promos)
+int max_lucro(vector<Nos*>* promos, int index, int lat_falt, int lucro)
 {
+	Nos* promo = promos->at(index);
+	int	qtde = promo->qtde;
+	int valor = promo->valor;
+
+	if(lat_falt == 0) return lucro;
+	//if(index == promos.lenght())
+
 	return 0;
 }
 
@@ -70,7 +77,7 @@ int main()
 		sort(promos.begin(), promos.end(), sort_by_qtde);
 		print_vector(promos);
 
-		//int lucro = max_lucro(promos);
+		int lucro = max_lucro(&promos, 0, m_latas, 0);
 	}
 
 	return 0;
