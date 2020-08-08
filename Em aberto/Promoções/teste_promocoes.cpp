@@ -41,7 +41,10 @@ int max_lucro(vector<Nos*>* promos, int index, int lat_falt, int lucro)
 	int valor = promo->valor;
 
 	if(lat_falt == 0) return lucro;
-	//if(index == promos.lenght())
+	
+	// Algo para calcular o lucro
+
+	if(index == promos->size() - 1) return -2;
 
 	return 0;
 }
@@ -77,7 +80,8 @@ int main()
 		sort(promos.begin(), promos.end(), sort_by_qtde);
 		print_vector(promos);
 
-		int lucro = max_lucro(&promos, 0, m_latas, 0);
+		int lucro = max_lucro(&promos, 7, m_latas, 0);
+		cout << "lucro: " << lucro << "\n";
 	}
 
 	return 0;
