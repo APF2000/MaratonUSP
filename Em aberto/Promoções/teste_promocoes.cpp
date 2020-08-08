@@ -1,7 +1,6 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
-#include <map>
 
 using namespace std;
 
@@ -10,7 +9,7 @@ class Nos {
 	public:
   		int qtde;
   		int valor;
-  		map<int, int> calculados;
+  		vector<int> calculados;
   
   		Nos(int qtde, int valor)
         {
@@ -53,16 +52,16 @@ int main()
         {
           	cin >> qtde >> valor;
 			promos.at(i) = new Nos(qtde, valor);
+
+			for(int j = 0; j < m_latas; j++)
+			{
+				promos.at(i)->calculados.push_back(-1);
+			}
 		}
       
 		
 		sort(promos.begin(), promos.end(), sort_by_qtde);
 		print_vector(promos);
-
-		promos.at(0)->calculados.insert(pair<int, int>(4, 20));
-		for(map<int, int>::iterator it = promos.at(0)->calculados.begin(); it < promos.at(0)->calculados.end(); it++){
-			cout << it->first << "\t" << it->second << "\n";
-		}
 
 		//int lucro = max_lucro(promos);
 	}
