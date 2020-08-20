@@ -3,6 +3,8 @@ class Solver():
         self.arestas = arestas
         self.visitados = []
         self.nodes_faltantes = len(arestas)
+        self.nodes_totais = len(arestas)
+        self.volta_final = []
 
     def vai_e_volta(self, atual, alvo):
         #import pdb; pdb.set_trace()
@@ -12,14 +14,24 @@ class Solver():
 
         # Todos os nos foram visitados
         if(self.nodes_faltantes == 0):
-            import pdb; pdb.set_trace()
+            #import pdb; pdb.set_trace()
 
-            if(atual == 1):    
+            if(atual == 1) or (1 in arestas[atual]):
                 return True
+            if atual in self.volta_final:
+                return False
 
-            for origem in arestas:
-                if 1 in arestas[origem]:
+            self.volta_final.append(atual)
+            if (len(self.volta_final) == self.nodes_totais):
+                return False
+
+            for node in arestas[atual].copy():
+                if self.vai_e_volta(node, alvo):
                     return True
+
+            #for origem in arestas:
+            #    if 1 in arestas[origem]:
+            #        return True
             return False
 
         if atual in visitados:
@@ -34,11 +46,11 @@ class Solver():
             #import pdb; pdb.set_trace() 
             return False
 
-        if(len(visitados) == len(arestas)):
+        if(len(visitados) == self.nodes_totais):
             return False
 
         visitados.append(atual)
-        print(self.nodes_faltantes)
+        #print(self.nodes_faltantes)
         self.nodes_faltantes -= 1
         for node in arestas[atual].copy():
             #import pdb; pdb.set_trace()
@@ -87,4 +99,4 @@ while True:
 
     #import pdb; pdb.set_trace()
     #print(ruas)
-    print(solver.arestas)
+    #print(solver.arestas)
