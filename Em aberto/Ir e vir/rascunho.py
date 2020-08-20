@@ -10,9 +10,10 @@ class Solver():
         arestas = self.arestas
         visitados = self.visitados
 
-        if(self.nodes_faltantes == 0 and (1 in arestas[atual] or atual == 1) ): 
-            #import pdb; pdb.set_trace()   
-            return True
+        if(self.nodes_faltantes == 0):
+            import pdb; pdb.set_trace()
+            if(1 in arestas[atual] or atual == 1) ):    
+                return True
 
         if atual in visitados:
             index = visitados.index(atual)
