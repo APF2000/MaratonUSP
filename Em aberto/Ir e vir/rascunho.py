@@ -10,21 +10,28 @@ class Solver():
         arestas = self.arestas
         visitados = self.visitados
 
+        # Todos os nos foram visitados
         if(self.nodes_faltantes == 0):
             import pdb; pdb.set_trace()
-            if(1 in arestas[atual] or atual == 1) ):    
+
+            if(atual == 1):    
                 return True
+
+            for origem in arestas:
+                if 1 in arestas[origem]:
+                    return True
+            return False
 
         if atual in visitados:
             index = visitados.index(atual)
 
-            import pdb; pdb.set_trace() 
+            #import pdb; pdb.set_trace() 
             for el in visitados[index + 1:]:
                 if el not in arestas[atual]:
                     arestas[atual].append(el)
                 if atual not in arestas[el]:
                     arestas[el].append(atual)
-            import pdb; pdb.set_trace() 
+            #import pdb; pdb.set_trace() 
             return False
 
         if(len(visitados) == len(arestas)):
@@ -34,7 +41,7 @@ class Solver():
         print(self.nodes_faltantes)
         self.nodes_faltantes -= 1
         for node in arestas[atual].copy():
-            import pdb; pdb.set_trace()
+            #import pdb; pdb.set_trace()
             for visitado in visitados:
                 if (visitado != atual) and (atual not in arestas[visitado]):
                     arestas[visitado].append(atual)
