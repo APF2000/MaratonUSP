@@ -10,12 +10,12 @@ class Solver():
         arestas = self.arestas
         visitados = self.visitados
 
-        if(self.nodes_faltantes == 0 and 1 in arestas[atual]):    
+        if(self.nodes_faltantes == 0 and (1 in arestas[atual] or atual == 1) ): 
+            #import pdb; pdb.set_trace()   
             return True
 
         if atual in visitados:
             index = visitados.index(atual)
-            import pdb; pdb.set_trace()
 
             for el in visitados[index + 1:]:
                 if el not in arestas[atual]:
@@ -31,7 +31,7 @@ class Solver():
         visitados.append(atual)
         self.nodes_faltantes -= 1
         for node in arestas[atual].copy():
-            import pdb; pdb.set_trace()
+            #import pdb; pdb.set_trace()
             for visitado in visitados:
                 if (visitado != atual) and (atual not in arestas[visitado]):
                     arestas[visitado].append(atual)
@@ -70,6 +70,11 @@ while True:
     
     solver = Solver(arestas)
     result = solver.vai_e_volta(1, 1)
+    if result:
+        print(1)
+    else:
+        print(0)
 
     #import pdb; pdb.set_trace()
-    print(ruas)
+    #print(ruas)
+    print(solver.arestas)
