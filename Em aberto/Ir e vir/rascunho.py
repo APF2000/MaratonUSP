@@ -1,32 +1,42 @@
-def vai_e_volta(atual, arestas, nodes_faltantes, visitados, alvo):
+class Solver():
+    def __init__(self, arestas):
+        self.arestas = arestas
+        self.visitados = []
+        self.nodes_faltantes = len(arestas)
 
-    if(nodes_faltantes == 0 and 1 in arestas[atual]):    
-        return True
+    def vai_e_volta(self, atual, alvo):
+        #import pdb; pdb.set_trace()
+        #nodes_faltantes = len(self.arestas) - len(self.visitados)
 
-    if atual in visitados:
-        index = visitados.index(atual)
-        import pdb; pdb.set_trace()
-
-        for el in visitados[index + 1:]:
-            arestas[atual].append(el)
-            if atual not in arestas[el]:
-                arestas[el].append(atual)
-
-        return False
-
-    if(len(visitados) == len(arestas)):
-        return False
-
-    visitados.append(atual)
-    for node in arestas[atual].copy():
-        import pdb; pdb.set_trace()
-        for visitado in visitados:
-            if (visitado != atual) and (atual not in arestas[visitado]):
-                arestas[visitado].append(atual)
-        if vai_e_volta(node, arestas, nodes_faltantes - 1, visitados, alvo):
+        if(self.nodes_faltantes == 0 and 1 in self.arestas[atual]):    
             return True
 
-    return False
+        if atual in self.visitados:
+            index = self.visitados.index(atual)
+            import pdb; pdb.set_trace()
+
+            for el in self.visitados[index + 1:]:
+                if el not in self.arestas[atual]:
+                    self.arestas[atual].append(el)
+                if atual not in self.arestas[el]:
+                    self.arestas[el].append(atual)
+
+            return False
+
+        if(len(self.visitados) == len(self.arestas)):
+            return False
+
+        self.visitados.append(atual)
+        self.nodes_faltantes -= 1
+        for node in self.arestas[atual].copy():
+            import pdb; pdb.set_trace()
+            for visitado in self.visitados:
+                if (visitado != atual) and (atual not in self.arestas[visitado]):
+                    self.arestas[visitado].append(atual)
+            if self.vai_e_volta(node, alvo):
+                return True
+
+        return False
 
 while True:    
     n_m = input().split()
@@ -55,8 +65,9 @@ while True:
         arestas[v].append(w)
         if p == 2:
             arestas[w].append(v)
-
-    result = vai_e_volta(1, arestas, n, [], 1)
+    
+    solver = Solver(arestas)
+    result = solver.vai_e_volta(1, 1)
 
     #import pdb; pdb.set_trace()
     print(ruas)
