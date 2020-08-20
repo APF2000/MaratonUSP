@@ -17,21 +17,23 @@ class Solver():
         if atual in visitados:
             index = visitados.index(atual)
 
+            import pdb; pdb.set_trace() 
             for el in visitados[index + 1:]:
                 if el not in arestas[atual]:
                     arestas[atual].append(el)
                 if atual not in arestas[el]:
                     arestas[el].append(atual)
-
+            import pdb; pdb.set_trace() 
             return False
 
         if(len(visitados) == len(arestas)):
             return False
 
         visitados.append(atual)
+        print(self.nodes_faltantes)
         self.nodes_faltantes -= 1
         for node in arestas[atual].copy():
-            #import pdb; pdb.set_trace()
+            import pdb; pdb.set_trace()
             for visitado in visitados:
                 if (visitado != atual) and (atual not in arestas[visitado]):
                     arestas[visitado].append(atual)
