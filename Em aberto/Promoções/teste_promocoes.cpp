@@ -37,14 +37,17 @@ void print_vector(vector<Nos*> promos){
 int max_lucro(vector<Nos*>* promos, int index, int lat_falt, int lucro)
 {
 	Nos* promo = promos->at(index);
-	int	qtde = promo->qtde;
+	int qtde = promo->qtde;
 	int valor = promo->valor;
 
 	if(lat_falt == 0) return lucro;
-	
-	// Algo para calcular o lucro
+	if(index == promos->size() - 1 && lat_falt % qtde != 0) return -2;
 
-	if(index == promos->size() - 1) return -2;
+	int aux, max;
+	for(int i = 0; i < lat_falt / qtde; i++)
+	{
+		
+	}
 
 	return 0;
 }
