@@ -3,10 +3,12 @@
 
 using namespace std;
 
-#define BLOCK '*'
+#define BLOCK 'H'
 #define PASS ' '
-#define FREE '_'
+#define FREE ' '
 
+#define V 'H'
+#define H '='
 
 #define HOR 'H'
 #define VERT 'V'
@@ -58,12 +60,12 @@ char** createMatrix(int n, char** bar)
                 bool h3 = i < rows - 1 && j > 1 && (jm4 == 0 || jm4 == 2) && im4 == 3;
 
                 // Vertical
-                if(v1 && bar[2 * (i / 4)][(j-1) / 4] == VERT) M[i][j] = BLOCK;
-                else if(v3 && bar[2 * ((i - 2) / 4) + 1][(j-1) / 4] == VERT) M[i][j] = BLOCK;
+                if(v1 && bar[2 * (i / 4)][(j-1) / 4] == VERT) M[i][j] = V;//;
+                else if(v3 && bar[2 * ((i - 2) / 4) + 1][(j-1) / 4] == VERT) M[i][j] = V;//BLOCK;
 
                 // Horizontal
-                else if(h1 && bar[2 * (i / 4)][(j / 4)] == HOR) M[i][j] = BLOCK;
-                else if(h3 && bar[2 * (i / 4) + 1][(j-2) / 4] == HOR) M[i][j] = BLOCK;
+                else if(h1 && bar[2 * (i / 4)][(j / 4)] == HOR) M[i][j] = H;//BLOCK;
+                else if(h3 && bar[2 * (i / 4) + 1][(j-2) / 4] == HOR) M[i][j] = H;//BLOCK;
 
                 else M[i][j] = PASS;
             }
