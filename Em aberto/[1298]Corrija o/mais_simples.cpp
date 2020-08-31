@@ -75,8 +75,8 @@ char direction(char **M, char **bar, int i, int j, int rows, int cols)
                     if(M[i][j - 1] == BLOCK) return R;
                     return L;
                 }
-            // Up-right corner
             }
+            // Up-right corner
             if(M[i][j - 1] == BLOCK) return D;
             return L;
         }
@@ -98,34 +98,73 @@ char direction(char **M, char **bar, int i, int j, int rows, int cols)
                     if(M[i][j - 1] == BLOCK) return R;
                     return L;
                 }
-            // Bottom-right corner
             }
+            // Bottom-right corner
             if(M[i][j - 1] == BLOCK) return U;
             return L;
         }
 
-        /*/ First column
+        // First column
         else if(j == 0)
         {
-            if(i < rows -1)
+            if(i > 0 && i < rows -1)
             {
-                // Left blocked
+                // Right blocked
                 if(bar[i][jd2] == VERT)
                 {
+                    if(M[i - 1][j] == BLOCK) return D;
+                    return U;
+                }
+                // Down blocked
+                else
+                {
                     if(M[i - 1][j] == BLOCK) return R;
+                    return U;
+                }
+            }
+            
+            // End of maze
+            return HALT;
+        }
+
+        // Last column
+        else if(j == cols - 1)
+        {
+            if(i > 0 && i < rows -1)
+            {
+                // Left blocked
+                if(bar[i][jd2 - 1] == VERT) // j/2 - 1 => Standarize last col barrel
+                {
+                    if(M[i - 1][j] == BLOCK) return D;
                     return U;
                 }
                 // Up blocked
                 else
                 {
-                    if(M[i][j - 1] == BLOCK) return R;
-                    return L;
+                    if(M[i][j - 1] == BLOCK) return L;
+                    return D;
                 }
-            // Bottom-right corner
+            }            
+        }
+
+        /*/ Middle tile
+        else
+        {
+            // Right blocked
+            if(bar[i][jd2] == VERT)
+            {
+                // Left blocked
+                if(bar[i - 1][jd2] == VERT)
+                {
+                    if(M[])
+                }
+            }
+            // Down blocked
+            else
+            {
+                
             }
             
-            // End of maze
-            return HALT;
         }*/
     }
     // White tile
