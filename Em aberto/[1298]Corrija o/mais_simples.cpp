@@ -49,9 +49,20 @@ void freeMatrix(char **M, int larg)
     delete [] M;
 }
 
-char direction(char **M, char **bar, int i, int j)
+char direction(char **M, char **bar, int i, int j, int rows, int cols)
 {
-    return ' ';
+    int row, col;
+
+    // Black tile
+    if( (i + j) % 2 == 0)
+    {
+
+    }
+    // White tile
+    else
+    {
+
+    }
 }
 
 int minMoves(char** M, char **bar, int n)
@@ -70,7 +81,7 @@ int minMoves(char** M, char **bar, int n)
             {
                 M[ii][jj] = BLOCK;
 
-                switch (direction(M, bar, ii, jj))
+                switch (direction(M, bar, ii, jj, rows, cols))
                 {
                 case R:
                     jj++;
