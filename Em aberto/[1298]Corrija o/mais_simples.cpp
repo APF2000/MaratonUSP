@@ -7,11 +7,12 @@ using namespace std;
 #define FREE ' '
 #define ERROR 'E'
 
-enum Direction { R, L, U, D, HALT};
-/*#define PASS ' '
-
-#define V 'H'
-#define H '='*/
+//enum Direction { R, L, U, D, HALT };
+#define R 'R'
+#define U 'U'
+#define L 'L'
+#define D 'D'
+#define HALT 'H'
 
 #define HOR 'H'
 #define VERT 'V'
@@ -55,6 +56,9 @@ char direction(char **M, char **bar, int i, int j, int rows, int cols)
     int row, col;
     int id2 = i / 2, jd2 = j / 2;
 
+    if(i == 0 && j == 2) 
+        cout << "oi\n";
+
     // Black tile
     if( (i + j) % 2 == 0)
     {
@@ -66,13 +70,15 @@ char direction(char **M, char **bar, int i, int j, int rows, int cols)
                 // Right blocked
                 if(bar[i][jd2] == VERT)
                 {
-                    if(M[i][j - 1] == BLOCK) return D;
+                    if(M[i + 1][j] != BLOCK) return D;
+                    //if(j == 0) return ERROR; // NON-SENSE
                     return L;
                 }
                 // Down blocked
                 else
                 {
-                    if(M[i][j - 1] == BLOCK) return R;
+                    if(M[i][j + 1] != BLOCK) return R;
+                    //if(j == 0) return ERROR; // NON-SENSE
                     return L;
                 }
             }
@@ -233,14 +239,23 @@ int main()
 
     while(cin >> n)
     {
+        int rows = (2 * n), cols = (2 * n + 1);
         bar = createBar(n);
 
-        M = createMatrix(2 * n, 2 * n + 1);
+        M = createMatrix(rows, cols);
 
+        for (int i = 0; i < rows; i++)
+        {
+            for (int j = 0; j < cols; j++)
+            {
+                cout << "M[" << i << "][" << j << "] => move = " << direction(M, bar, i, j, rows, cols) << "\n";
+            }            
+        }
+        
         cout << "M[0][0] = " << M[0][0] << "\n"; 
         //result = minMoves(M);
 
-        freeMatrix(M, 2 * n);
+        freeMatrix(M, rows);
     }
 
     return 0;
