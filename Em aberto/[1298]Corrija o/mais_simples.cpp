@@ -147,7 +147,7 @@ char direction(char **M, char **bar, int i, int j, int rows, int cols)
             }            
         }
 
-        /*/ Middle tile
+        // Middle tile
         else
         {
             // Right blocked
@@ -156,16 +156,21 @@ char direction(char **M, char **bar, int i, int j, int rows, int cols)
                 // Left blocked
                 if(bar[i - 1][jd2] == VERT)
                 {
-                    if(M[])
+                    if(M[i - 1][j] == BLOCK) return D;
+                    return U;
                 }
             }
             // Down blocked
             else
             {
-                
-            }
-            
-        }*/
+                // Left blocked
+                if(bar[i - 1][jd2] == VERT)
+                {
+                    if(M[i - 1][j] == BLOCK) return R;
+                    return U;
+                }               
+            }            
+        }
     }
     // White tile
     else
