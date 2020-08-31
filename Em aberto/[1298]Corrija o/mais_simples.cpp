@@ -5,8 +5,9 @@ using namespace std;
 
 #define BLOCK 'H'
 #define FREE ' '
+#define ERROR 'E'
 
-enum Direction { R, L, U, D };
+enum Direction { R, L, U, D, HALT};
 /*#define PASS ' '
 
 #define V 'H'
@@ -52,17 +53,88 @@ void freeMatrix(char **M, int larg)
 char direction(char **M, char **bar, int i, int j, int rows, int cols)
 {
     int row, col;
+    int id2 = i / 2, jd2 = j / 2;
 
     // Black tile
     if( (i + j) % 2 == 0)
     {
+        // First line
+        if(i == 0)
+        {
+            if(j < cols -1)
+            {
+                // Right blocked
+                if(bar[i][jd2] == VERT)
+                {
+                    if(M[i][j - 1] == BLOCK) return D;
+                    return L;
+                }
+                // Down blocked
+                else
+                {
+                    if(M[i][j - 1] == BLOCK) return R;
+                    return L;
+                }
+            // Up-right corner
+            }
+            if(M[i][j - 1] == BLOCK) return D;
+            return L;
+        }
 
+        // Last line
+        else if(i == rows - 1)
+        {
+            if(j < cols -1)
+            {
+                // Left blocked
+                if(bar[i - 1][jd2] == VERT) // i - 1 => standarize line of barrel
+                {
+                    if(M[i - 1][j] == BLOCK) return R;
+                    return U;
+                }
+                // Up blocked
+                else
+                {
+                    if(M[i][j - 1] == BLOCK) return R;
+                    return L;
+                }
+            // Bottom-right corner
+            }
+            if(M[i][j - 1] == BLOCK) return U;
+            return L;
+        }
+
+        /*/ First column
+        else if(j == 0)
+        {
+            if(i < rows -1)
+            {
+                // Left blocked
+                if(bar[i][jd2] == VERT)
+                {
+                    if(M[i - 1][j] == BLOCK) return R;
+                    return U;
+                }
+                // Up blocked
+                else
+                {
+                    if(M[i][j - 1] == BLOCK) return R;
+                    return L;
+                }
+            // Bottom-right corner
+            }
+            
+            // End of maze
+            return HALT;
+        }*/
     }
     // White tile
     else
     {
 
     }
+
+    return ERROR;
 }
 
 int minMoves(char** M, char **bar, int n)
