@@ -4,11 +4,13 @@
 using namespace std;
 
 #define BLOCK 'H'
-#define PASS ' '
 #define FREE ' '
 
+enum Direction { R, L, U, D };
+/*#define PASS ' '
+
 #define V 'H'
-#define H '='
+#define H '='*/
 
 #define HOR 'H'
 #define VERT 'V'
@@ -47,12 +49,53 @@ void freeMatrix(char **M, int larg)
     delete [] M;
 }
 
+char direction(char **M, char **bar, int i, int j)
+{
+    return ' ';
+}
+
 int minMoves(char** M, char **bar, int n)
 {
     int rows = (2 * n), cols = (2 * n + 1);
+    int count = 0;
 
+    for(int i = 0; i < rows; i++)
+    {
+        for(int j = 0; j < cols; j++)
+        {
+            if(M[i][j] == BLOCK) continue;
 
-    return 0;
+            int ii = i, jj = j;
+            while(M[ii][jj] == FREE)
+            {
+                M[ii][jj] = BLOCK;
+
+                switch (direction(M, bar, ii, jj))
+                {
+                case R:
+                    jj++;
+                    break;
+                case L:
+                    jj--;
+                    break;
+                case U:
+                    ii--;
+                    break;
+                case D:
+                    ii++;
+                    break;
+                
+                default:
+                    break;
+                }
+            }
+
+            // Individual graph island
+            count++;
+        }
+    }
+
+    return count;
 }
 
 int main()
