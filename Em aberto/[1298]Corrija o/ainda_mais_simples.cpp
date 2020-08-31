@@ -1,5 +1,6 @@
 #include <iostream>
-#include <iomanip>
+//#include <iomanip>
+#include <vector>
 
 using namespace std;
 
@@ -68,7 +69,20 @@ class Solver
             this->cols = cols;
         }
 
-        
+        // Gives the coordenates in bar that affect that tile (i, j)
+        vector<vector<char>> coords_in_bar(int i, int j)
+        {
+            int row, col;
+            vector<vector<char>> coords;
+            //vector<char> aux;
+
+            if(i == 0)
+            {
+                
+            }
+
+            return {};
+        }
 
         char direction(int i, int j)
         {
