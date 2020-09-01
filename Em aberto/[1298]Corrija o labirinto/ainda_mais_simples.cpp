@@ -99,11 +99,16 @@ class Solver
             else if(i == 0) // First row
             {
                 if(this->M[i][j + 1] != BLOCK && j % 2 == 1) return true; // Black tile
-                return false; // Nonsense
+                //return false; // Nonsense
+            }
+            else if(i == this->rows - 1) // Last row
+            {
+                if(this->M[i][j + 1] != BLOCK && j % 2 == 1) return true; // Black tile
+                //return false; // Nonsense
             }
 
             if( (i + j) % 2 == 0 && this->bar[i][j / 2] == VERT ) return false; // Barrier, black tile
-            else if( (i + j) % 2 == 1 && this->bar[i][j / 2] == VERT ) return false; // Barrier, white tile
+            else if( (i + j) % 2 == 1 && this->bar[i - 1][j / 2] == VERT ) return false; // Barrier, white tile
 
             return true;
         }
@@ -112,10 +117,15 @@ class Solver
         {
             if(j == 0) return false; // First col
             else if(this->M[i][j - 1] == BLOCK) return false; // Already passed there
+            else if(i == 0) // First row
+            {
+                if(this->M[i][j - 1] != BLOCK && j % 2 == 0) return true; // Black tile
+                //return false; // Nonsense
+            }
             else if(i == this->rows - 1) // Last row
             {
                 if(this->M[i][j - 1] != BLOCK && j % 2 == 0) return true; // White tile
-                return false; // Nonsense
+                //return false; // Nonsense
             }
 
             if( (i + j) % 2 == 0 && this->bar[i - 1][(j - 1) / 2] == VERT ) return false; // Barrier, black tile
@@ -136,7 +146,7 @@ class Solver
             else if(j == 0) // First col
             {
                 if(this->M[i - 1][j] != BLOCK && i % 2 == 0) return true; // Black tile
-                return false; // Nonsense
+                //return false; // Nonsense
             }
 
             if( (i + j) % 2 == 0 && this->bar[i - 1][(j - 1) / 2] == HOR ) return false; // Barrier, black tile
@@ -152,16 +162,16 @@ class Solver
             else if(j == 0) // First col
             {
                 if(this->M[i + 1][j] != BLOCK && i % 2 == 1) return true; // White tile
-                return false; // Nonsense
+                //return false; // Nonsense
             }
             else if(j == this->cols - 1) // Last col
             {
                 if(this->M[i + 1][j] != BLOCK && i % 2 == 0) return true; // Black tile
-                return false; // Nonsense
+                //return false; // Nonsense
             }
 
             if( (i + j) % 2 == 0 && this->bar[i][j / 2] == HOR ) return false; // Barrier, black tile
-            else if( (i + j) % 2 == 1 && this->bar[i][j / 2] == HOR ) return false; // Barrier, white tile
+            else if( (i + j) % 2 == 1 && this->bar[i][(j - 1) / 2] == HOR ) return false; // Barrier, white tile
 
             return true;
         }
@@ -173,8 +183,8 @@ class Solver
 
             if(this->right(i, j)) return R;
             else if(this->left(i, j)) return L;
-            //else if(this->up(i, j)) return U;
-            //else if(this->down(i, j)) return D;
+            else if(this->up(i, j)) return U;
+            else if(this->down(i, j)) return D;
 
             return HALT;
         }
