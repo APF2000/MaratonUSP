@@ -54,6 +54,29 @@ void freeMatrix(char **M, int larg)
 
 class Solver
 {
+    /*
+    M
+         0 1 2 3 4
+          _ _ _ _ _
+       0 | | | | | |
+           *   *  
+       1 | | | | | |
+             *   *
+       2 | | | | | |
+           *   *
+       3 | | | | | |
+
+    bar
+
+        VHV
+        VHV 
+        VVV
+        VVV
+        HHH
+
+    */
+
+
     public:
         char **M, **bar;
         int rows, cols;
@@ -69,12 +92,21 @@ class Solver
             this->cols = cols;
         }
 
+        bool right(int i, int j)
+        {
+            if(j == this->cols - 1) return false;
+            if( (i + j) % 2 == 0 )
+            {
+
+            }
+        }
+
         char direction(int i, int j)
         {
             int row, col;
             int id2 = i / 2, jd2 = j / 2;
 
-            //if()
+            if(this->right(i, j)) return R;
 
             return HALT;
         }
