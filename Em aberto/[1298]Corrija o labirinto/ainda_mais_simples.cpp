@@ -232,7 +232,7 @@ int main()
         result = s->minMoves();
         cout << "result = " << result << "\n";
 
-        //freeMatrix(M, rows);
+        freeMatrix(s->M, rows);
     }
 
     return 0;
