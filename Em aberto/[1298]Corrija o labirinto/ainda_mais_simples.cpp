@@ -103,7 +103,7 @@ class Solver
             }
 
             if( (i + j) % 2 == 0 && this->bar[i][j / 2] == VERT ) return false; // Barrier, black tile
-            else if( (i + j) % 2 == 1 && this->bar[i - 1][j / 2] == VERT ) return false; // Barrier, white tile
+            else if( (i + j) % 2 == 1 && this->bar[i][j / 2] == VERT ) return false; // Barrier, white tile
 
             return true;
         }
@@ -119,7 +119,7 @@ class Solver
             }
 
             if( (i + j) % 2 == 0 && this->bar[i - 1][(j - 1) / 2] == VERT ) return false; // Barrier, black tile
-            else if( (i + j) % 2 == 1 && this->bar[i - 1][(j - 1) / 2] == VERT ) return false; // Barrier, white tile
+            else if( (i + j) % 2 == 1 && this->bar[i][(j - 1) / 2] == VERT ) return false; // Barrier, white tile
 
             return true;
         }
@@ -127,9 +127,20 @@ class Solver
         bool up(int i, int j)
         {
             if(i == 0) return false; // First row
+            else if(this->M[i - 1][j] == BLOCK) return false; // Already passed there
+            else if(j == this->cols - 1) // Last col
+            {
+                if(this->M[i - 1][j] != BLOCK && i % 2 == 1) return true; // White tile
+                return false; // Nonsense
+            }
+            else if(j == 0) // First col
+            {
+                if(this->M[i - 1][j] != BLOCK && i % 2 == 0) return true; // Black tile
+                return false; // Nonsense
+            }
 
-            if( (i + j) % 2 == 0 && this->bar[i][j / 2] == VERT ) return false; // Barrier
-            else if(this->M[i][j + 1] == BLOCK) return false; // Already passed there
+            if( (i + j) % 2 == 0 && this->bar[i - 1][(j - 1) / 2] == HOR ) return false; // Barrier, black tile
+            else if( (i + j) % 2 == 1 && this->bar[i - 1][j / 2] == HOR ) return false; // Barrier, white tile
 
             return true;
         }
@@ -137,9 +148,20 @@ class Solver
         bool down(int i, int j)
         {
             if(i == this->rows - 1) return false; // Last row
+            else if(this->M[i + 1][j] == BLOCK) return false; // Already passed there
+            else if(j == 0) // First col
+            {
+                if(this->M[i + 1][j] != BLOCK && i % 2 == 1) return true; // White tile
+                return false; // Nonsense
+            }
+            else if(j == this->cols - 1) // Last col
+            {
+                if(this->M[i + 1][j] != BLOCK && i % 2 == 0) return true; // Black tile
+                return false; // Nonsense
+            }
 
-            if( (i + j) % 2 == 1 && this->bar[i][j / 2] == VERT ) return false; // Barrier
-            else if(this->M[i][j - 1] == BLOCK) return false; // Already passed there
+            if( (i + j) % 2 == 0 && this->bar[i][j / 2] == HOR ) return false; // Barrier, black tile
+            else if( (i + j) % 2 == 1 && this->bar[i][j / 2] == HOR ) return false; // Barrier, white tile
 
             return true;
         }
