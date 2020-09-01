@@ -1,5 +1,4 @@
 #include <iostream>
-//#include <iomanip>
 #include <vector>
 
 using namespace std;
@@ -8,12 +7,7 @@ using namespace std;
 #define FREE ' '
 #define ERROR 'E'
 
-//enum Direction { R, L, U, D, HALT };
-#define R 'R'
-#define U 'U'
-#define L 'L'
-#define D 'D'
-#define HALT 'H'
+enum Direction { R, L, U, D, HALT };
 
 #define HOR 'H'
 #define VERT 'V'
@@ -99,12 +93,10 @@ class Solver
             else if(i == 0) // First row
             {
                 if(this->M[i][j + 1] != BLOCK && j % 2 == 1) return true; // Black tile
-                //return false; // Nonsense
             }
             else if(i == this->rows - 1) // Last row
             {
                 if(this->M[i][j + 1] != BLOCK && j % 2 == 1) return true; // Black tile
-                //return false; // Nonsense
             }
 
             if( (i + j) % 2 == 0 && this->bar[i][j / 2] == VERT ) return false; // Barrier, black tile
@@ -120,12 +112,10 @@ class Solver
             else if(i == 0) // First row
             {
                 if(this->M[i][j - 1] != BLOCK && j % 2 == 0) return true; // Black tile
-                //return false; // Nonsense
             }
             else if(i == this->rows - 1) // Last row
             {
                 if(this->M[i][j - 1] != BLOCK && j % 2 == 0) return true; // White tile
-                //return false; // Nonsense
             }
 
             if( (i + j) % 2 == 0 && this->bar[i - 1][(j - 1) / 2] == VERT ) return false; // Barrier, black tile
@@ -141,12 +131,10 @@ class Solver
             else if(j == this->cols - 1) // Last col
             {
                 if(this->M[i - 1][j] != BLOCK && i % 2 == 1) return true; // White tile
-                return false; // Nonsense
             }
             else if(j == 0) // First col
             {
                 if(this->M[i - 1][j] != BLOCK && i % 2 == 0) return true; // Black tile
-                //return false; // Nonsense
             }
 
             if( (i + j) % 2 == 0 && this->bar[i - 1][(j - 1) / 2] == HOR ) return false; // Barrier, black tile
@@ -162,12 +150,10 @@ class Solver
             else if(j == 0) // First col
             {
                 if(this->M[i + 1][j] != BLOCK && i % 2 == 1) return true; // White tile
-                //return false; // Nonsense
             }
             else if(j == this->cols - 1) // Last col
             {
                 if(this->M[i + 1][j] != BLOCK && i % 2 == 0) return true; // Black tile
-                //return false; // Nonsense
             }
 
             if( (i + j) % 2 == 0 && this->bar[i][j / 2] == HOR ) return false; // Barrier, black tile
@@ -191,7 +177,6 @@ class Solver
 
         int minMoves()
         {
-            //int rows = (2 * n), cols = (2 * n + 1);
             int count = 0;
 
             for(int i = 0; i < this->rows; i++)
@@ -236,7 +221,6 @@ class Solver
 
 int main()
 { 
-    //char **M, **bar;
     int n;
     int result;
 
@@ -244,19 +228,7 @@ int main()
     {
         Solver *s = new Solver(n);
         int rows = (2 * n), cols = (2 * n + 1);
-        //bar = createBar(n);
-
-        //M = createMatrix(rows, cols);
-
-        /*for (int i = 0; i < rows; i++)
-        {
-            for (int j = 0; j < cols; j++)
-            {
-                cout << "M[" << i << "][" << j << "] => move = " << s->direction(i, j) << "\n";
-            }            
-        }*/
         
-        //cout << "M[0][0] = " << M[0][0] << "\n"; 
         result = s->minMoves();
         cout << "result = " << result << "\n";
 
