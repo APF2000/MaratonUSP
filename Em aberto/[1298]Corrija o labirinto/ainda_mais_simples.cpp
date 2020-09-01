@@ -189,14 +189,14 @@ class Solver
             return HALT;
         }
 
-        int minMoves(int n)
+        int minMoves()
         {
-            int rows = (2 * n), cols = (2 * n + 1);
+            //int rows = (2 * n), cols = (2 * n + 1);
             int count = 0;
 
-            for(int i = 0; i < rows; i++)
+            for(int i = 0; i < this->rows; i++)
             {
-                for(int j = 0; j < cols; j++)
+                for(int j = 0; j < this->cols; j++)
                 {
                     if(this->M[i][j] == BLOCK) continue;
 
@@ -230,7 +230,7 @@ class Solver
                 }
             }
 
-            return count;
+            return count - 1;
         }
 };
 
@@ -248,16 +248,17 @@ int main()
 
         //M = createMatrix(rows, cols);
 
-        for (int i = 0; i < rows; i++)
+        /*for (int i = 0; i < rows; i++)
         {
             for (int j = 0; j < cols; j++)
             {
                 cout << "M[" << i << "][" << j << "] => move = " << s->direction(i, j) << "\n";
             }            
-        }
+        }*/
         
         //cout << "M[0][0] = " << M[0][0] << "\n"; 
-        //result = minMoves(M);
+        result = s->minMoves();
+        cout << "result = " << result << "\n";
 
         //freeMatrix(M, rows);
     }
