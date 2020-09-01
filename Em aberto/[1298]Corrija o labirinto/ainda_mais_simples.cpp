@@ -230,7 +230,7 @@ int main()
         int rows = (2 * n), cols = (2 * n + 1);
         
         result = s->minMoves();
-        cout << "result = " << result << "\n";
+        cout << result << "\n";
 
         freeMatrix(s->M, rows);
     }
