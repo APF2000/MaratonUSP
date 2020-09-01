@@ -94,31 +94,24 @@ class Solver
 
         bool right(int i, int j)
         {
-            if(j == this->cols - 1) return false;
+            if(j == this->cols - 1) return false; // Last col
 
-            if( (i + j) % 2 == 0 )
-            {
-                if(this->bar[i][j / 2] == VERT) return false;
-                else if(this->M[i][j + 1] == BLOCK) return false;
-            }
-            else if(this->M[i][j + 1] == BLOCK) return false;
+            if( (i + j) % 2 == 0 && this->bar[i][j / 2] == VERT ) return false; // Barrier
+            else if(this->M[i][j + 1] == BLOCK) return false; // Already passed there
 
             return true;
         }
 
         bool left(int i, int j)
         {
-            if(j == 0) return false;
+            if(j == 0) return false; // First col
 
-            if( (i + j) % 2 == 1 )
-            {
-                if(this->bar[i][j / 2] == VERT) return false;
-                else if(this->M[i][j - 1] == BLOCK) return false;
-            }
-            else if(this->M[i][j - 1] == BLOCK) return false;
+            if( (i + j) % 2 == 1 && this->bar[i][j / 2] == VERT ) return false; // Barrier
+            else if(this->M[i][j - 1] == BLOCK) return false; // Already passed there
 
             return true;
         }
+
         char direction(int i, int j)
         {
             int row, col;
