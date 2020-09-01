@@ -95,9 +95,15 @@ class Solver
         bool right(int i, int j)
         {
             if(j == this->cols - 1) return false; // Last col
-
-            if( (i + j) % 2 == 0 && this->bar[i][j / 2] == VERT ) return false; // Barrier
             else if(this->M[i][j + 1] == BLOCK) return false; // Already passed there
+            else if(i == 0) // First row
+            {
+                if(this->M[i][j + 1] != BLOCK && j % 2 == 1) return true; // Black tile
+                return false; // Nonsense
+            }
+
+            if( (i + j) % 2 == 0 && this->bar[i][j / 2] == VERT ) return false; // Barrier, black tile
+            else if( (i + j) % 2 == 1 && this->bar[i - 1][j / 2] == VERT ) return false; // Barrier, white tile
 
             return true;
         }
@@ -105,9 +111,15 @@ class Solver
         bool left(int i, int j)
         {
             if(j == 0) return false; // First col
-
-            if( (i + j) % 2 == 1 && this->bar[i][j / 2] == VERT ) return false; // Barrier
             else if(this->M[i][j - 1] == BLOCK) return false; // Already passed there
+            else if(i == this->rows - 1) // Last row
+            {
+                if(this->M[i][j - 1] != BLOCK && j % 2 == 0) return true; // White tile
+                return false; // Nonsense
+            }
+
+            if( (i + j) % 2 == 0 && this->bar[i - 1][(j - 1) / 2] == VERT ) return false; // Barrier, black tile
+            else if( (i + j) % 2 == 1 && this->bar[i - 1][(j - 1) / 2] == VERT ) return false; // Barrier, white tile
 
             return true;
         }
