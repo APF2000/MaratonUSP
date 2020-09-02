@@ -34,10 +34,19 @@ class Circle
 
 int main()
 {
-	Circle *c1 = new Circle(2, 0, 0), *c2 = new Circle(3, 0, 0);
+	Circle *c1, *c2;
+	int r1, x1, y1, r2, x2, y2;
 
-	cout << "C1 inside C2? : " << c1->is_inside(c2) << "\n";
-	cout << "C2 inside C1? : " << c2->is_inside(c1) << "\n";
+	while(cin >> r1 >> x1 >> y1 >> r2 >> x2 >> y2)
+	{
+		c1 = new Circle(r1, x1, y1);
+		c2 = new Circle(r2, x2, y2);
+
+		cout << c2->is_inside(c1) ? "RICO" : "MORTO" << "\n";
+
+		delete [] c1;
+		delete [] c2;
+	}
 
 	return 0;
 }
