@@ -42,7 +42,7 @@ int main()
 		c1 = new Circle(r1, x1, y1);
 		c2 = new Circle(r2, x2, y2);
 
-		cout << c2->is_inside(c1) ? "RICO" : "MORTO" << "\n";
+		cout << (c2->is_inside(c1) ? "RICO" : "MORTO") << "\n";
 
 		delete [] c1;
 		delete [] c2;
