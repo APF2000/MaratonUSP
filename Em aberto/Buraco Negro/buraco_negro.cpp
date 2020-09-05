@@ -37,8 +37,6 @@ class Line{
             Point *med = new Point(xm, ym);
             Point *aux;
 
-            cout << "Ponto medio: (" << xm << ", " << ym << ")\n";
-
             if(a->y == b->y)
             {
                 // Vertical line
@@ -69,7 +67,14 @@ class Line{
         */
         Point* intersection(Line* other)
         {
-            
+            if(this->vert)
+            {
+                return new Point(this->xis, other->a * this->xis + other->b);
+            }
+            else if(other->vert)
+            {
+                return new Point(other->xis, this->a * other->xis + this->b);
+            }
 
             double x = (other->b - this->b) / (this->a - other->a);
             double y = this->a * x + this->b;
@@ -111,7 +116,7 @@ int main(){
             Point *inter = la->intersection(lb);
             
             cout << "Caso #" << (i + 1) << ": ";
-            cout << inter->x << " " << inter->y;
+            cout << inter->x << " " << inter->y << "\n";
         }
     }
 
