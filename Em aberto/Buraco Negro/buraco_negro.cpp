@@ -26,13 +26,36 @@ class Line{
                 return;
             }
             this->a = (p1->y - p2->y) / (p1->x - p2->x);
-            this->b = p1->y - this->a * p1->x;   
+            this->b = p1->y - this->a * p1->x;
 
-            cout << "OI\n a=" << this->a << ", b=" << this->b << "\n"; 
+            //cout << "OI\n a=" << this->a << ", b=" << this->b << "\n"; 
         }
 
+        static Line* mediatriz(Point *a, Point *b)
+        {
+            double xm = (a->x + b->x) / 2, ym = (a->y + b->y) / 2;
+            Point *med = new Point(xm, ym);
+            Point *aux;
+
+            cout << "Ponto medio: (" << xm << ", " << ym << ")\n";
+
+            if(a->y == b->y)
+            {
+                // Vertical line
+                aux = new Point(xm, ym + 1);
+            }
+            else{
+                // Angular coef
+                double m = - (a->x - b->x) / (a->y - b->y) ;
+                aux = new Point(xm + 1, ym + m);
+            }
+
+            return new Line(med, aux);
+        }
+
+
         bool isParallel(Line* other){
-            cout << "other=" << other->a <<  ", this=" << this->a << "\n";
+            //cout << "other=" << other->a <<  ", this=" << this->a << "\n";
             if(other->a == this->a) return true;
             return false;
         }
@@ -44,30 +67,52 @@ class Line{
             x * (a1 - a2) + (b1 - b2) = 0
             x = (b2 - b1) / (a1 - a2)
         */
-        Point intersection(Line* other){
+        Point* intersection(Line* other)
+        {
+            
+
             double x = (other->b - this->b) / (this->a - other->a);
             double y = this->a * x + this->b;
 
-            return Point(x, y);
+            return new Point(x, y);
         }
 };
 
 
 int main(){
 
-    Point* x1 = new Point(2, 0);
-    Point* x2 = new Point(0, 3);
+    int n;
 
-    Point* y1 = new Point(0, -2);
-    Point* y2 = new Point(2, 0);
+    cin >> n;
+    for (int i = 0; i < n; i++)
+    {
+        double x1a, x1d, y1a, y1d;
+        double x2a, x2d, y2a, y2d;
 
-    Line* l1 = new Line(x1, x2);
-    Line* l2 = new Line(y1, y2);
+        cin >> x1a >> y1a>> x2a >> y2a;
+        cin >> x1d >> y1d >> x2d >> y2d;
 
-    cout << "Sao paralelas? " << l1->isParallel(l2) << "\n";
-    if(!(l1->isParallel(l2))){
-        Point aux = l1->intersection(l2);
-        cout << "Interseccao: (" << aux.x  << "," << aux.y << ")\n";
+        Point* umA = new Point(x1a, y1a);
+        Point* umD = new Point(x1d, y1d);
+
+        Point* doisA = new Point(x2a, y2a);
+        Point* doisD = new Point(x2d, y2d);
+
+        /*cout << "(" << x1a <<", " << y1a << ")\n";
+        cout << "(" << x1d <<", " << y1d << ")\n";
+        cout << "(" << x2a <<", " << y2a << ")\n";
+        cout << "(" << x2d <<", " << y2d << ")\n";*/
+
+        Line *la = Line::mediatriz(umA, umD);
+        Line *lb = Line::mediatriz(doisA, doisD);
+
+        if(!(la->isParallel(lb)))
+        {
+            Point *inter = la->intersection(lb);
+            
+            cout << "Caso #" << (i + 1) << ": ";
+            cout << inter->x << " " << inter->y;
+        }
     }
 
     return 0;
