@@ -1,4 +1,5 @@
 #include <iostream>
+#include <iomanip>
 
 using namespace std;
 
@@ -28,7 +29,6 @@ class Line{
             this->a = (p1->y - p2->y) / (p1->x - p2->x);
             this->b = p1->y - this->a * p1->x;
 
-            //cout << "OI\n a=" << this->a << ", b=" << this->b << "\n"; 
         }
 
         static Line* mediatriz(Point *a, Point *b)
@@ -53,7 +53,6 @@ class Line{
 
 
         bool isParallel(Line* other){
-            //cout << "other=" << other->a <<  ", this=" << this->a << "\n";
             if(other->a == this->a) return true;
             return false;
         }
@@ -103,20 +102,17 @@ int main(){
         Point* doisA = new Point(x2a, y2a);
         Point* doisD = new Point(x2d, y2d);
 
-        /*cout << "(" << x1a <<", " << y1a << ")\n";
-        cout << "(" << x1d <<", " << y1d << ")\n";
-        cout << "(" << x2a <<", " << y2a << ")\n";
-        cout << "(" << x2d <<", " << y2d << ")\n";*/
-
         Line *la = Line::mediatriz(umA, umD);
         Line *lb = Line::mediatriz(doisA, doisD);
 
         if(!(la->isParallel(lb)))
         {
             Point *inter = la->intersection(lb);
+
+            cout.precision(2);
             
             cout << "Caso #" << (i + 1) << ": ";
-            cout << inter->x << " " << inter->y << "\n";
+            cout << setprecision(2) << fixed << (double)inter->x << " " << (double)inter->y << "\n";
         }
     }
 
