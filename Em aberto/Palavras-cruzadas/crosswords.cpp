@@ -43,7 +43,6 @@ vector<Word*> find_spots(vector<vector<char>> map, int m, int n)
     int x_fim, y_fim;
     
     // Ver palavras na horizontal
-    //Ver palavras na horizontal
     for(int i = 0; i < m; i++)
     {
         lendo_espaco = false;
@@ -73,7 +72,14 @@ vector<Word*> find_spots(vector<vector<char>> map, int m, int n)
             }
             
         }
-
+        
+        if(lendo_espaco) 
+        {
+            x_fim = x_ini;
+            y_fim = y_ini;
+            Word *w = new Word(x_ini, x_fim, y_ini, y_fim, "");
+            spots.push_back(w);
+        }
     }        
 
     // Vertical
@@ -105,6 +111,14 @@ vector<Word*> find_spots(vector<vector<char>> map, int m, int n)
                 }
             }
             
+        }
+
+        if(lendo_espaco) 
+        {
+            x_fim = x_ini;
+            y_fim = y_ini;
+            Word *w = new Word(x_ini, x_fim, y_ini, y_fim, "");
+            spots.push_back(w);
         }
 
     }        
