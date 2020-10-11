@@ -35,13 +35,13 @@ vector<vector<char>> criar_mapa(int m, int n)
     return map;
 } 
 
-vector<Word*> find_spots(vector<vector<char>> map, int m, int n)
+vector<Word*> find_spots_in_line(vector<vector<char>> map, int m, int n)
 {
     vector<Word*> spots;
     bool lendo_espaco;
     int x_ini, y_ini;
     int x_fim, y_fim;
-    
+
     // Ver palavras na horizontal
     for(int i = 0; i < m; i++)
     {
@@ -80,48 +80,20 @@ vector<Word*> find_spots(vector<vector<char>> map, int m, int n)
             Word *w = new Word(x_ini, x_fim, y_ini, y_fim, "");
             spots.push_back(w);
         }
-    }        
+    }
 
-    // Vertical
-    for(int j = 0; j < n; j++)
-    {
-        lendo_espaco = false;
-        for(int i = 0; i < m; i++)
-        {
-            if(!lendo_espaco && map[i][j] == EMPTY)
-            {
-                lendo_espaco = true;
-                x_ini = i;
-                y_ini = j;
-            }
-            else if(lendo_espaco)
-            {
-                bool cond1 = (map[i][j] == BLOCK);
-                bool cond2 = (i == m - 1);                
-                
-                if(cond1 || cond2)
-                {
-                    lendo_espaco = false;
-                    y_fim = j;
-                    if(cond1) x_fim = i - 1;
-                    else if(cond2) x_fim = i;    
+    return spots;
+}
 
-                    Word *w = new Word(x_ini, x_fim, y_ini, y_fim, "");
-                    spots.push_back(w);
-                }
-            }
-            
-        }
-
-        if(lendo_espaco) 
-        {
-            x_fim = x_ini;
-            y_fim = y_ini;
-            Word *w = new Word(x_ini, x_fim, y_ini, y_fim, "");
-            spots.push_back(w);
-        }
-
-    }        
+vector<Word*> find_spots(vector<vector<char>> map, int m, int n)
+{
+    vector<Word*> spots;
+    bool lendo_espaco;
+    int x_ini, y_ini;
+    int x_fim, y_fim;
+    
+    spots = find_spots_in_line(map, m, n);
+    //spots = find_spots_in_line(map, n, m);
 
     return spots;
 } 
