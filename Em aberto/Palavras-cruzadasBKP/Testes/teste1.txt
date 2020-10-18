@@ -1,0 +1,25 @@
+4 4
+-1  0  0 -1
+ 0 -1  0  0
+ 0  0  0 -1
+-1  0 -1  0
+6
+ba
+oi
+la
+iso
+so
+z
+
+Esperado:
+* b a *
+o * l a
+i s o *
+* o * z
+
+   b
+banana*
+   t 
+   a
+   t
+   a
