@@ -3,15 +3,34 @@
  0 -1  0  0
  0  0  0 -1
 -1  0 -1  0
-6
+7
 ba
 oi
 la
 iso
+suo
 so
 z
 
+-1  0  i -1
+ b -1  s  0
+ a  0  o -1
+-1  0 -1  0
 
+
+
+*
+a
+b
+*
+o
+s
+i
+
+
+iso
+ba
+...
 
 Esperado:
 * b a *

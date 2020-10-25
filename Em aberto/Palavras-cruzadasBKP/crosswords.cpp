@@ -159,6 +159,37 @@ bool string_greater_than(string st1, string st2)
     return( st1.size() > st2.size() );
 }
 
+bool check_size(Word* w, Word* spot)
+{
+    return ( w->w.size() == word_size(spot) );
+}
+
+bool check_encaixe(vector<vector<char>> map, Word* spot, string w)
+{
+    if( spot->x_ini == spot->x_fim ) // Mesma coluna
+    {
+        for(int i = 0; i < w.size(); i++)
+        {
+            char ch = w[i];
+            char mapch = map[spot->x_ini][spot->y_ini + i];
+
+            if( mapch != EMPTY && ch != mapch ) return false;
+        }
+
+    }else // Mesma linha
+    {
+        for(int i = 0; i < w.size(); i++)
+        {
+            char ch = w[i];
+            char mapch = map[spot->x_ini + i][spot->y_ini];
+
+            if( mapch != EMPTY && ch != mapch ) return false;
+        }
+    }
+
+    return true;
+}
+
 vector<vector<char>>* solve_puzzle(vector<vector<char>> map, vector<string> wordlist, vector<Word*> spots)
 {
     // Backtracking :)
@@ -167,10 +198,16 @@ vector<vector<char>>* solve_puzzle(vector<vector<char>> map, vector<string> word
 
     Printer *p = new Printer();
     sort(spots.begin(), spots.end(), spot_greater_than);
-    p->print_vector(spots);
-
     sort(wordlist.begin(), wordlist.end(), string_greater_than);
-    p->print_vector_strings(wordlist);
+
+    cout << "Cabe ? " << check_encaixe(map, spots[0], wordlist[0]) << "\n";
+    cout << "Cabe2 ? " << check_encaixe(map, spots[1], wordlist[0]) << "\n";
+
+    map[2][1] = 'z';
+    map[1][2] = 'z';
+    cout << "Cabe3 ? " << check_encaixe(map, spots[1], wordlist[0]) << "\n";
+
+    // Confere tamanho -> ve se pode por -> poe
 
     return NULL;
 }
