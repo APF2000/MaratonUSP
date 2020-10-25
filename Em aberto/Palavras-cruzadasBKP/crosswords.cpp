@@ -166,6 +166,7 @@ vector<vector<char>>* solve_puzzle(vector<vector<char>> map, vector<string> word
     cout << "Antes:\n";
     p->print_vector(spots);
     sort(spots.begin(), spots.end(), spot_greater_than);
+    
     cout << "\n Depois:\n";
     p->print_vector(spots);
 
