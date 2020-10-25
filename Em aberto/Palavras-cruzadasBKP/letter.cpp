@@ -1,9 +1,9 @@
 #include "letter.h"
 
-Letter::Letter(int x, int y , char c, bool inter)
+Letter::Letter(int x, int y , char ch, bool inter)
 {
     this->x = x;
     this->y = y;
-    this->c = c;
+    this->ch = ch;
     this->inter = inter;
 }

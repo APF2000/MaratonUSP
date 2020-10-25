@@ -164,16 +164,37 @@ bool check_size(Word* w, Word* spot)
     return ( w->w.size() == word_size(spot) );
 }
 
-bool check_encaixe(vector<vector<char>> map, Word* spot, string w)
+
+bool insert_word(vector<vector<char>> *map, stack<Letter*> pilha,  Word* spot, string w)
 {
+    int xbase = spot->x_ini, ybase = spot->y_ini;
+    Letter *l;
+
     if( spot->x_ini == spot->x_fim ) // Mesma coluna
     {
+
         for(int i = 0; i < w.size(); i++)
         {
             char ch = w[i];
-            char mapch = map[spot->x_ini][spot->y_ini + i];
+            char mapch = (*map)[xbase][ybase + i];
 
-            if( mapch != EMPTY && ch != mapch ) return false;
+            if( mapch != EMPTY && ch != mapch )
+            {
+                for(int j = i; j > 0; j--)
+                {
+                    l = pilha.top();   
+                    pilha.pop();
+
+                    // Desempilhar
+                    if( !l->inter ) (*map)[xbase][ybase + j] = EMPTY;
+                }
+
+                return false;
+            }
+
+            l = new Letter(xbase, ybase + i, ch, (mapch != EMPTY));
+            (*map)[xbase][ybase + i] = ch;
+            pilha.push(l);
         }
 
     }else // Mesma linha
@@ -181,9 +202,24 @@ bool check_encaixe(vector<vector<char>> map, Word* spot, string w)
         for(int i = 0; i < w.size(); i++)
         {
             char ch = w[i];
-            char mapch = map[spot->x_ini + i][spot->y_ini];
+            char mapch = (*map)[spot->x_ini + i][spot->y_ini];
 
-            if( mapch != EMPTY && ch != mapch ) return false;
+            if( mapch != EMPTY && ch != mapch ){   
+                for(int j = i; j > 0; j--)
+                {
+                    l = pilha.top();
+                    pilha.pop();
+                    
+                    // Desempilhar
+                    if( !l->inter ) (*map)[xbase + j][ybase] = EMPTY;
+                }
+
+                return false;
+            }
+             
+            l = new Letter(xbase + i, ybase, ch, (mapch != EMPTY));
+            (*map)[xbase + i][ybase] = ch;
+            pilha.push(l);
         }
     }
 
@@ -200,12 +236,16 @@ vector<vector<char>>* solve_puzzle(vector<vector<char>> map, vector<string> word
     sort(spots.begin(), spots.end(), spot_greater_than);
     sort(wordlist.begin(), wordlist.end(), string_greater_than);
 
-    cout << "Cabe ? " << check_encaixe(map, spots[0], wordlist[0]) << "\n";
-    cout << "Cabe2 ? " << check_encaixe(map, spots[1], wordlist[0]) << "\n";
+    cout << "Sera que pode por ?\n" << insert_word(&map, pilha, spots[0], wordlist[0]) << "\n";
+    p->print_map(map, 4, 4);
+    p->showstack_letter(pilha);
 
+    map[1][2] = 'u';
     map[2][1] = 'z';
-    map[1][2] = 'z';
-    cout << "Cabe3 ? " << check_encaixe(map, spots[1], wordlist[0]) << "\n";
+
+    cout << "Sera que pode por ?\n" << insert_word(&map, pilha, spots[1], wordlist[1]) << "\n";
+    p->print_map(map, 4, 4);
+    p->showstack_letter(pilha);
 
     // Confere tamanho -> ve se pode por -> poe
 

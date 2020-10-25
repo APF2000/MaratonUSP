@@ -38,9 +38,9 @@ o * l a
 i s o *
 * o * z
 
-   b
-banana*
-   t 
-   a
-   t
-   a
+      b
+b a n a n a *
+      t 
+      a
+      t
+      a

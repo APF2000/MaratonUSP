@@ -47,3 +47,15 @@ void Printer::showstack(stack <Word*> s)
     } 
     cout << '\n'; 
 } 
+
+void Printer::showstack_letter(stack <Letter*> s) 
+{ 
+    while (!s.empty()) 
+    { 
+        Letter *aux = s.top();
+
+        cout << "pilha : " << aux->ch << "\n";
+        s.pop(); 
+    } 
+    cout << '\n'; 
+} 

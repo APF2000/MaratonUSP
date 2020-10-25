@@ -11,10 +11,10 @@ class Letter
 {
     public:
         int x, y;
-        char c;
+        char ch;
         bool inter;
 
-        Letter(int x, int y, char c, bool inter);     
+        Letter(int x, int y, char ch, bool inter);     
 };
 
 #endif
