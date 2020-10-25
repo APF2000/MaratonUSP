@@ -154,21 +154,23 @@ bool spot_greater_than(Word *w1, Word *w2)
     return ( word_size(w1) > word_size(w2) );
 }
 
+bool string_greater_than(string st1, string st2)
+{
+    return( st1.size() > st2.size() );
+}
+
 vector<vector<char>>* solve_puzzle(vector<vector<char>> map, vector<string> wordlist, vector<Word*> spots)
 {
-    // Backtracking :(
+    // Backtracking :)
 
     stack<Letter*> pilha;
-    //vector<Word*> spots = find_spots(map, m, n);
 
     Printer *p = new Printer();
-
-    cout << "Antes:\n";
-    p->print_vector(spots);
     sort(spots.begin(), spots.end(), spot_greater_than);
-    
-    cout << "\n Depois:\n";
     p->print_vector(spots);
+
+    sort(wordlist.begin(), wordlist.end(), string_greater_than);
+    p->print_vector_strings(wordlist);
 
     return NULL;
 }
