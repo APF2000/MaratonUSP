@@ -11,7 +11,7 @@
 #define BLOCK '*'
 #define EMPTY '_'
 
-#define INTERSECT '+'
+//#define INTERSECT '+'
 #define WORDEND '|'
 
 using namespace std;
@@ -165,7 +165,7 @@ bool check_size(Word* w, Word* spot)
 }
 
 
-bool insert_word(vector<vector<char>> *map, stack<Letter*> pilha,  Word* spot, string w)
+bool insert_word(vector<vector<char>> *map, stack<Letter*> *pilha,  Word* spot, string w)
 {
     int xbase = spot->x_ini, ybase = spot->y_ini;
     Letter *l;
@@ -182,8 +182,8 @@ bool insert_word(vector<vector<char>> *map, stack<Letter*> pilha,  Word* spot, s
             {
                 for(int j = i; j > 0; j--)
                 {
-                    l = pilha.top();   
-                    pilha.pop();
+                    l = (*pilha).top();   
+                    (*pilha).pop();
 
                     // Desempilhar
                     if( !l->inter ) (*map)[xbase][ybase + j] = EMPTY;
@@ -194,7 +194,7 @@ bool insert_word(vector<vector<char>> *map, stack<Letter*> pilha,  Word* spot, s
 
             l = new Letter(xbase, ybase + i, ch, (mapch != EMPTY));
             (*map)[xbase][ybase + i] = ch;
-            pilha.push(l);
+            (*pilha).push(l);
         }
 
     }else // Mesma linha
@@ -207,8 +207,8 @@ bool insert_word(vector<vector<char>> *map, stack<Letter*> pilha,  Word* spot, s
             if( mapch != EMPTY && ch != mapch ){   
                 for(int j = i; j > 0; j--)
                 {
-                    l = pilha.top();
-                    pilha.pop();
+                    l = (*pilha).top();
+                    (*pilha).pop();
                     
                     // Desempilhar
                     if( !l->inter ) (*map)[xbase + j][ybase] = EMPTY;
@@ -219,11 +219,32 @@ bool insert_word(vector<vector<char>> *map, stack<Letter*> pilha,  Word* spot, s
              
             l = new Letter(xbase + i, ybase, ch, (mapch != EMPTY));
             (*map)[xbase + i][ybase] = ch;
-            pilha.push(l);
+            (*pilha).push(l);
         }
     }
 
+    (*pilha).push( new Letter(-1, -1, WORDEND, false) );
     return true;
+}
+
+void unstack_purge_from_map(vector<vector<char>> *map, stack<Letter*> *pilha)
+{
+    cout << "Ponteiro-pilha: " << pilha << "; size: " << pilha->size() << "\n";
+
+    if( pilha->empty() ) return;
+
+    // Tirando o WORDEND do topo
+    pilha->pop();
+
+    Letter *topo = pilha->top();
+    cout << "Topo " << topo << "\n";
+
+    while(topo != NULL && topo->ch != WORDEND)
+    {
+        pilha->pop();
+        if( !topo->inter ) (*map)[topo->x][topo->y] = EMPTY;
+        topo = pilha->top();
+    }
 }
 
 vector<vector<char>>* solve_puzzle(vector<vector<char>> map, vector<string> wordlist, vector<Word*> spots)
@@ -231,12 +252,54 @@ vector<vector<char>>* solve_puzzle(vector<vector<char>> map, vector<string> word
     // Backtracking :)
 
     stack<Letter*> pilha;
+    vector<int> index_spot = {0};
 
     Printer *p = new Printer();
     sort(spots.begin(), spots.end(), spot_greater_than);
     sort(wordlist.begin(), wordlist.end(), string_greater_than);
 
-    cout << "Sera que pode por ?\n" << insert_word(&map, pilha, spots[0], wordlist[0]) << "\n";
+    int pos_atual = 0;
+    bool deu_pra_por = false;
+
+    while(true)
+    {
+        string w_atual = wordlist[pos_atual];
+
+        for(int i = index_spot[pos_atual]; i < spots.size(); i++)
+        {
+            Word *spot = spots[i];
+            if( w_atual.size() == word_size(spot) )
+            {
+                deu_pra_por = insert_word(&map, &pilha, spot, w_atual);
+                if(deu_pra_por)
+                {
+                    cout << "Printando a pilha depois de dar bom : \n";
+                    p->showstack_letter(pilha);
+
+                    index_spot.push_back(i);
+
+                    pos_atual ++;
+                    break;
+                } 
+            }
+        }
+        cout << "Mapa depois do for\n";
+        p->print_map(map, 4, 4);
+
+        if( !deu_pra_por )
+        {
+            unstack_purge_from_map(&map, &pilha);
+            cout << "Printando a pilha depois de tirar da pilha : \n";
+            p->showstack_letter(pilha);
+            pos_atual--;
+        }
+        else deu_pra_por = false;
+
+        int fodase;
+        cin >> fodase;
+    }
+
+    /*cout << "Sera que pode por ?\n" << insert_word(&map, pilha, spots[0], wordlist[0]) << "\n";
     p->print_map(map, 4, 4);
     p->showstack_letter(pilha);
 
@@ -245,7 +308,7 @@ vector<vector<char>>* solve_puzzle(vector<vector<char>> map, vector<string> word
 
     cout << "Sera que pode por ?\n" << insert_word(&map, pilha, spots[1], wordlist[1]) << "\n";
     p->print_map(map, 4, 4);
-    p->showstack_letter(pilha);
+    p->showstack_letter(pilha);*/
 
     // Confere tamanho -> ve se pode por -> poe
 
