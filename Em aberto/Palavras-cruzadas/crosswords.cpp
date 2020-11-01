@@ -170,6 +170,9 @@ bool insert_word(vector<vector<char>> *map, stack<Letter*> *pilha,  Word* spot, 
     int xbase = spot->x_ini, ybase = spot->y_ini;
     Letter *l;
 
+    //Printer *p;
+    //p->print_map((*map), 4, 4);
+
     if( spot->x_ini == spot->x_fim ) // Mesma coluna
     {
 
@@ -186,7 +189,7 @@ bool insert_word(vector<vector<char>> *map, stack<Letter*> *pilha,  Word* spot, 
                     (*pilha).pop();
 
                     // Desempilhar
-                    if( !l->inter ) (*map)[xbase][ybase + j] = EMPTY;
+                    if( !l->inter ) (*map)[xbase][ybase + j - 1] = EMPTY;
                 }
 
                 return false;
@@ -211,7 +214,7 @@ bool insert_word(vector<vector<char>> *map, stack<Letter*> *pilha,  Word* spot, 
                     (*pilha).pop();
                     
                     // Desempilhar
-                    if( !l->inter ) (*map)[xbase + j][ybase] = EMPTY;
+                    if( !l->inter ) (*map)[xbase + j - 1][ybase] = EMPTY;
                 }
 
                 return false;
@@ -291,7 +294,9 @@ vector<vector<char>>* solve_puzzle(vector<vector<char>> map, vector<string> word
             unstack_purge_from_map(&map, &pilha);
             cout << "Printando a pilha depois de tirar da pilha : \n";
             p->showstack_letter(pilha);
+            
             pos_atual--;
+            index_spot[pos_atual] ++;
         }
         else deu_pra_por = false;
 
