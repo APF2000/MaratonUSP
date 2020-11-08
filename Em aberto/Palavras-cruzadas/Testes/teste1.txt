@@ -17,7 +17,8 @@ z
  a  0  o -1
 -1  0 -1  0
 
-
+Esperado:
+impossivel
 
 *
 a
@@ -31,7 +32,18 @@ i
 iso
 ba
 ...
-
+4 4
+-1  0  0 -1
+ 0 -1  0  0
+ 0  0  0 -1
+-1  0 -1  0
+6
+ba
+oi
+la
+iso
+so
+z
 Esperado:
 * b a *
 o * l a

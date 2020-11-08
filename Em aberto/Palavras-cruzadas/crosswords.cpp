@@ -192,6 +192,7 @@ bool insert_word(vector<vector<char>> *map, stack<Letter*> *pilha,  Word* spot, 
                     if( !l->inter ) (*map)[xbase][ybase + j - 1] = EMPTY;
                 }
 
+                //(*pilha).push( new Letter(-1, -1, WORDEND, false) );
                 return false;
             }
 
@@ -217,6 +218,7 @@ bool insert_word(vector<vector<char>> *map, stack<Letter*> *pilha,  Word* spot, 
                     if( !l->inter ) (*map)[xbase + j - 1][ybase] = EMPTY;
                 }
 
+                //(*pilha).push( new Letter(-1, -1, WORDEND, false) );
                 return false;
             }
              
@@ -240,22 +242,27 @@ void unstack_purge_from_map(vector<vector<char>> *map, stack<Letter*> *pilha)
     pilha->pop();
 
     Letter *topo = pilha->top();
-    cout << "Topo " << topo << "\n";
+    cout << "Topo " << topo->ch << "\n";
 
     while(topo != NULL && topo->ch != WORDEND)
     {
         pilha->pop();
+
         if( !topo->inter ) (*map)[topo->x][topo->y] = EMPTY;
+        if(pilha->empty()) return;
+
         topo = pilha->top();
     }
 }
 
-vector<vector<char>>* solve_puzzle(vector<vector<char>> map, vector<string> wordlist, vector<Word*> spots)
+vector<vector<char>>* solve_puzzle(vector<vector<char>> *map, vector<string> wordlist, vector<Word*> spots)
 {
     // Backtracking :)
 
     stack<Letter*> pilha;
-    vector<int> index_spot = {0};
+    vector<int> index_spot;
+
+    for(int i = 0; i < wordlist.size(); i++) index_spot.push_back(0);
 
     Printer *p = new Printer();
     sort(spots.begin(), spots.end(), spot_greater_than);
@@ -273,35 +280,55 @@ vector<vector<char>>* solve_puzzle(vector<vector<char>> map, vector<string> word
             Word *spot = spots[i];
             if( w_atual.size() == word_size(spot) )
             {
-                deu_pra_por = insert_word(&map, &pilha, spot, w_atual);
+                deu_pra_por = insert_word(map, &pilha, spot, w_atual);
                 if(deu_pra_por)
                 {
                     cout << "Printando a pilha depois de dar bom : \n";
                     p->showstack_letter(pilha);
 
-                    index_spot.push_back(i);
-
+                    //index_spot.push_back(i);
+                    index_spot[pos_atual] = i;
                     pos_atual ++;
+
+                    if(pos_atual == wordlist.size()) return map;
+
                     break;
-                } 
+                }
             }
         }
         cout << "Mapa depois do for\n";
-        p->print_map(map, 4, 4);
+        //p->print_map(map, 4, 4);
 
         if( !deu_pra_por )
         {
-            unstack_purge_from_map(&map, &pilha);
+            // Impossivel
+            if(pos_atual == 0) return NULL;
+
+            //p->showstack_letter(pilha);
+            unstack_purge_from_map(map, &pilha);
             cout << "Printando a pilha depois de tirar da pilha : \n";
-            p->showstack_letter(pilha);
-            
+            //p->showstack_letter(pilha);
+
+            index_spot[pos_atual] = 0;
             pos_atual--;
-            index_spot[pos_atual] ++;
+            
+            // Backtracking abaixo
+            if(index_spot[pos_atual] >= spots.size() - 1)
+            {
+                index_spot[pos_atual] = 0;
+                pos_atual--;
+            }
+            //{
+            //    index_spot[pos_atual]++;
+            //    pos_atual--;
+            //}
+            
+            else index_spot[pos_atual] ++;
         }
         else deu_pra_por = false;
 
         int fodase;
-        cin >> fodase;
+        //cin >> fodase;
     }
 
     /*cout << "Sera que pode por ?\n" << insert_word(&map, pilha, spots[0], wordlist[0]) << "\n";
@@ -357,10 +384,13 @@ int main()
         wordlist.push_back(aux);
     }
 
-    vector<vector<char>> *sol = solve_puzzle(map, wordlist, spots);
+    vector<vector<char>> *sol = solve_puzzle(&map, wordlist, spots);
 
     if(!sol) cout << "Deu ruim, nao tem como\n";
-    else cout << "Deu bom, e aqui esta : \n";
+    else{
+        cout << "Deu bom, e aqui esta : \n";
+        p->print_map(map, m, n);
+    }
 
     //p->print_vector_strings(wordlist);
 
