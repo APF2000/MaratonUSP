@@ -387,7 +387,8 @@ int main()
     vector<vector<char>> *sol = solve_puzzle(&map, wordlist, spots);
 
     if(!sol) cout << "Deu ruim, nao tem como\n";
-    else{
+    else
+    {
         cout << "Deu bom, e aqui esta : \n";
         p->print_map(map, m, n);
     }
