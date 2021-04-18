@@ -14,7 +14,7 @@ def score(D, fix, sts, cars, inters, schedule):
         path = cars[car]
         first = path[0]
         st_info = sts[first]#['size']
-        cars[car] = { 'path': path, 'pos': { 'name': first, 'st': st_info, 'id': st_info['size'][2] - 1 } }
+        cars[car] = { 'path': path, 'pos': { 'name': first, 'st': st_info, 'id': st_info['size'][2] - 1 }, 'score': 0 }
 
     ##print('cars', cars)
 
@@ -24,6 +24,7 @@ def score(D, fix, sts, cars, inters, schedule):
 
     path = {}
     count = 0
+    bkp_cars = {}
     passou_intersec = {}
     for inter in inters.copy():
         inters[inter] = { 'sts': inters[inter], 'passed': False }
@@ -71,7 +72,10 @@ def score(D, fix, sts, cars, inters, schedule):
             if path[-1] == st_name and id >= size_st - 1: #(len(path) == 0):
                 #print(f"carro {car} CHEGOU NO DESTINO")
                 #print(f't={t}, D={D}, bonus={D-t}, fix={fix}, pountuacao antes={count}')
-                count += fix + (D - t)
+                score = fix + (D - t)
+                count += score
+                cars[car]['score'] = score
+                bkp_cars[car] = cars[car]
                 cars.pop(car)
                 continue
 
@@ -135,5 +139,5 @@ def score(D, fix, sts, cars, inters, schedule):
 
         #print('t: ', t)
         #print(f'cars = {cars}')
-
-    return count
+    #print("bkp_cars: ", bkp_cars)
+    return count, bkp_cars
