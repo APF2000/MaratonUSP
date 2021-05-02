@@ -1,6 +1,8 @@
 from math import floor
 from math import gcd 
 from functools import reduce
+import random
+
 
 def pega_input(in_put):
     # Duration, num of Intersections, num of Streets, num of Vehicles, 
@@ -37,7 +39,7 @@ def sol_batata(D,I,S,V,F, sts, cars, inters):
 
     # Pra cada intersseccao, pegar as ruas e dizer que cada uma tem 1 s
     for inter in inters:
-        aux = [ { 'st': st, 't': 1 } for st in inters[inter]]
+        aux = [ { 'st': st, 't': floor(3*random.random() + 1) } for st in inters[inter]]
         schedule[inter] = aux
 
     return schedule
