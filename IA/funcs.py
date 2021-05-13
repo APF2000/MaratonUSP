@@ -33,13 +33,29 @@ def pega_input(in_put):
     
     return D,I,S,V,F,sts,cars,inters
 
-def sol_batata(D,I,S,V,F, sts, cars, inters):
+def sol_batata(D,I,S,V,F, sts, cars, inters, max_time=3, old_schedule=None):
 
     schedule = {}
 
     # Pra cada intersseccao, pegar as ruas e dizer que cada uma tem 1 s
     for inter in inters:
-        aux = [ { 'st': st, 't': floor(3*random.random() + 1) } for st in inters[inter]]
+        aux = []
+        for st in inters[inter]:
+            new_time = 1
+            if old_schedule != None and (inter in set(old_schedule.keys())):
+                last_schedule = old_schedule[inter]
+                last_time = last_schedule['t']
+
+                new_time = last_time + (max_time * (random.random() - 1 / 2))
+                new_time = int(new_time)
+                if new_time <= 0:
+                    new_time = 1
+            else:
+                new_time = floor(max_time * random.random() + 1)
+                
+            aux.append({ 'st': st, 't': new_time })
+
+        #aux = [  for st in inters[inter]]
         schedule[inter] = aux
 
     return schedule
