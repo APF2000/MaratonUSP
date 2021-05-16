@@ -25,7 +25,7 @@ int s(ll x)
         if(dig_sum.find(x) != dig_sum.end())
         {
             sum += dig_sum[x];
-            cout << "Já tinha calculado: digsum[" << x << "] = " << dig_sum[x] << endl; 
+            //cout << "Já tinha calculado: digsum[" << x << "] = " << dig_sum[x] << endl; 
             break;
         }
         sum += ( x % base );
@@ -62,7 +62,7 @@ ll solve(ll lower, ll upper, ll n)
     ll f_lower = formula(lower);
     ll f_upper = formula(upper);
     ll f_middle = formula(middle);
-    cout << "Formula(" << middle << ") = " << f_middle << endl;
+    //cout << "Formula(" << middle << ") = " << f_middle << endl;
     
     if(f_lower == n) return lower;
     if(f_upper == n) return upper;
@@ -74,35 +74,13 @@ ll solve(ll lower, ll upper, ll n)
 
 int main()
 {
-    ll n; 
-    cin >> n;
-    cout << "Numero recebido: " << n << endl;
+    //ll n; 
+    //cin >> n;
+    //cout << "Numero recebido: " << n << endl;
 
-    // for(ll i = 0; i * i < n; i += 10)
-    // {
-    //     ll lower = i;
-    //     ll upper = i + 9;
-
-    //     cout << "Formula(" << i << ") = " << formula(i) << endl;
-
-
-    //     if(formula(lower) <= n && formula(upper) >= n)
-    //     {
-    //         for(ll j = lower; j < upper; j++)
-    //         {
-    //             if(formula(j) == n)
-    //             {
-    //                 cout << j << endl;
-    //                 return 0;
-    //             }
-    //         }
-    //     }
-    // }
-
-    cout << solve(0, MAX_SIZE, n) << endl;
-
-    //cout << INF << endl;
-    //cout << calcs[0] << endl;
+    for(ll n=0; n < MAX_SIZE; n++)
+        if( solve(0, MAX_SIZE, n) != -1 )
+            cout << "-----------------------\nsolve(" << n << ") = " << solve(0, MAX_SIZE, n) << endl << "formula(" << solve(0, MAX_SIZE, n) << ") = n = " << formula(solve(0, MAX_SIZE, n)) << endl;
 
     return 0;
 }
