@@ -35,7 +35,7 @@ def pega_input(in_put):
 
 def sol_batata(D,I,S,V,F, sts, cars, inters, max_time=3, old_schedule=None):
 
-    schedule = {}
+    new_schedule = {}
 
     # Pra cada intersseccao, pegar as ruas e dizer que cada uma tem 1 s
     for inter in inters:
@@ -43,9 +43,15 @@ def sol_batata(D,I,S,V,F, sts, cars, inters, max_time=3, old_schedule=None):
         for st in inters[inter]:
             new_time = 1
             if old_schedule != None and (inter in set(old_schedule.keys())):
-                last_schedule = old_schedule[inter]
-                last_time = last_schedule['t']
+                last_schedules = old_schedule[inter]
 
+                last_time = 0
+                for schedule in last_schedules: # selecionando a rua do schedule
+                    if schedule['st'] == st:
+                        last_time = schedule['t']
+                        break
+
+                #import pdb; pdb.set_trace()
                 new_time = last_time + (max_time * (random.random() - 1 / 2))
                 new_time = int(new_time)
                 if new_time <= 0:
@@ -56,9 +62,10 @@ def sol_batata(D,I,S,V,F, sts, cars, inters, max_time=3, old_schedule=None):
             aux.append({ 'st': st, 't': new_time })
 
         #aux = [  for st in inters[inter]]
-        schedule[inter] = aux
+        #print(f'new_schedule[{inter}] = {aux}')
+        new_schedule[inter] = aux
 
-    return schedule
+    return new_schedule
 
 def sol_ruim(D,I,S,V,F, sts, cars, inters):
 
@@ -146,7 +153,10 @@ def form_out(schedule):
         output += f"{inter}\n{len(sts)}\n"
         
         for st in sts:
+            #try:
             output += f"{st['st']} {st['t']}\n"
+            #except Exception:
+                #import pdb; pdb.set_trace()
     
     return output
 
