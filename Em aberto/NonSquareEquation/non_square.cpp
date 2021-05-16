@@ -8,10 +8,12 @@
 
 using namespace std;
 
-int s(long long int x)
+typedef long long ll;
+
+int s(ll x)
 {
     int base = 10, sum = 0;
-    long long int x_orig = x;
+    ll x_orig = x;
     /*static int last_x;
     cout << "Last X: " << last_x;
     cout << "; New X: " << x << endl;
@@ -33,28 +35,33 @@ int s(long long int x)
     return sum;
 }
 
-long long int formula(long long int x)
+ll formula(ll x)
 {
     return ( x + s(x) ) * x;
 }
 
+ll solve(ll lower, ll upper)
+{
+
+}
+
 int main()
 {
-    long long int n; 
+    ll n; 
     cin >> n;
     cout << "Numero recebido: " << n << endl;
 
-    // for(long long int i = 0; i * i < n; i += 10)
+    // for(ll i = 0; i * i < n; i += 10)
     // {
-    //     long long int lower = i;
-    //     long long int upper = i + 9;
+    //     ll lower = i;
+    //     ll upper = i + 9;
 
     //     cout << "Formula(" << i << ") = " << formula(i) << endl;
 
 
     //     if(formula(lower) <= n && formula(upper) >= n)
     //     {
-    //         for(long long int j = lower; j < upper; j++)
+    //         for(ll j = lower; j < upper; j++)
     //         {
     //             if(formula(j) == n)
     //             {
