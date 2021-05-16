@@ -14,10 +14,6 @@ int s(ll x)
 {
     int base = 10, sum = 0;
     ll x_orig = x;
-    /*static int last_x;
-    cout << "Last X: " << last_x;
-    cout << "; New X: " << x << endl;
-    last_x = x;*/
     static map<int, int> dig_sum;
 
     while(x != 0)
@@ -42,10 +38,14 @@ ll formula(ll x)
 
 ll solve(ll lower, ll upper, ll n)
 {
-    if(lower >= upper) return -1;
+    if(lower >= upper){
+        cout << "lower>=upper" << endl;
+        return UNDEF;
+    }
 
     if(upper - lower <= 10)
     {
+        cout << "upper-lower < 10" << endl;
         for(ll x = lower; x <= upper; x++)
         {
             if(formula(x) == n)
@@ -53,7 +53,7 @@ ll solve(ll lower, ll upper, ll n)
                 return x;
             }
         }
-        return -1;
+        return UNDEF;
     }
 
     // pegar numero que acaba em 9
@@ -74,13 +74,10 @@ ll solve(ll lower, ll upper, ll n)
 
 int main()
 {
-    //ll n; 
-    //cin >> n;
-    //cout << "Numero recebido: " << n << endl;
+    ll n; 
+    cin >> n;
 
-    for(ll n=0; n < MAX_SIZE; n++)
-        if( solve(0, MAX_SIZE, n) != -1 )
-            cout << "-----------------------\nsolve(" << n << ") = " << solve(0, MAX_SIZE, n) << endl << "formula(" << solve(0, MAX_SIZE, n) << ") = n = " << formula(solve(0, MAX_SIZE, n)) << endl;
+    cout << solve(0, MAX_SIZE, n) << endl;
 
     return 0;
 }
