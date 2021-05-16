@@ -33,7 +33,7 @@ def pega_input(in_put):
     
     return D,I,S,V,F,sts,cars,inters
 
-def sol_batata(D,I,S,V,F, sts, cars, inters, max_time=3, old_schedule=None):
+def sol_batata(D,I,S,V,F, sts, cars, inters, deviation=1/2, max_time=3, old_schedule=None):
 
     new_schedule = {}
 
@@ -52,7 +52,7 @@ def sol_batata(D,I,S,V,F, sts, cars, inters, max_time=3, old_schedule=None):
                         break
 
                 #import pdb; pdb.set_trace()
-                new_time = last_time + (max_time * (random.random() - 1 / 2))
+                new_time = last_time + (max_time * (random.random() - deviation))
                 new_time = int(new_time)
                 if new_time <= 0:
                     new_time = 1
