@@ -8,10 +8,10 @@
 
 using namespace std;
 
-int s(int x)
+int s(long long int x)
 {
     int base = 10, sum = 0;
-    int x_orig = x;
+    long long int x_orig = x;
     /*static int last_x;
     cout << "Last X: " << last_x;
     cout << "; New X: " << x << endl;
@@ -34,7 +34,7 @@ int s(int x)
     return sum;
 }
 
-int formula(int x)
+long long int formula(long long int x)
 {
     return ( x + s(x) ) * x;
 }
@@ -52,12 +52,24 @@ int main()
     // cout << "DIgsum[1]: " <<  dig_sum[1] << endl;
     // if(dig_sum.find(2) != dig_sum.end()) cout << "Tem o 2" << endl;
 
-    for(int i = 0; i * i < n; i++)
+    for(long long int i = 0; i * i < n; i += 10)
     {
-        if(formula(i) == n)
+        long int lower = i;
+        long int upper = i + 9;
+
+        cout << "Formula(" << i << ") = " << formula(i) << endl;
+
+
+        if(formula(lower) <= n && formula(upper) >= n)
         {
-            cout << i << endl;
-            return 0;
+            for(long long int j = lower; j < upper; j++)
+            {
+                if(formula(j) == n)
+                {
+                    cout << j << endl;
+                    return 0;
+                }
+            }
         }
     }
 
