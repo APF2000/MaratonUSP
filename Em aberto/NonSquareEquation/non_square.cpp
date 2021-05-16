@@ -74,10 +74,11 @@ ll solve(ll lower, ll upper, ll n)
 
 int main()
 {
-    ll n; 
-    cin >> n;
+//     ll n; 
+//     cin >> n;
 
-    cout << solve(0, MAX_SIZE, n) << endl;
+//     cout << solve(0, MAX_SIZE, n) << endl;
+    for(ll x=99999959; x < 100000050; x++) cout << "formula(" << x << ") = " << formula(x) << endl;
 
     return 0;
 }
