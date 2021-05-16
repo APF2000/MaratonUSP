@@ -23,10 +23,9 @@ int s(long long int x)
         if(dig_sum.find(x) != dig_sum.end())
         {
             sum += dig_sum[x];
-            //cout << "Já tinha calculado: digsum[" << x << "] = " << dig_sum[x] << endl; 
+            cout << "Já tinha calculado: digsum[" << x << "] = " << dig_sum[x] << endl; 
             break;
         }
-        
         sum += ( x % base );
         x = x / base;
     }
@@ -44,34 +43,27 @@ int main()
     long long int n; 
     cin >> n;
     cout << "Numero recebido: " << n << endl;
-    //vector<int> calcs;
-    //for(int i = 0; i < MAX_SIZE; i++) calcs.push_back(UNDEF);
-    // map<int, int> dig_sum;
-    // dig_sum[1] = 1;
-    // dig_sum[2] = 2;
-    // cout << "DIgsum[1]: " <<  dig_sum[1] << endl;
-    // if(dig_sum.find(2) != dig_sum.end()) cout << "Tem o 2" << endl;
 
-    for(long long int i = 0; i * i < n; i += 10)
-    {
-        long int lower = i;
-        long int upper = i + 9;
+    // for(long long int i = 0; i * i < n; i += 10)
+    // {
+    //     long long int lower = i;
+    //     long long int upper = i + 9;
 
-        cout << "Formula(" << i << ") = " << formula(i) << endl;
+    //     cout << "Formula(" << i << ") = " << formula(i) << endl;
 
 
-        if(formula(lower) <= n && formula(upper) >= n)
-        {
-            for(long long int j = lower; j < upper; j++)
-            {
-                if(formula(j) == n)
-                {
-                    cout << j << endl;
-                    return 0;
-                }
-            }
-        }
-    }
+    //     if(formula(lower) <= n && formula(upper) >= n)
+    //     {
+    //         for(long long int j = lower; j < upper; j++)
+    //         {
+    //             if(formula(j) == n)
+    //             {
+    //                 cout << j << endl;
+    //                 return 0;
+    //             }
+    //         }
+    //     }
+    // }
 
     cout << -1 << endl;
 
