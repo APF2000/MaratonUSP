@@ -40,9 +40,36 @@ ll formula(ll x)
     return ( x + s(x) ) * x;
 }
 
-ll solve(ll lower, ll upper)
+ll solve(ll lower, ll upper, ll n)
 {
+    if(lower >= upper) return -1;
 
+    if(upper - lower <= 10)
+    {
+        for(ll x = lower; x <= upper; x++)
+        {
+            if(formula(x) == n)
+            {
+                return x;
+            }
+        }
+        return -1;
+    }
+
+    // pegar numero que acaba em 9
+    ll middle = 10 * ((upper + lower) / 20) - 1; 
+
+    ll f_lower = formula(lower);
+    ll f_upper = formula(upper);
+    ll f_middle = formula(middle);
+    cout << "Formula(" << middle << ") = " << f_middle << endl;
+    
+    if(f_lower == n) return lower;
+    if(f_upper == n) return upper;
+
+    if(f_middle <= n) return solve(middle, upper - 1, n);
+    // esse +10 é para garantir convergência
+    else return solve(lower + 1, middle + 10, n); 
 }
 
 int main()
@@ -72,7 +99,7 @@ int main()
     //     }
     // }
 
-    cout << -1 << endl;
+    cout << solve(0, MAX_SIZE, n) << endl;
 
     //cout << INF << endl;
     //cout << calcs[0] << endl;
