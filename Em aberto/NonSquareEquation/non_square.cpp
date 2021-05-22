@@ -74,11 +74,16 @@ ll solve(ll lower, ll upper, ll n)
 
 int main()
 {
+    //echo 1000 1000000 | time -o stats.txt -v ./a.out >> stats.txt && grep -i max stats.txt
     ll n; 
     cin >> n;
 
     cout << solve(0, MAX_SIZE, n) << endl;
-    //for(ll x=99999959; x < 100000050; x++) cout << "formula(" << x << ") = " << formula(x) << endl;
+    for(ll x=99999959; x < 100000050; x++) cout << "formula(" << x << ") = " << formula(x) << endl;
+    
+    // ll lower, upper;
+    // cin >> lower >> upper;
+    // for(ll x=lower; x < upper; x++) cout << "formula(" << x << ") = " << formula(x) << endl;
 
     return 0;
 }
