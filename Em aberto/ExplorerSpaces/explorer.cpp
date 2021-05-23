@@ -64,7 +64,7 @@ public:
     aux_x+= dir_mov[0];
     aux_y+=dir_mov[1];
     if(aux_x < m && aux_x >= 0 && aux_y < n && aux_y >= 0){
-        cout << "(" << *x << ", " << *y << ") -> (" << aux_x << ", " << aux_y << ") e valido" << endl;
+        //cout << "(" << *x << ", " << *y << ") -> (" << aux_x << ", " << aux_y << ") e valido" << endl;
 
       *x = aux_x;
       *y =  aux_y;
@@ -100,10 +100,10 @@ public:
         if(tmp_cost != INF) tmp_cost += tmp_cost + cost; // soma tmp com ele mesmo para contar ida e volta
         //tmp_cost *= 2;
 
-        cout << "Chamando min_path(" << aux_x << ", " << aux_y << ", " << x_fut << ", " << y_fut << ", " << tmp_cost << ", " << k-2 << "){" << endl;
+        //cout << "Chamando min_path(" << aux_x << ", " << aux_y << ", " << x_fut << ", " << y_fut << ", " << tmp_cost << ", " << k-2 << "){" << endl;
         new_cost = min_path(aux_x, aux_y, x_fut, y_fut, tmp_cost, k-2);
-        cout << "} (" << k << ")" << endl;
-        cout << "Para a pos = (" << aux_x << ", " << aux_y << ") =>  cost antigo: " << tmp_cost << "; newcost: " << new_cost << endl;
+        //cout << "} (" << k << ")" << endl;
+        //cout << "Para a pos = (" << aux_x << ", " << aux_y << ") =>  cost antigo: " << tmp_cost << "; newcost: " << new_cost << endl;
 
       }
       costs.push_back(new_cost);
@@ -112,7 +112,7 @@ public:
     //int min = *(min_element(costs.begin(), costs.end()));
     sort(costs.begin(), costs.end());
     int min = costs[0];
-    cout << "Min cost: " << min << endl;//", max: " << costs[3] << endl;
+    //cout << "Min cost: " << min << endl;//", max: " << costs[3] << endl;
 
     return min;// + cost;
   }
@@ -146,22 +146,17 @@ int main()
       }
       solver_obj.updown.push_back(v);
     }
-    int x = 0, y = 0;
 
-    cout << solver_obj.can_move(UP, &x, &y) << "; x= " << x << "; y = " << y << endl;
-    x = 0, y = 0;
-
-    cout << solver_obj.can_move(DOWN, &x, &y) << "; x= " << x << "; y = " << y << endl;
-    x = 0, y = 0;
-
-    cout << solver_obj.can_move(LEFT, &x, &y) << "; x= " << x << "; y = " << y << endl;
-    x = 0, y = 0;
-
-    cout << solver_obj.can_move(RIGHT, &x, &y) << endl;
-
-    cout << "Custo maximo (0, 0): \n" << solver_obj.min_path(0, 0, 0, 0, 0, k) << "; x= " << x << "; y = " << y << endl;
-    x = 0, y = 0;
-
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < m; j++)
+        {
+            cout << "Custo maximo (" << i << ", " <<  j << "): " 
+             << solver_obj.min_path(i, j, i, j, 0, k) << endl;
+        }
+        
+    }
+    
 
     return 0;
 }
