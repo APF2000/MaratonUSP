@@ -3,6 +3,7 @@
 #include <iostream>
 #include <vector>
 #include <map>
+#define INF 0xffffffff
 #define UP 1
 #define DOWN 2
 #define LEFT 3
@@ -40,17 +41,49 @@ map<int, vector< int > > DIR = {{UP, U_DIR}, {DOWN, D_DIR}, {LEFT, L_DIR}, {RIGH
     4   2
     * 3 *
 */
+
 class solver{
 public:
   int m,n;
   vector< vector<int> > updown;
   vector< vector<int> > rl;
 
-  bool can_move(int dir, int x, int y){
+  bool can_move(int dir, int *x, int *y){
     vector<int> dir_mov = DIR[dir];
-    x+= dir_mov[0];
-    y+=dir_mov[1];
-    return (x < m && x >= 0 && y < n && y >= 0);
+    int aux_x = *x;
+    int aux_y = *y;
+    aux_x+= dir_mov[0];
+    aux_y+=dir_mov[1];
+    if(aux_x < m && aux_x >= 0 && aux_y < n && aux_y >= 0){
+      *x = aux_x;
+      *y =  aux_y;
+      return true;
+    }
+    return false;
+  }
+  int calc_cost(int dir, int x, int y){
+    return 0;
+  }
+
+  int min_path(int x, int y, int x_fut, int y_fut, int cost, int k){
+    if(k%2 == 1) return -1;
+    if(k == 0) {
+      if (x == x_fut && y == y_fut) return cost;
+      else return INF;
+    }
+    vector<int> costs;
+    for(int dir : {UP,DOWN,LEFT,RIGHT}){
+      int aux_x = x;
+      int aux_y = y;
+      int new_cost = INF;
+      if(can_move(dir, &aux_x, &aux_y)){
+        new_cost = min_path(aux_x, aux_y, x_fut, y_fut, cost+calc_cost(dir,x,y), k-2);
+      }
+      costs.push_back(new_cost);
+      cout << dir << endl;
+    }
+    int min = *min_element(costs.begin(), costs.end());
+    return min+cost;
   }
 };
 int main()
