@@ -11,10 +11,10 @@
 #define LEFT 3
 #define RIGHT 4
 
-#define U_DIR {0,1}
-#define D_DIR {0,-1}
-#define L_DIR {-1,0}
-#define R_DIR {1,0}
+#define U_DIR {-1, 0}
+#define D_DIR {1, 0}
+#define L_DIR {0, -1}
+#define R_DIR {0, 1}
 
 using namespace std;
 //map<int, vector<int> > DIR = {{UP, [0, 1]}, {DOWN, [0,-1]}, {LEFT, [-1, 0]}, {RIGHT, [1,0]}};
@@ -35,6 +35,11 @@ map<int, vector< int > > DIR = {{UP, U_DIR}, {DOWN, D_DIR}, {LEFT, L_DIR}, {RIGH
     * 1 * 1 *
     1   1   1
     * 1 * 1 *
+
+2 2 4
+1
+1
+1 1
 
     2 2 4
     1
@@ -66,7 +71,14 @@ public:
     return false;
   }
   int calc_cost(int dir, int x, int y){
-    return 0;
+    switch (dir)
+    {
+        case UP: return updown[x - 1][y];
+        case DOWN: return updown[x][y];
+        case RIGHT: return rl[x][y];
+        case LEFT: return rl[x][y - 1];
+        default: return INF;
+    }
   }
 
   int min_path(int x, int y, int x_fut, int y_fut, int cost, int k){
@@ -75,16 +87,22 @@ public:
       if (x == x_fut && y == y_fut) return cost;
       else return INF;
     }
-    vector<int> costs;
+    vector<int> costs = {};
     for(int dir : {UP,DOWN,LEFT,RIGHT}){
       int aux_x = x;
       int aux_y = y;
       int new_cost = INF;
       if(can_move(dir, &aux_x, &aux_y)){
-        new_cost = min_path(aux_x, aux_y, x_fut, y_fut, cost+calc_cost(dir,x,y), k-2);
+        int tmp_cost = calc_cost(dir,x,y);
+        if(tmp_cost != INF) tmp_cost += cost;
+        tmp_cost *= 2;
+
+        new_cost = min_path(aux_x, aux_y, x_fut, y_fut, tmp_cost, k-2);
+        cout << "Para a pos = (" << aux_x << ", " << aux_y << ") =>  cost antigo: " << tmp_cost << "; newcost: " << new_cost << endl;
+
       }
       costs.push_back(new_cost);
-      cout << dir << endl;
+      //cout << dir << endl;
     }
     //int min = *(min_element(costs.begin(), costs.end()));
     sort(costs.begin(), costs.end());
@@ -110,7 +128,7 @@ int main()
           cin >> temp;
           v.push_back(temp);
       }
-      solver_obj.updown.push_back(v);
+      solver_obj.rl.push_back(v);
     }
 
     for (int i = 0; i < n - 1; i++)
@@ -121,7 +139,7 @@ int main()
         cin >> temp;
         v.push_back(temp);
       }
-      solver_obj.rl.push_back(v);
+      solver_obj.updown.push_back(v);
     }
     int x = 0, y = 0;
 
@@ -136,7 +154,7 @@ int main()
 
     cout << solver_obj.can_move(RIGHT, &x, &y) << endl;
 
-    cout << "Custo maximo (0, 0): " << solver_obj.min_path(0, 0, 0, 0, 0, k) << "; x= " << x << "; y = " << y << endl;
+    cout << "Custo maximo (0, 0): \n" << solver_obj.min_path(0, 0, 0, 0, 0, k) << "; x= " << x << "; y = " << y << endl;
     x = 0, y = 0;
 
 
