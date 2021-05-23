@@ -3,15 +3,19 @@
 #include <iostream>
 #include <vector>
 #include <map>
-#define INF 0xffffffff
+#include <algorithm>
+
+#define INF 0xffff //ffff
 #define UP 1
 #define DOWN 2
 #define LEFT 3
 #define RIGHT 4
+
 #define U_DIR {0,1}
 #define D_DIR {0,-1}
 #define L_DIR {-1,0}
 #define R_DIR {1,0}
+
 using namespace std;
 //map<int, vector<int> > DIR = {{UP, [0, 1]}, {DOWN, [0,-1]}, {LEFT, [-1, 0]}, {RIGHT, [1,0]}};
 //map<int, (*int) > DIR = {{UP, {0, 1}}, {DOWN, {0,-1}}, {LEFT, {-1, 0}}, {RIGHT, {1,0}}};
@@ -82,8 +86,12 @@ public:
       costs.push_back(new_cost);
       cout << dir << endl;
     }
-    int min = *min_element(costs.begin(), costs.end());
-    return min+cost;
+    //int min = *(min_element(costs.begin(), costs.end()));
+    sort(costs.begin(), costs.end());
+    int min = costs[0];
+    cout << "Min cost: " << min << ", max: " << costs[3] << endl;
+
+    return min + cost;
   }
 };
 int main()
@@ -115,10 +123,21 @@ int main()
       }
       solver_obj.rl.push_back(v);
     }
-    cout << solver_obj.can_move(UP, 0,0) << endl;
-    cout << solver_obj.can_move(DOWN, 0,0) << endl;
-    cout << solver_obj.can_move(LEFT, 0,0) << endl;
-    cout << solver_obj.can_move(RIGHT, 0,0) << endl;
+    int x = 0, y = 0;
+
+    cout << solver_obj.can_move(UP, &x, &y) << "; x= " << x << "; y = " << y << endl;
+    x = 0, y = 0;
+
+    cout << solver_obj.can_move(DOWN, &x, &y) << "; x= " << x << "; y = " << y << endl;
+    x = 0, y = 0;
+
+    cout << solver_obj.can_move(LEFT, &x, &y) << "; x= " << x << "; y = " << y << endl;
+    x = 0, y = 0;
+
+    cout << solver_obj.can_move(RIGHT, &x, &y) << endl;
+
+    cout << "Custo maximo (0, 0): " << solver_obj.min_path(0, 0, 0, 0, 0, k) << "; x= " << x << "; y = " << y << endl;
+    x = 0, y = 0;
 
 
     return 0;
