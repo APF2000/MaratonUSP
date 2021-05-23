@@ -8,10 +8,10 @@
 #define DOWN 2
 #define LEFT 3
 #define RIGHT 4
-#define U_DIR {0,1}
-#define D_DIR {0,-1}
-#define L_DIR {-1,0}
-#define R_DIR {1,0}
+#define R_DIR {0,1}
+#define L_DIR {0,-1}
+#define U_DIR {-1,0}
+#define D_DIR {1,0}
 using namespace std;
 //map<int, vector<int> > DIR = {{UP, [0, 1]}, {DOWN, [0,-1]}, {LEFT, [-1, 0]}, {RIGHT, [1,0]}};
 //map<int, (*int) > DIR = {{UP, {0, 1}}, {DOWN, {0,-1}}, {LEFT, {-1, 0}}, {RIGHT, {1,0}}};
@@ -62,6 +62,16 @@ public:
     return false;
   }
   int calc_cost(int dir, int x, int y){
+    vector<int> dir_mov = DIR[dir];
+    //x += dir_mov[0];
+    //y += dir_mov[1];
+    switch (dir){
+      case UP: return updown[x-1][y];
+      case DOWN: return updown[x][y];
+      case LEFT: return rl[x][y-1];
+      case RIGHT: return rl[x][y];
+      default return INF
+    }
     return 0;
   }
 
