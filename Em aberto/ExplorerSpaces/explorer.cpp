@@ -100,7 +100,7 @@ public:
 
   bool cost_was_calc(int x, int y, int k){
     map<int, int> m = mem_costs[x][y];
-    return( m.find(k) == m.end() );
+    return( m.find(k) != m.end() );
   }
 
   bool can_move(int dir, int *x, int *y){
@@ -147,13 +147,17 @@ public:
         //tmp_cost *= 2;
 
         //cout << "Chamando min_path(" << aux_x << ", " << aux_y << ", " << x_fut << ", " << y_fut << ", " << tmp_cost << ", " << k-2 << "){" << endl;
-        if(cost_was_calc(aux_x, aux_y, k)) new_cost = mem_costs[aux_x][aux_y][k];
+        if(cost_was_calc(aux_x, aux_y, k)){
+          new_cost = mem_costs[aux_x][aux_y][k];
+          //cout << "Valor ja existia: mem_costs[" << aux_x << "][" << aux_y << "][" << k << "] == " << new_cost << endl;
+        }
         else{
           new_cost = min_path(aux_x, aux_y, x_fut, y_fut, tmp_cost, k-2);
           mem_costs[aux_x][aux_y][k] = new_cost;
+          //cout << "Novo valor : mem_costs[" << aux_x << "][" << aux_y << "][" << k << "] = " << new_cost << endl; 
         }
         //cout << "} (" << k << ")" << endl;
-        cout << "Para a pos = (" << aux_x << ", " << aux_y << ") =>  cost antigo: " << tmp_cost << "; newcost: " << new_cost << endl;
+        //cout << "Para a pos = (" << aux_x << ", " << aux_y << ") =>  cost antigo: " << tmp_cost << "; newcost: " << new_cost << endl;
 
       }
       costs.push_back(new_cost);
@@ -179,10 +183,10 @@ int main()
     {
         for (int j = 0; j < m; j++)
         {
-            cout << "Custo maximo (" << i << ", " <<  j << "): " 
-             << solver_obj->min_path(i, j, i, j, 0, k) << endl;
+            //cout << "Custo maximo (" << i << ", " <<  j << "): " 
+            cout << solver_obj->min_path(i, j, i, j, 0, k) << " ";
         }
-        
+        cout << endl;
     }
     
 
