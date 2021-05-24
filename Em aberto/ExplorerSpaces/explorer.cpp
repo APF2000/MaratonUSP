@@ -53,9 +53,50 @@ map<int, vector< int > > DIR = {{UP, U_DIR}, {DOWN, D_DIR}, {LEFT, L_DIR}, {RIGH
 
 class solver{
 public:
-  int m,n;
+  int m, n;
   vector< vector<int> > updown;
   vector< vector<int> > rl;
+  vector< vector< map<int, int> > > mem_costs;
+
+  solver (int n, int m){
+    this->n = n;
+    this->m = m;
+
+    int temp;
+    for (int i = 0; i < n; i++)
+    {
+      vector<int> v;
+      for (int j = 0; j < m - 1; j++)
+      {
+          cin >> temp;
+          v.push_back(temp);
+      }
+      rl.push_back(v);
+    }
+
+    for (int i = 0; i < n - 1; i++)
+    {
+      vector<int> v;
+      for (int j = 0; j < m ; j++)
+      {
+        cin >> temp;
+        v.push_back(temp);
+      }
+      updown.push_back(v);
+    }
+
+    map<int, int> aux_map;
+    for (int i = 0; i < n; i++)
+    {
+      vector< map<int, int> > v;
+      for (int j = 0; j < m; j++)
+      {
+        v.push_back(aux_map);
+      }
+      mem_costs.push_back(v);
+    }
+
+  }
 
   bool can_move(int dir, int *x, int *y){
     vector<int> dir_mov = DIR[dir];
@@ -120,39 +161,17 @@ public:
 int main()
 {
     int n, m, k;
-    int i,j, temp;
+    int i,j;
     cin >> n >> m >> k;
-    solver solver_obj;
-    solver_obj.m = m;
-    solver_obj.n = n;
-    for (int i = 0; i < n; i++)
-    {
-      vector<int> v;
-      for (int j = 0; j < m - 1; j++)
-      {
-          cin >> temp;
-          v.push_back(temp);
-      }
-      solver_obj.rl.push_back(v);
-    }
 
-    for (int i = 0; i < n - 1; i++)
-    {
-      vector<int> v;
-      for (int j = 0; j < m ; j++)
-      {
-        cin >> temp;
-        v.push_back(temp);
-      }
-      solver_obj.updown.push_back(v);
-    }
+    solver *solver_obj = new solver(n, m);    
 
     for (int i = 0; i < n; i++)
     {
         for (int j = 0; j < m; j++)
         {
             cout << "Custo maximo (" << i << ", " <<  j << "): " 
-             << solver_obj.min_path(i, j, i, j, 0, k) << endl;
+             << solver_obj->min_path(i, j, i, j, 0, k) << endl;
         }
         
     }
