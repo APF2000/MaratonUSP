@@ -147,9 +147,13 @@ public:
         //tmp_cost *= 2;
 
         //cout << "Chamando min_path(" << aux_x << ", " << aux_y << ", " << x_fut << ", " << y_fut << ", " << tmp_cost << ", " << k-2 << "){" << endl;
-        new_cost = min_path(aux_x, aux_y, x_fut, y_fut, tmp_cost, k-2);
+        if(cost_was_calc(aux_x, aux_y, k)) new_cost = mem_costs[aux_x][aux_y][k];
+        else{
+          new_cost = min_path(aux_x, aux_y, x_fut, y_fut, tmp_cost, k-2);
+          mem_costs[aux_x][aux_y][k] = new_cost;
+        }
         //cout << "} (" << k << ")" << endl;
-        //cout << "Para a pos = (" << aux_x << ", " << aux_y << ") =>  cost antigo: " << tmp_cost << "; newcost: " << new_cost << endl;
+        cout << "Para a pos = (" << aux_x << ", " << aux_y << ") =>  cost antigo: " << tmp_cost << "; newcost: " << new_cost << endl;
 
       }
       costs.push_back(new_cost);
