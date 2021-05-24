@@ -98,6 +98,11 @@ public:
 
   }
 
+  bool cost_was_calc(int x, int y, int k){
+    map<int, int> m = mem_costs[x][y];
+    return( m.find(k) == m.end() );
+  }
+
   bool can_move(int dir, int *x, int *y){
     vector<int> dir_mov = DIR[dir];
     int aux_x = *x;
