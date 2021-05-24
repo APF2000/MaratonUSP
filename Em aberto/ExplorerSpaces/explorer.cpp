@@ -130,7 +130,7 @@ public:
     }
   }
 
-  int min_path(int x, int y, int x_fut, int y_fut, int cost, int k){
+  int min_path(int x, int y, int cost, int k){
     if(k % 2 == 1) return -1;
     if(k == 0) {
       /*if (x == x_fut && y == y_fut)*/ return cost;
@@ -163,11 +163,11 @@ public:
         }
         else{
           //for (int i = 0; i < 4 - k / 2; i++) cout << '\t';
-          cout << "Chamando min_path(" << aux_x << ", " << aux_y << ", " << x_fut << ", " << y_fut << ", " << tmp_cost << ", " << aux_k << "){" << endl;
+          cout << "Chamando min_path(" << aux_x << ", " << aux_y <<  ", " << tmp_cost << ", " << aux_k << "){" << endl;
         
-          new_cost = min_path(aux_x, aux_y, x_fut, y_fut, tmp_cost, aux_k);
+          new_cost = min_path(aux_x, aux_y, tmp_cost, aux_k);
           mem_costs[x][y][k] = new_cost;
-          cout << "Novo valor : mem_costs[" << x << "][" << y << "][" << k << "] = " << new_cost << endl; 
+          cout << "Novo valor(em cima) : mem_costs[" << x << "][" << y << "][" << k << "] = " << new_cost << endl; 
 
           cout << "} (" << aux_k << ")" << endl;
         }
@@ -192,7 +192,7 @@ public:
 
     if(aux_k > 0){
       mem_costs[min_x][min_y][aux_k] = min_cost;
-      cout << "Novo valor : mem_costs[" << min_x << "][" << min_y << "][" << aux_k << "] = " << min_cost << endl;    
+      cout << "Novo valor(embaixo) : mem_costs[" << min_x << "][" << min_y << "][" << aux_k << "] = " << min_cost << endl;    
     }
     //cout << "Min cost: " << min << endl;//", max: " << costs[3] << endl;
 
@@ -212,7 +212,7 @@ int main()
         for (int j = 0; j < m; j++)
         {
             //cout << "Custo maximo (" << i << ", " <<  j << "): " 
-            cout << solver_obj->min_path(i, j, i, j, 0, k) << " ";
+            cout << solver_obj->min_path(i, j, 0, k) << " ";
         }
         cout << endl;
     }
