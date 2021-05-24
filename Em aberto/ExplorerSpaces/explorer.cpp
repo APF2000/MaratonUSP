@@ -136,39 +136,56 @@ public:
       /*if (x == x_fut && y == y_fut)*/ return cost;
       //else return INF;
     }
-    vector<int> costs = {};
+    int min_x = -1, min_y = -1; // jamais deveriam passar pelo FOR continuando com esse valor
+    int min_cost = INF;
+    
+    int aux_k = k -2;
+
+    //vector<int> costs = {};
     for(int dir : {UP,DOWN,LEFT,RIGHT}){
       int aux_x = x;
       int aux_y = y;
+
       int new_cost = INF;
+
       if(can_move(dir, &aux_x, &aux_y)){
         int tmp_cost = calc_cost(dir,x,y);
         if(tmp_cost != INF) tmp_cost += tmp_cost + cost; // soma tmp com ele mesmo para contar ida e volta
         //tmp_cost *= 2;
 
         //cout << "Chamando min_path(" << aux_x << ", " << aux_y << ", " << x_fut << ", " << y_fut << ", " << tmp_cost << ", " << k-2 << "){" << endl;
-        if(cost_was_calc(aux_x, aux_y, k)){
-          new_cost = mem_costs[aux_x][aux_y][k];
-          //cout << "Valor ja existia: mem_costs[" << aux_x << "][" << aux_y << "][" << k << "] == " << new_cost << endl;
+        if(cost_was_calc(aux_x, aux_y, aux_k)){
+          new_cost = mem_costs[aux_x][aux_y][aux_k];
+          //cout << "Valor ja existia: mem_costs[" << aux_x << "][" << aux_y << "][" << aux_k << "] == " << new_cost << endl;
         }
         else{
           new_cost = min_path(aux_x, aux_y, x_fut, y_fut, tmp_cost, k-2);
-          mem_costs[aux_x][aux_y][k] = new_cost;
-          //cout << "Novo valor : mem_costs[" << aux_x << "][" << aux_y << "][" << k << "] = " << new_cost << endl; 
+          //mem_costs[aux_x][aux_y][aux_k] = new_cost;
+          //cout << "Novo valor : mem_costs[" << aux_x << "][" << aux_y << "][" << aux_k << "] = " << new_cost << endl; 
         }
         //cout << "} (" << k << ")" << endl;
         //cout << "Para a pos = (" << aux_x << ", " << aux_y << ") =>  cost antigo: " << tmp_cost << "; newcost: " << new_cost << endl;
 
+        if(new_cost < min_cost){ // atualiza custo se for o menor ate agora
+          min_x = aux_x;
+          min_y = aux_y;
+          min_cost = new_cost;
+        }
+
       }
-      costs.push_back(new_cost);
+      //costs.push_back(new_cost);
       //cout << dir << endl;
     }
     //int min = *(min_element(costs.begin(), costs.end()));
-    sort(costs.begin(), costs.end());
-    int min = costs[0];
+    //sort(costs.begin(), costs.end());
+    //min_cost = costs[0];
+
+    mem_costs[min_x][min_y][aux_k] = min_cost;
+    //cout << "Novo valor : mem_costs[" << min_x << "][" << min_y << "][" << aux_k << "] = " << min_cost << endl; 
+        
     //cout << "Min cost: " << min << endl;//", max: " << costs[3] << endl;
 
-    return min;// + cost;
+    return min_cost;// + cost;
   }
 };
 int main()
