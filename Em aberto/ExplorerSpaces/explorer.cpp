@@ -149,24 +149,34 @@ public:
       int new_cost = INF;
 
       if(can_move(dir, &aux_x, &aux_y)){
+        
+        for (int i = 0; i < 100; i++) cout << "-";
+        cout << endl;
+
         int tmp_cost = calc_cost(dir,x,y);
         if(tmp_cost != INF) tmp_cost += tmp_cost + cost; // soma tmp com ele mesmo para contar ida e volta
         //tmp_cost *= 2;
 
-        //cout << "Chamando min_path(" << aux_x << ", " << aux_y << ", " << x_fut << ", " << y_fut << ", " << tmp_cost << ", " << k-2 << "){" << endl;
         if(cost_was_calc(aux_x, aux_y, aux_k)){
           new_cost = mem_costs[aux_x][aux_y][aux_k];
-          //cout << "Valor ja existia: mem_costs[" << aux_x << "][" << aux_y << "][" << aux_k << "] == " << new_cost << endl;
+          cout << "Valor ja existia: mem_costs[" << aux_x << "][" << aux_y << "][" << aux_k << "] == " << new_cost << endl;
         }
         else{
-          new_cost = min_path(aux_x, aux_y, x_fut, y_fut, tmp_cost, k-2);
-          //mem_costs[aux_x][aux_y][aux_k] = new_cost;
-          //cout << "Novo valor : mem_costs[" << aux_x << "][" << aux_y << "][" << aux_k << "] = " << new_cost << endl; 
+          //for (int i = 0; i < 4 - k / 2; i++) cout << '\t';
+          cout << "Chamando min_path(" << aux_x << ", " << aux_y << ", " << x_fut << ", " << y_fut << ", " << tmp_cost << ", " << aux_k << "){" << endl;
+        
+          new_cost = min_path(aux_x, aux_y, x_fut, y_fut, tmp_cost, aux_k);
+          mem_costs[x][y][k] = new_cost;
+          cout << "Novo valor : mem_costs[" << x << "][" << y << "][" << k << "] = " << new_cost << endl; 
+
+          cout << "} (" << aux_k << ")" << endl;
         }
-        //cout << "} (" << k << ")" << endl;
+        //for (int i = 0; i < 4 - k / 2; i++) cout << '\t';
         //cout << "Para a pos = (" << aux_x << ", " << aux_y << ") =>  cost antigo: " << tmp_cost << "; newcost: " << new_cost << endl;
 
         if(new_cost < min_cost){ // atualiza custo se for o menor ate agora
+          cout << "Newcost: " << new_cost << " menor do que mincost: " << min_cost << endl;
+          
           min_x = aux_x;
           min_y = aux_y;
           min_cost = new_cost;
@@ -180,9 +190,10 @@ public:
     //sort(costs.begin(), costs.end());
     //min_cost = costs[0];
 
-    mem_costs[min_x][min_y][aux_k] = min_cost;
-    //cout << "Novo valor : mem_costs[" << min_x << "][" << min_y << "][" << aux_k << "] = " << min_cost << endl; 
-        
+    if(aux_k > 0){
+      mem_costs[min_x][min_y][aux_k] = min_cost;
+      cout << "Novo valor : mem_costs[" << min_x << "][" << min_y << "][" << aux_k << "] = " << min_cost << endl;    
+    }
     //cout << "Min cost: " << min << endl;//", max: " << costs[3] << endl;
 
     return min_cost;// + cost;
