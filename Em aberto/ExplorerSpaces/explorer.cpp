@@ -130,10 +130,10 @@ public:
     }
   }
 
-  int min_path(int x, int y, int cost, int k){
+  int min_path(int x, int y, int k){
     if(k % 2 == 1) return -1;
     if(k == 0) {
-      /*if (x == x_fut && y == y_fut)*/ return cost;
+      /*if (x == x_fut && y == y_fut)*/ return 0;//cost;
       //else return INF;
     }
     int min_x = -1, min_y = -1; // jamais deveriam passar pelo FOR continuando com esse valor
@@ -154,7 +154,8 @@ public:
         cout << endl;
 
         int tmp_cost = calc_cost(dir,x,y);
-        if(tmp_cost != INF) tmp_cost += tmp_cost + cost; // soma tmp com ele mesmo para contar ida e volta
+        if(tmp_cost != INF) tmp_cost = (2 * tmp_cost);// + cost; // x2 para contar ida e volta
+        else{ cout << "TMPCOST == INF" << endl; }
         //tmp_cost *= 2;
 
         if(cost_was_calc(aux_x, aux_y, aux_k)){
@@ -163,11 +164,12 @@ public:
         }
         else{
           //for (int i = 0; i < 4 - k / 2; i++) cout << '\t';
-          cout << "Chamando min_path(" << aux_x << ", " << aux_y <<  ", " << tmp_cost << ", " << aux_k << "){" << endl;
+          cout << "Chamando min_path(" << aux_x << ", " << aux_y << ", " << aux_k << "){" << endl;
         
-          new_cost = min_path(aux_x, aux_y, tmp_cost, aux_k);
-          mem_costs[x][y][k] = new_cost;
-          cout << "Novo valor(em cima) : mem_costs[" << x << "][" << y << "][" << k << "] = " << new_cost << endl; 
+          new_cost = min_path(aux_x, aux_y, aux_k);
+          mem_costs[aux_x][aux_y][aux_k] = new_cost;
+          cout << "Novo valor(em cima) : mem_costs[" << aux_x << "][" << aux_y << "][" << aux_k << "] = " << new_cost << endl; 
+          new_cost += tmp_cost;
 
           cout << "} (" << aux_k << ")" << endl;
         }
@@ -212,7 +214,7 @@ int main()
         for (int j = 0; j < m; j++)
         {
             //cout << "Custo maximo (" << i << ", " <<  j << "): " 
-            cout << solver_obj->min_path(i, j, 0, k) << " ";
+            cout << solver_obj->min_path(i, j, k) << " ";
         }
         cout << endl;
     }
