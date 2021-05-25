@@ -5,7 +5,9 @@
 #include <map>
 #include <algorithm>
 
-#define INF 0xffff //ffff
+#define MAX_K 20
+#define MAX_CELL 1000 * 1000
+#define INF MAX_K * MAX_CELL
 #define UP 1
 #define DOWN 2
 #define LEFT 3
