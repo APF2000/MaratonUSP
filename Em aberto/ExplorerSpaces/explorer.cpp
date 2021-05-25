@@ -153,28 +153,32 @@ public:
         for (int i = 0; i < 100; i++) cout << "-";
         cout << endl;
 
-        int tmp_cost = calc_cost(dir,x,y);
-        if(tmp_cost != INF) tmp_cost = (2 * tmp_cost);// + cost; // x2 para contar ida e volta
+        int move_cost = calc_cost(dir,x,y);
+        if(move_cost != INF) move_cost = (2 * move_cost);// + cost; // x2 para contar ida e volta
         else{ cout << "TMPCOST == INF" << endl; }
-        //tmp_cost *= 2;
+        //move_cost *= 2;
 
+        int next_cell_cost;
         if(cost_was_calc(aux_x, aux_y, aux_k)){
-          new_cost = mem_costs[aux_x][aux_y][aux_k];
-          cout << "Valor ja existia: mem_costs[" << aux_x << "][" << aux_y << "][" << aux_k << "] == " << new_cost << endl;
+          next_cell_cost = mem_costs[aux_x][aux_y][aux_k];
+          cout << "Valor ja existia: mem_costs[" << aux_x << "][" << aux_y << "][" << aux_k << "] == " << next_cell_cost << endl;
         }
         else{
           //for (int i = 0; i < 4 - k / 2; i++) cout << '\t';
           cout << "Chamando min_path(" << aux_x << ", " << aux_y << ", " << aux_k << "){" << endl;
         
-          new_cost = min_path(aux_x, aux_y, aux_k);
-          mem_costs[aux_x][aux_y][aux_k] = new_cost;
-          cout << "Novo valor(em cima) : mem_costs[" << aux_x << "][" << aux_y << "][" << aux_k << "] = " << new_cost << endl; 
-          new_cost += tmp_cost;
+          next_cell_cost = min_path(aux_x, aux_y, aux_k);
+          mem_costs[aux_x][aux_y][aux_k] = next_cell_cost;
+          cout << "Novo valor(em cima) : mem_costs[" << aux_x << "][" << aux_y << "][" << aux_k << "] = " << next_cell_cost << endl; 
+          //next_cell_cost += move_cost;
 
           cout << "} (" << aux_k << ")" << endl;
         }
+
+        new_cost = next_cell_cost + move_cost;
+        cout << "Newcost  = " << next_cell_cost << " + " << move_cost << " = " << new_cost << endl;
         //for (int i = 0; i < 4 - k / 2; i++) cout << '\t';
-        //cout << "Para a pos = (" << aux_x << ", " << aux_y << ") =>  cost antigo: " << tmp_cost << "; newcost: " << new_cost << endl;
+        //cout << "Para a pos = (" << aux_x << ", " << aux_y << ") =>  cost antigo: " << move_cost << "; newcost: " << new_cost << endl;
 
         if(new_cost < min_cost){ // atualiza custo se for o menor ate agora
           cout << "Newcost: " << new_cost << " menor do que mincost: " << min_cost << endl;
@@ -192,10 +196,10 @@ public:
     //sort(costs.begin(), costs.end());
     //min_cost = costs[0];
 
-    if(aux_k > 0){
+    /*if(aux_k > 0){
       mem_costs[min_x][min_y][aux_k] = min_cost;
       cout << "Novo valor(embaixo) : mem_costs[" << min_x << "][" << min_y << "][" << aux_k << "] = " << min_cost << endl;    
-    }
+    }*/
     //cout << "Min cost: " << min << endl;//", max: " << costs[3] << endl;
 
     return min_cost;// + cost;
