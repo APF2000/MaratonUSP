@@ -110,7 +110,7 @@ public:
     int aux_y = *y;
     aux_x+= dir_mov[0];
     aux_y+=dir_mov[1];
-    if(aux_x < m && aux_x >= 0 && aux_y < n && aux_y >= 0){
+    if(aux_x < n && aux_x >= 0 && aux_y < m && aux_y >= 0){
       *x = aux_x;
       *y =  aux_y;
 
@@ -145,7 +145,7 @@ public:
       if(can_move(dir, &aux_x, &aux_y)){
 
         int move_cost = calc_cost(dir,x,y);
-        if(move_cost != INF) move_cost = (2 * move_cost);// + cost; // x2 para contar ida e volta
+        if(move_cost != INF) move_cost = (2 * move_cost); // x2 para contar ida e volta
 
         int next_cell_cost;
         if(cost_was_calc(aux_x, aux_y, aux_k)) next_cell_cost = mem_costs[aux_x][aux_y][aux_k];
