@@ -1,5 +1,5 @@
 // https://codeforces.com/problemset/problem/1517/D
-
+#include <thread>
 #include <iostream>
 #include <vector>
 #include <map>
@@ -132,10 +132,10 @@ public:
   int min_path(int x, int y, int k){
     if(k % 2 == 1) return -1;
     if(k == 0) return 0;
-    
+
     int min_cost = INF;
     int aux_k = k -2;
-    
+
     for(int dir : {UP,DOWN,LEFT,RIGHT}){
       int aux_x = x;
       int aux_y = y;
@@ -169,7 +169,7 @@ int main()
     int n, m, k;
     cin >> n >> m >> k;
 
-    solver *solver_obj = new solver(n, m);    
+    solver *solver_obj = new solver(n, m);
 
     for (int i = 0; i < n; i++)
     {
@@ -179,7 +179,7 @@ int main()
         }
         cout << endl;
     }
-    
+
 
     return 0;
 }
