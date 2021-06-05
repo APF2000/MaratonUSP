@@ -1,5 +1,4 @@
 // https://codeforces.com/problemset/problem/1517/D
-#include <thread>
 #include <iostream>
 #include <vector>
 #include <map>
