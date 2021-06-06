@@ -19,7 +19,7 @@
 
 using namespace std;
 
-map<int, vector< int > > DIR = {{UP, U_DIR}, {DOWN, D_DIR}, {LEFT, L_DIR}, {RIGHT, R_DIR}};
+map<long, vector< long > > DIR = {{UP, U_DIR}, {DOWN, D_DIR}, {LEFT, L_DIR}, {RIGHT, R_DIR}};
 
 
 /*
@@ -53,22 +53,22 @@ map<int, vector< int > > DIR = {{UP, U_DIR}, {DOWN, D_DIR}, {LEFT, L_DIR}, {RIGH
 
 class solver{
 public:
-  int m, n;
-  int t_x, t_y, t_k;
-  int min_cost;
-  vector< vector<int> > updown;
-  vector< vector<int> > rl;
-  vector< vector< map<int, int> > > mem_costs;
+  long m, n;
+  long t_x, t_y, t_k;
+  long min_cost;
+  vector< vector<long> > updown;
+  vector< vector<long> > rl;
+  vector< vector< map<long, long> > > mem_costs;
 
-  solver (int n, int m){
+  solver (long n, long m){
     this->n = n;
     this->m = m;
     min_cost = INF;
-    int temp;
-    for (int i = 0; i < n; i++)
+    long temp;
+    for (long i = 0; i < n; i++)
     {
-      vector<int> v;
-      for (int j = 0; j < m - 1; j++)
+      vector<long> v;
+      for (long j = 0; j < m - 1; j++)
       {
           cin >> temp;
           v.push_back(temp);
@@ -77,10 +77,10 @@ public:
       rl.push_back(v);
     }
 
-    for (int i = 0; i < n - 1; i++)
+    for (long i = 0; i < n - 1; i++)
     {
-      vector<int> v;
-      for (int j = 0; j < m ; j++)
+      vector<long> v;
+      for (long j = 0; j < m ; j++)
       {
         cin >> temp;
         v.push_back(temp);
@@ -89,11 +89,11 @@ public:
       updown.push_back(v);
     }
 
-    map<int, int> aux_map;
-    for (int i = 0; i < n; i++)
+    map<long, long> aux_map;
+    for (long i = 0; i < n; i++)
     {
-      vector< map<int, int> > v;
-      for (int j = 0; j < m; j++)
+      vector< map<long, long> > v;
+      for (long j = 0; j < m; j++)
       {
         v.push_back(aux_map);
       }
@@ -102,15 +102,15 @@ public:
 
   }
 
-  bool cost_was_calc(int x, int y, int k){
-    map<int, int> m = mem_costs[x][y];
+  bool cost_was_calc(long x, long y, long k){
+    map<long, long> m = mem_costs[x][y];
     return( m.find(k) != m.end() );
   }
 
-  bool can_move(int dir, int *x, int *y){
-    vector<int> dir_mov = DIR[dir];
-    int aux_x = *x;
-    int aux_y = *y;
+  bool can_move(long dir, long *x, long *y){
+    vector<long> dir_mov = DIR[dir];
+    long aux_x = *x;
+    long aux_y = *y;
     aux_x+= dir_mov[0];
     aux_y+=dir_mov[1];
     if(aux_x < n && aux_x >= 0 && aux_y < m && aux_y >= 0){
@@ -121,7 +121,7 @@ public:
     }
     return false;
   }
-  int calc_cost(int dir, int x, int y){
+  long calc_cost(long dir, long x, long y){
     switch (dir)
     {
         case UP: return updown[x - 1][y];
@@ -132,32 +132,32 @@ public:
     }
   }
 
-  int min_path(int x, int y, int k){
+  long min_path(long x, long y, long k){
     if(k % 2 == 1) return -1;
     if(k == 0) return 0;
 
-    int total_cost = INF*2;
-    int aux_k = k - 2;
+    long total_cost = INF*2;
+    long aux_k = k - 2;
 
-    for(int dir : {UP,DOWN,LEFT,RIGHT}){
-      int aux_x = x;
-      int aux_y = y;
+    for(long dir : {UP,DOWN,LEFT,RIGHT}){
+      long aux_x = x;
+      long aux_y = y;
 
-      int new_cost = INF;
+      long new_cost = INF;
 
       if(can_move(dir, &aux_x, &aux_y)){
 
-        int move_cost = calc_cost(dir,x,y);
+        long move_cost = calc_cost(dir,x,y);
         if(move_cost != INF) move_cost = (2 * move_cost); // x2 para contar ida e volta
 
         bool t_was_calc = cost_was_calc(t_x, t_y, t_k);
-        int next_cell_cost = INF;
+        long next_cell_cost = INF;
         if(cost_was_calc(aux_x, aux_y, aux_k)){
           next_cell_cost = mem_costs[aux_x][aux_y][aux_k];
         } 
         else{
           bool found_min_cost = false;
-          int ref_cost = aux_k * min_cost;
+          long ref_cost = aux_k * min_cost;
 
           if(t_was_calc){
            found_min_cost = ( move_cost + ref_cost < mem_costs[t_x][t_y][t_k] );
@@ -185,22 +185,23 @@ public:
     return total_cost;
   }
 
-  void define_target(int _t_x, int _t_y, int _t_k){
+  void define_target(long _t_x, long _t_y, long _t_k){
     t_x = _t_x;
     t_y = _t_y;
     t_k = _t_k;
   }
 };
+
 int main()
 {
-    int n, m, k;
+    long n, m, k;
     cin >> n >> m >> k;
 
     solver *solver_obj = new solver(n, m);
 
-    for (int i = 0; i < n; i++)
+    for (long i = 0; i < n; i++)
     {
-        for (int j = 0; j < m; j++)
+        for (long j = 0; j < m; j++)
         {
             solver_obj->define_target(i,j,k);
             cout << solver_obj->min_path(i, j, k) << " ";
