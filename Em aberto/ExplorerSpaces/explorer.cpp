@@ -165,7 +165,7 @@ public:
             mem_costs[aux_x][aux_y][aux_k] = next_cell_cost;
           }
           else{
-            // next_cell_cost = INF+2*min_cost;
+            //next_cell_cost = INF+2*min_cost;
           }
         }
 
