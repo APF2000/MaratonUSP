@@ -137,7 +137,7 @@ public:
     if(k == 0) return 0;
 
     int total_cost = INF*2;
-    int aux_k = k -2;
+    int aux_k = k - 2;
 
     for(int dir : {UP,DOWN,LEFT,RIGHT}){
       int aux_x = x;
@@ -157,15 +157,17 @@ public:
         } 
         else{
           bool found_min_cost = false;
+          int ref_cost = aux_k * min_cost;
+
           if(t_was_calc){
-           found_min_cost = (move_cost + aux_k*min_cost < mem_costs[t_x][t_y][t_k]);
+           found_min_cost = ( move_cost + ref_cost < mem_costs[t_x][t_y][t_k] );
           }
           if(!found_min_cost){
             next_cell_cost = min_path(aux_x, aux_y, aux_k);
             mem_costs[aux_x][aux_y][aux_k] = next_cell_cost;
           }
           else{
-            //next_cell_cost = INF+2*min_cost;
+            next_cell_cost = ref_cost;
           }
         }
 
