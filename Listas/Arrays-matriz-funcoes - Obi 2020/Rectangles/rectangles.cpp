@@ -41,8 +41,11 @@ long sum_sets(vector<vector<long>> mt, int n, int m)
             }
         }
 
-        for(long s : sums) sum += s;
-        //cout << sum << endl;
+        for(long s : sums) {
+            sum += s;
+            cout << s << " + ";
+        }
+        cout << " === " << sum << endl;
     }
 
     return sum;
