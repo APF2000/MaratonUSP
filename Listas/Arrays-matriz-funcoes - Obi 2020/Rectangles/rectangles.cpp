@@ -13,39 +13,17 @@ long sum_sets(vector<vector<long>> mt, int n, int m)
 
     for (vector<long> v : mt)
     {
-        //bool zpass = true;
-        bool is_first = true;
-        long v_first = 0;
+        long pow1 = 0, pow2 = 0;
 
-        long pow = 1;
-        vector<long> sums;
         for (int j = 0; j < m; j++)
         {
-            if(v[j] == v[(j + 1 + m) % m]) {
-                if(j == m - 1)
-                { 
-                    pow += v_first;
-                    sums.push_back(binom(pow));
-                }else pow++; 
-            }else
-            {
-                if(is_first) 
-                {
-                    v_first = pow;
-                    is_first = false;
-                    if(v[j] != v[m - 1]) sums.push_back(binom(pow));
-                }else{
-                    sums.push_back(binom(pow));
-                }
-                pow = 1;
-            }
+            if(v[j] == 0) pow1 += 1;
+            else pow2 += 1;
         }
 
-        for(long s : sums) {
-            sum += s;
-            cout << s << " + ";
-        }
-        cout << " === " << sum << endl;
+        sum += (binom(pow1) + binom(pow2));
+
+        cout << pow1 << " + " << pow2 << " === " << pow1 + pow2 << endl;
     }
     return sum;
 }
