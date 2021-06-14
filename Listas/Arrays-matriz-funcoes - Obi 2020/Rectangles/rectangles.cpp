@@ -47,7 +47,6 @@ long sum_sets(vector<vector<long>> mt, int n, int m)
         }
         cout << " === " << sum << endl;
     }
-
     return sum;
 }
 
