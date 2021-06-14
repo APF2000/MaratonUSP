@@ -22,9 +22,8 @@ long sum_sets(vector<vector<long>> mt, int n, int m)
         }
 
         sum += (binom(pow1) + binom(pow2));
-
-        cout << pow1 << " + " << pow2 << " === " << pow1 + pow2 << endl;
     }
+    
     return sum;
 }
 
