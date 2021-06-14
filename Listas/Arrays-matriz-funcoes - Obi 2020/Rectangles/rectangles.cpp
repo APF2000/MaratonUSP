@@ -2,23 +2,23 @@
 
 using namespace std;
 
-int binom(int n)
+long binom(long n)
 {
     return (1 << n) - 1;
 }
 
-int sum_sets(vector<vector<int>> mt, int n, int m)
+long sum_sets(vector<vector<long>> mt, int n, int m)
 {
-    int sum = 0;
+    long sum = 0;
 
-    for (vector<int> v : mt)
+    for (vector<long> v : mt)
     {
         //bool zpass = true;
         bool is_first = true;
-        int v_first = 0;
+        long v_first = 0;
 
-        int pow = 1;
-        vector<int> sums;
+        long pow = 1;
+        vector<long> sums;
         for (int j = 0; j < m; j++)
         {
             if(v[j] == v[(j + 1 + m) % m]) {
@@ -41,20 +41,22 @@ int sum_sets(vector<vector<int>> mt, int n, int m)
             }
         }
 
-        for(int s : sums) sum += s;
-        cout << sum << endl;
+        for(long s : sums) sum += s;
+        //cout << sum << endl;
     }
+
+    return sum;
 }
 
-void transpose(vector<vector<int>> *mt, int n, int m)
+void transpose(vector<vector<long>> *mt, int n, int m)
 {
-    vector<vector<int>> maux;
-    vector<int> vaux(n);
+    vector<vector<long>> maux;
+    vector<long> vaux(n);
     for (int j = 0; j < m; j++) maux.push_back(vaux);
 
     for (int i = 0; i < n; i++)
     {
-        vector<int> vaux;
+        vector<long> vaux;
         for (int j = 0; j < m; j++)
         {
             maux[j][i] = (*mt)[i][j];
@@ -69,26 +71,30 @@ int main()
     int n, m;
     cin >> n >> m;
 
-    vector<vector<int>> mt;
+    vector<vector<long>> mt;
 
     for (int i = 0; i < n; i++)
     {
-        vector<int> vaux;
+        vector<long> vaux;
 
         for (int j = 0; j < m; j++)
         {
-            int aux;
+            long aux;
             cin >> aux;
             vaux.push_back(aux);
         }
         mt.push_back(vaux);
     }
 
-    int sum = 0;
+    long sum = 0;
 
     sum += sum_sets(mt, n, m);
     transpose(&mt, n, m);
     sum += sum_sets(mt, m, n);
+
+    sum -= (m * n);
+
+    cout << sum << endl;
 
     return 0;
 }
