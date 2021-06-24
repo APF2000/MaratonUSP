@@ -70,20 +70,15 @@ int main()
         n_asc.push_back(temp);
       }
     }
-    int count = 0;
+    unsigned long count = 0;
     count += asc.size()*asc.size() + 2*asc.size()*n_asc.size();
-    cout << "count " << count << endl;
-    cout << "n_asc " << n_asc.size() << endl;
-    cout << "asc " << asc.size() << endl;
+    
     for (int i = 0; i < n_asc.size(); i++)
     {
-      for (int j = i; j < n_asc.size(); j++)
+      for (int j = 0; j < n_asc.size(); j++)
       {
         asc_seq a = n_asc[i], b = n_asc[j];
         if(a.max > b.min){
-          count ++;
-        }
-        if(b.max > a.min){
           count ++;
         }
       }
