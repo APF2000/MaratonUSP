@@ -4,6 +4,21 @@
 
 using namespace std;
 
+struct ascend_sequence
+{
+  int max;
+  int min;
+  vector<int> v;
+};
+
+typedef struct ascend_sequence asc_seq;
+
+int binomial(int i){
+// n!/2!(n-2)! - n_asc!/2 
+    int binom;
+    binom = i*(i-1)/2;
+    return binom;
+}
 
 int main()
 {
@@ -22,9 +37,58 @@ int main()
       }
       seqs.push_back(aux);
     }
-
-    vector<vector<int>> asc, n_asc;
+    // 1 2 3 4
+    // 
+    vector<vector<int>> asc;
+    vector<asc_seq> n_asc;
     
-    
+   for(vector<int> vec: seqs){
+      int aux_menor = vec[0];
+      int aux_maior = vec[0];
+      bool isAsc = false;
+      for (unsigned int i = 1; i < vec.size(); i++)
+      {
+          if(vec.at(i) < aux_menor){
+            aux_menor = vec.at(i);
+          }
+          if(vec.at(i) > aux_maior){
+            aux_maior = vec.at(i);
+          }
+          if(vec.at(i) > aux_menor){
+            isAsc = true;
+            break;
+          }
+      }
+      if(isAsc){
+        asc.push_back(vec);
+      }
+      else{
+        asc_seq temp;
+        temp.min = aux_menor;
+        temp.max = aux_maior;
+        temp.v = vec;
+        n_asc.push_back(temp);
+      }
+    }
+    int count = 0;
+    count += asc.size()*asc.size() + 2*asc.size()*n_asc.size();
+    cout << "count " << count << endl;
+    cout << "n_asc " << n_asc.size() << endl;
+    cout << "asc " << asc.size() << endl;
+    for (int i = 0; i < n_asc.size(); i++)
+    {
+      for (int j = i; j < n_asc.size(); j++)
+      {
+        asc_seq a = n_asc[i], b = n_asc[j];
+        if(a.max > b.min){
+          count ++;
+        }
+        if(b.max > a.min){
+          count ++;
+        }
+      }
+      
+    }
+    cout << count << endl;
     return 0;
 }
