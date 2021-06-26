@@ -25,11 +25,16 @@ void insert_node(asc_node *root, asc_node *new_node, long unsigned *count)
 	{
 		bool is_greater = (new_node->max > next->min);
 
+		if(is_greater)
+		{
+			cout << new_node->max << " > " << next->min << endl;
+			(*count)++;
+		}
+		
 		next = last->sons[is_greater];
 		if(next == NULL) last->sons[is_greater] = new_node;
 		last = next;
 
-		(*count)++;
 	}
 }
 
