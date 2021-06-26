@@ -12,6 +12,7 @@ struct ascend_node
   int max;
   int min;
   map<bool, struct ascend_node*> sons; // direita e esquerda
+  long unsigned count = 0;
   //vector<int> v;
 };
 
@@ -24,17 +25,38 @@ void insert_node(asc_node *root, asc_node *new_node, long unsigned *count)
 	while(next != NULL)
 	{
 		bool is_greater = (new_node->max > next->min);
+		bool is_less = (new_node->max < next->min);
 
+		cout << "------------------------------------------" << endl;
 		if(is_greater)
 		{
 			cout << new_node->max << " > " << next->min << endl;
-			(*count)++;
+			(*count) += (1 + next->count);
+		}else 
+		{
+			cout << "Count next: " << next->count << endl;
+			cout << "Is less: " << is_less << endl;
+
+			if(is_less)
+			{
+				next->count++;
+				//(*count)++;
+			}
+			/*if(is_less)
+			{
+				//(*count) += (1 + next->count);
+			}else
+			{*/
+			//}*/
+			cout << new_node->max << " < " << next->min << " : count esq = " << next->count << endl;
+		
 		}
+
+		cout << "Count total: " << *count << endl;
 		
 		next = last->sons[is_greater];
 		if(next == NULL) last->sons[is_greater] = new_node;
 		last = next;
-
 	}
 }
 
@@ -107,6 +129,8 @@ int main()
 
 		node->sons[true] = NULL;
 		node->sons[false] = NULL;
+
+		node->count = 0;
 	}
 
 	// Volta
@@ -122,3 +146,32 @@ int main()
 
     return 0;
 }
+
+/*
+5
+1 1
+1 1
+1 2
+1 4
+1 3
+
+             1
+      1             2
+                        4
+                    3
+
+
+             3
+        2        4
+     1
+   1
+
+1 2
+1 2
+2 4
+1 4
+1 4
+1 3
+1 3
+2 3
+*/
