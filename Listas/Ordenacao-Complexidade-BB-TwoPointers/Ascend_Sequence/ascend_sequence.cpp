@@ -95,6 +95,15 @@ int main()
     }
 	print_tree(root, 0);
 
+	// Resetar ponteiros
+	for (int i = 0; i < n; i++)
+	{
+		asc_node *node = &seqs[i];
+
+		node->sons[true] = NULL;
+		node->sons[false] = NULL;
+	}
+
 	// Volta
 	root = &seqs[n - 1];
     for (int i = n - 2; i >= 0; i--)
@@ -102,6 +111,7 @@ int main()
 		asc_node *new_node = &seqs[i];
 		insert_node(root, new_node, &count);
     }
+	print_tree(root, 0);
 
 	cout << count << endl;
 
