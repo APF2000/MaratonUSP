@@ -24,30 +24,23 @@ void insert_node(asc_node *root, asc_node *new_node, long unsigned *count)
 
 	while(next != NULL)
 	{
-		bool is_greater = (new_node->max > next->min);
-		bool is_less = (new_node->max < next->min);
+		bool is_greater = (new_node->max > last->min);
+		//bool is_less = (new_node->max < last->min);
 
 		cout << "------------------------------------------" << endl;
+		
+		cout << "Count last: " << last->count << endl;
+
 		if(is_greater)
 		{
-			cout << new_node->max << " > " << next->min << endl;
-			(*count) += (1 + next->count);
+			cout << new_node->max << " > " << last->min << endl;
+			(*count) += (1 + last->count);
 		}else 
 		{
-			cout << "Count next: " << next->count << endl;
-			cout << "Is less: " << is_less << endl;
+			//cout << "Is less: " << is_less << endl;
 
-			if(is_less)
-			{
-				next->count++;
-				//(*count)++;
-			}
-			/*if(is_less)
-			{
-				//(*count) += (1 + next->count);
-			}else
-			{*/
-			//}*/
+			last->count++;
+
 			cout << new_node->max << " < " << next->min << " : count esq = " << next->count << endl;
 		
 		}
