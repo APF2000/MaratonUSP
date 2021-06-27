@@ -18,6 +18,21 @@ struct ascend_node
 
 typedef struct ascend_node asc_node;
 
+void count_right_tree(asc_node *last, asc_node* new_node, long unsigned *count){
+	if(last == NULL){
+		cout << new_node->min << " DEU NULL" << endl;
+		cout << new_node->max << " DEU NULL" << endl;
+		return;
+	} 
+	bool is_greater_aux = (new_node->max > last->min);
+	if(is_greater_aux){
+		cout << new_node->max << " > " <<  last->min << endl;
+		*count ++;
+	}
+	count_right_tree(last->sons[true], new_node, count);
+	count_right_tree(last->sons[false], new_node, count);
+}
+
 void insert_node(asc_node *root, asc_node *new_node, long unsigned *count)
 {
 	asc_node *last = root, *next = root;
@@ -40,7 +55,8 @@ void insert_node(asc_node *root, asc_node *new_node, long unsigned *count)
 			//cout << "Is less: " << is_less << endl;
 
 			last->count++;
-
+			count_right_tree(last->sons[!is_greater], new_node, count);
+			
 			cout << new_node->max << " < " << next->min << " : count esq = " << next->count << endl;
 		
 		}
@@ -173,7 +189,8 @@ int main()
 1 2
 
 
-10
+11
+2 31 35
 3 62 24 39
 1 17
 1 99
@@ -196,7 +213,7 @@ int main()
 				100
 			85
 		30	    73
-	17        	    79
+	17     35     	79
 						64
 				60				99
 					62
