@@ -20,8 +20,7 @@ typedef struct ascend_node asc_node;
 
 void count_right_tree(asc_node *last, asc_node* new_node, long unsigned *count){
 	if(last == NULL){
-		cout << new_node->min << " DEU NULL" << endl;
-		cout << new_node->max << " DEU NULL" << endl;
+		cout << new_node->min << ", " << new_node->max << " DEU NULL" << endl;
 		return;
 	} 
 	bool is_greater_aux = (new_node->max > last->min);
@@ -44,7 +43,7 @@ void insert_node(asc_node *root, asc_node *new_node, long unsigned *count)
 
 		cout << "------------------------------------------" << endl;
 		
-		cout << "Count last: " << last->count << endl;
+		//cout << "Count last: " << last->count << endl;
 
 		if(is_greater)
 		{
@@ -130,7 +129,7 @@ int main()
 		asc_node *new_node = &seqs[i];
 		insert_node(root, new_node, &count);
     }
-	print_tree(root, 0);
+	//print_tree(root, 0);
 
 	// Resetar ponteiros
 	for (int i = 0; i < n; i++)
@@ -150,7 +149,7 @@ int main()
 		asc_node *new_node = &seqs[i];
 		insert_node(root, new_node, &count);
     }
-	print_tree(root, 0);
+	//print_tree(root, 0);
 
 	cout << count << endl;
 
