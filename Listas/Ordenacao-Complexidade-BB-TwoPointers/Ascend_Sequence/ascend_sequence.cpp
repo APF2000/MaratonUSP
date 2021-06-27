@@ -83,6 +83,7 @@ int main()
     cin >> n;
 
     vector<asc_node> seqs;
+    unsigned long count = 0;
 
     for(int i = 0; i < n; i++ ){
 		int l;
@@ -97,14 +98,14 @@ int main()
 		int min = *(min_element(aux.begin(), aux.end()));
 		int max = *(max_element(aux.begin(), aux.end()));
 
+		if(max > min) count += 2;
+
 		asc_node anode;
 		anode.min = min;
 		anode.max = max;
 
 		seqs.push_back(anode);
     }
-
-    unsigned long count = 0;
 
 	// Ida
     asc_node *root = &seqs[0];
@@ -141,6 +142,65 @@ int main()
 }
 
 /*
+4
+2 2 4
+2 1 3
+2 3 5
+2 1 1
+
+            (2, 4)
+        (1,1)       (1, 3)
+                		(3, 5)
+
+			(1,1)
+					(3,5)
+				(1,3)	(2,4)
+2 4 2 4
+2 4 2 4
+1 3 1 3
+1 3 1 3
+3 5 3 5
+3 5 3 5
+
+2 3
+2 5
+1 5
+
+1 5
+1 3
+1 4
+3 4
+1 2
+
+
+10
+3 62 24 39
+1 17
+1 99
+1 60
+1 64
+1 30
+2 79 29
+2 20 73
+2 85 37
+1 100
+
+          24
+    17         99
+            60     100  
+         30   64
+               79
+                73
+                 85
+
+				100
+			85
+		30	    73
+	17        	    79
+						64
+				60				99
+					62
+
 5
 1 1
 1 1
@@ -152,6 +212,7 @@ int main()
       1             2
                         4
                     3
+
 
 
              3
