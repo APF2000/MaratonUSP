@@ -116,7 +116,7 @@ int main()
 		int min = *(min_element(aux.begin(), aux.end()));
 		int max = *(max_element(aux.begin(), aux.end()));
 
-		if(max > min) count += 2;
+		if(max > min) count += 1;//2;
 
 		asc_node anode;
 		anode.min = min;
@@ -132,7 +132,7 @@ int main()
 		asc_node *new_node = &seqs[i];
 		insert_node(root, new_node, &count);
     }
-	//print_tree(root, 0);
+	print_tree(root, 0);
 
 	// Resetar ponteiros
 	for (int i = 0; i < n; i++)
@@ -152,7 +152,7 @@ int main()
 		asc_node *new_node = &seqs[i];
 		insert_node(root, new_node, &count);
     }
-	//print_tree(root, 0);
+	print_tree(root, 0);
 
 	cout << count << endl;
 
