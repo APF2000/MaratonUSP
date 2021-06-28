@@ -58,7 +58,7 @@ int main()
       for (int j = 0; j < seqs.size(); j++)
       {
         asc_seq a = seqs[i], b = seqs[j];
-        if(a.max > b.min){
+        if(a.min < b.max){
           count ++;
 		  cout << "( "<< i << ", " << j  << ")"<< "{" ;
 		  for (int k = 0; k < a.v.size(); k++)
