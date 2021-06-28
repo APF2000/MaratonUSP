@@ -102,6 +102,7 @@ int main()
 
     vector<asc_node> seqs;
     unsigned long count = 0;
+	long asc = 0, not_asc = 0;
 
     for(int i = 0; i < n; i++ ){
 		int l;
@@ -113,17 +114,41 @@ int main()
 			cin >> aux[j];
 		}
 
-		int min = *(min_element(aux.begin(), aux.end()));
-		int max = *(max_element(aux.begin(), aux.end()));
+		bool is_asc = false;
+		int min = aux[0], max = aux[0];
+		for(int el : aux)
+		{
+			if(el < min) min = el;
+			else if(el > max) max = el;
 
-		if(max > min) count += 1;//2;
+			if(el > min) is_asc = true;
+		}
 
-		asc_node anode;
-		anode.min = min;
-		anode.max = max;
+		//if(max > min) count += 1;//2;
+		if(is_asc)
+		{
+			asc++;
+		}else
+		{
+			//int min = *(min_element(aux.begin(), aux.end()));
+			//int max = *(max_element(aux.begin(), aux.end()));
+			if(max > min) count += 1; // not_asc seguido de not_asc
 
-		seqs.push_back(anode);
+			asc_node anode;
+			anode.min = min;
+			anode.max = max;
+
+			seqs.push_back(anode);
+			not_asc++;
+		}
     }
+
+	count += (asc * asc) + 2 * (asc * not_asc);
+	cout << "Prim count: " << count << endl;
+	cout << "Asc: " << asc << ", nasc: " << not_asc << endl;
+
+	// Arvore so com os not_asc
+	n = not_asc;
 
 	// Ida
     asc_node *root = &seqs[0];
@@ -132,7 +157,7 @@ int main()
 		asc_node *new_node = &seqs[i];
 		insert_node(root, new_node, &count);
     }
-	print_tree(root, 0);
+	//print_tree(root, 0);
 
 	// Resetar ponteiros
 	for (int i = 0; i < n; i++)
@@ -152,7 +177,7 @@ int main()
 		asc_node *new_node = &seqs[i];
 		insert_node(root, new_node, &count);
     }
-	print_tree(root, 0);
+	//print_tree(root, 0);
 
 	cout << count << endl;
 
