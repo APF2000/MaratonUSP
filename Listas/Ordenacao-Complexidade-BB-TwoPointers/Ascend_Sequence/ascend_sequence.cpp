@@ -83,13 +83,13 @@ void print_tree(asc_node *root, int depth)
 	cout << "(" << root->min << ", " << root->max << ")-> " << endl;
 
 	print_spaces(depth + 1);
-	cout << "e: {";
+	cout << "d: {";
 	print_tree(root->sons[true], depth + 1);
 	print_spaces(depth + 1);
 	cout << "} " << endl;
 
 	print_spaces(depth + 1);
-	cout << "d: {";
+	cout << "e: {";
 	print_tree(root->sons[false], depth + 1);
 	print_spaces(depth + 1);
 	cout << "} " << endl;
@@ -157,7 +157,7 @@ int main()
 		asc_node *new_node = &seqs[i];
 		insert_node(root, new_node, &count);
     }
-	//print_tree(root, 0);
+	print_tree(root, 0);
 
 	// Resetar ponteiros
 	for (int i = 0; i < n; i++)
@@ -177,7 +177,7 @@ int main()
 		asc_node *new_node = &seqs[i];
 		insert_node(root, new_node, &count);
     }
-	//print_tree(root, 0);
+	print_tree(root, 0);
 
 	cout << count << endl;
 
@@ -216,8 +216,7 @@ int main()
 1 2
 
 
-11
-2 31 35
+10
 3 62 24 39
 1 17
 1 99
@@ -229,21 +228,18 @@ int main()
 2 85 37
 1 100
 
-          24
-    17         99
-            60     100  
-         30   64
-               79
-                73
-                 85
+		17
+				99
+			60		100
+		30		64
+					79
+						85
 
-				100
-			85
-		30	    73
-	17     35     	79
-						64
-				60				99
-					62
+					   100
+				85
+		79			  99
+	30		64
+17		60
 
 5
 1 1
