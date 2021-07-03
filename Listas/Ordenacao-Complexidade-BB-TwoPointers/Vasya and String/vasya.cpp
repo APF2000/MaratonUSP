@@ -34,6 +34,7 @@ int main()
     string s;
     int n, k;
     cin >> n >> k;
+	
 	cin >> s;
 	
     return 0;
