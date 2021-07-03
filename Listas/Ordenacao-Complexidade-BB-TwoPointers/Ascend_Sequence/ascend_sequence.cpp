@@ -12,7 +12,66 @@ struct ascend_sequence
   vector<int> v;
 };
 
-typedef struct ascend_sequence asc_seq;
+typedef struct ascend_node asc_node;
+
+void count_right_tree(asc_node *last, asc_node* new_node, long unsigned *count){
+	if(last == NULL){
+		//cout << new_node->min << ", " << new_node->max << " DEU NULL" << endl;
+		return;
+	} 
+	bool is_greater_aux = (new_node->max > last->min);
+	if(is_greater_aux){
+		cout << new_node->max << " > " <<  last->min << endl;
+		*count ++;
+	}
+	count_right_tree(last->sons[true], new_node, count);
+	count_right_tree(last->sons[false], new_node, count);
+}
+
+void insert_node(asc_node *root, asc_node *new_node, long unsigned *count)
+{
+	asc_node *last = root, *next = root;
+
+	long unsigned antes_count = *count;
+	while(next != NULL)
+	{
+		bool is_greater = (new_node->max > last->min);
+		//bool is_less = (new_node->max < last->min);
+
+		cout << "------------------------------------------" << endl;
+		
+		//cout << "Count last: " << last->count << endl;
+
+		if(is_greater)
+		{
+			cout << new_node->max << " > " << last->min << endl;
+			(*count) += (1 + last->count);
+		}else 
+		{
+			//cout << "Is less: " << is_less << endl;
+
+			last->count++;
+			count_right_tree(last->sons[!is_greater], new_node, count);
+			
+			cout << new_node->max << " < " << next->min << " : count esq = " << next->count << endl;
+		
+		}
+
+		//cout << "Count total: " << *count << endl;
+		
+		next = last->sons[is_greater];
+		if(next == NULL) last->sons[is_greater] = new_node;
+		last = next;
+	}
+	cout << new_node->min << ", " << new_node->max << ": ";
+	cout << "antes= " << antes_count << "; depois= " << *count << endl; 
+}
+
+void print_spaces(int qtty)
+{ 
+	for (int i = 0; i < qtty; i++) cout << "\t";
+ }
+
 
 int binomial(int i){
 // n!/2!(n-2)! - n_asc!/2 
@@ -26,34 +85,81 @@ int main()
     int n;
     cin >> n;
 
-    vector<asc_seq> seqs;
+
+    vector<asc_node> seqs;
+    unsigned long count = 0;
+	long asc = 0, not_asc = 0;
 
     for(int i = 0; i < n; i++ ){
-      int l;
-      cin >> l;
-      vector<int> aux(l);
-      for (int j = 0; j < l; j++)
-      {
-        cin >> aux[j];
-      }
-	  int min = *min_element(aux.begin(), aux.end());
-	  int max = *max_element(aux.begin(), aux.end());
-	  asc_seq aux_asc;
-	  aux_asc.min = min;
-	  aux_asc.max = max;
-	  aux_asc.v = aux;
-      seqs.push_back(aux_asc);
+		int l;
+		cin >> l;
+
+		vector<int> aux(l);
+		for (int j = 0; j < l; j++)
+		{
+			cin >> aux[j];
+		}
+
+		bool is_asc = false;
+		int min = aux[0], max = aux[0];
+		for(int el : aux)
+		{
+			if(el < min) min = el;
+			else if(el > max) max = el;
+
+			if(el > min) is_asc = true;
+		}
+
+		//if(max > min) count += 1;//2;
+		if(is_asc)
+		{
+			asc++;
+		}else
+		{
+			//int min = *(min_element(aux.begin(), aux.end()));
+			//int max = *(max_element(aux.begin(), aux.end()));
+			if(max > min) count += 1; // not_asc seguido de not_asc
+
+			asc_node anode;
+			anode.min = min;
+			anode.max = max;
+
+			seqs.push_back(anode);
+			not_asc++;
+		}
     }
-    // 1 2 3 4
-    // 
-    vector<vector<int>> asc;
-    vector<asc_seq> n_asc;
-    
-  
-    unsigned long count = 0;
-    
-    
-    for (int i = 0; i < seqs.size(); i++)
+
+	count += (asc * asc) + 2 * (asc * not_asc);
+	cout << "Prim count: " << count << endl;
+	cout << "Asc: " << asc << ", nasc: " << not_asc << endl;
+
+	// Arvore so com os not_asc
+	n = not_asc;
+
+	// Ida
+    asc_node *root = &seqs[0];
+    for (int i = 1; i < n; i++)
+    {
+		asc_node *new_node = &seqs[i];
+		insert_node(root, new_node, &count);
+    }
+	//print_tree(root, 0);
+
+	// Resetar ponteiros
+	for (int i = 0; i < n; i++)
+	{
+		asc_node *node = &seqs[i];
+
+		node->sons[true] = NULL;
+		node->sons[false] = NULL;
+
+		node->count = 0;
+	}
+
+	// Volta
+	root = &seqs[n - 1];
+    for (int i = n - 2; i >= 0; i--)
+
     {
       for (int j = 0; j < seqs.size(); j++)
       {
@@ -75,6 +181,10 @@ int main()
       }
       
     }
-    cout << count << endl;
+
+	//print_tree(root, 0);
+
+	cout << count << endl;
+
     return 0;
 }
