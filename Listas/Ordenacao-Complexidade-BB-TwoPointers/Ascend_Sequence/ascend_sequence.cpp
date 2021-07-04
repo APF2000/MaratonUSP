@@ -1,19 +1,15 @@
 //https://codeforces.com/contest/1284/problem/B
-
 #include <vector>
 #include <iostream>
-#include <map>
-#include <algorithm> // min_element, max_element
+#include <algorithm>
 
 using namespace std;
 
-struct ascend_node
+struct ascend_sequence
 {
   int max;
   int min;
-  map<bool, struct ascend_node*> sons; // direita e esquerda
-  long unsigned count = 0;
-  //vector<int> v;
+  vector<int> v;
 };
 
 typedef struct ascend_node asc_node;
@@ -76,11 +72,7 @@ void print_spaces(int qtty)
 	for (int i = 0; i < qtty; i++) cout << "\t";
  }
 
-void print_tree(asc_node *root, int depth)
-{
-	if(root == NULL) return;
 
-	cout << "(" << root->min << ", " << root->max << ")-> " << endl;
 
 	print_spaces(depth + 1);
 	cout << "d: {";
@@ -93,12 +85,15 @@ void print_tree(asc_node *root, int depth)
 	print_tree(root->sons[false], depth + 1);
 	print_spaces(depth + 1);
 	cout << "} " << endl;
+
+
 }
 
 int main()
 {
     int n;
     cin >> n;
+
 
     vector<asc_node> seqs;
     unsigned long count = 0;
@@ -173,15 +168,36 @@ int main()
 	// Volta
 	root = &seqs[n - 1];
     for (int i = n - 2; i >= 0; i--)
+
     {
-		asc_node *new_node = &seqs[i];
-		insert_node(root, new_node, &count);
+      for (int j = 0; j < seqs.size(); j++)
+      {
+        asc_seq a = seqs[i], b = seqs[j];
+        if(a.min < b.max){
+          count ++;
+		  cout << "( "<< i << ", " << j  << ")"<< "{" ;
+		  for (int k = 0; k < a.v.size(); k++)
+		  {
+			 cout << a.v[k] << " ";
+		  }
+		  cout << "}, {";
+		   for (int k = 0; k < b.v.size(); k++)
+		  {
+			 cout << b.v[k] << " ";
+		  }
+		  cout << "}" <<endl;
+        }
+      }
+      
     }
+  
 	print_tree(root, 0);
+
 
 	cout << count << endl;
 
     return 0;
+  
 }
 
 /*
@@ -269,3 +285,4 @@ int main()
 1 3
 2 3
 */
+}
