@@ -7,10 +7,10 @@ int bb(vector<int> v, int index, int esq, int dir){
 	int m;
 	m = (esq + dir)/2;
 	if(m == esq || v[m] == index){
-		/*if(m == v.size()-1){
-			return -1;
-		} */
-		return m+1;
+		if(m == v.size()-1){
+			return v[0];
+		}
+		return v[m];
 	}
 	if(v[m] < index){
 		return bb(v, index, m, dir);
@@ -22,7 +22,7 @@ int bb(vector<int> v, int index, int esq, int dir){
 		/*if(m == v.size()-1){
 			return -1;
 		}*/
-		return m+1;
+		return m;//m+1;
 	}
 }
 // 1 3 5 8 10 15 23
@@ -31,15 +31,15 @@ int main()
 {
     string s, t;// z;
     //string prov;
-    int T, op;
-	bool no_letter = false;
+    int T;
     cin >> T;
     for (int i = 0; i < T; i++)
     {
+		bool no_letter = false;
         cin >> s;
         cin >> t;
 		//z = "";
-		op = 0;
+		int ops = 1;
 		map<char, vector<int>> pos;
         for(int j = 0; j < s.length(); j++){
 			char key = s.at(j);
@@ -50,20 +50,20 @@ int main()
 				pos[key].push_back(j);
 			}
         }
-		int last_index = 0, new_index;
+		int last_index = -1, new_index;
 		for(int k = 0; k < t.size(); k++){
 			char key = t.at(k);
 			if(pos.find(key) != pos.end()){
 				new_index = bb(pos[key], last_index, 0, pos[key].size()-1);
 
-				cout << "newindex: " << new_index << endl; 
+				//cout << "newindex: " << new_index << endl; 
 
-				if(new_index == pos[key].size()){
-					new_index = last_index;
-				}
+				// if(new_index == pos[key].size()){
+				// 	new_index = last_index;
+				// }
 
 				if(new_index <= last_index){
-					op++;
+					ops++;
 				}
 				last_index = new_index;
 			}
@@ -76,7 +76,7 @@ int main()
 			cout << "-1" << endl;
 		}
 		else{
-			cout << op << endl;
+			cout << ops << endl;
 		}
     }
     return 0;
