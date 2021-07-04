@@ -6,7 +6,7 @@ using namespace std;
 int bb(vector<int> v, int index, int esq, int dir){
 	int m;
 	m = (esq + dir)/2;
-	if(m == esq){
+	if(m == esq || v[m] == index){
 		/*if(m == v.size()-1){
 			return -1;
 		} */
@@ -29,8 +29,8 @@ int bb(vector<int> v, int index, int esq, int dir){
 // 1 4 7 9 13 14
 int main()
 {
-    string s, t, z;
-    string prov;
+    string s, t;// z;
+    //string prov;
     int T, op;
 	bool no_letter = false;
     cin >> T;
@@ -38,16 +38,16 @@ int main()
     {
         cin >> s;
         cin >> t;
-		z = "";
+		//z = "";
 		op = 0;
 		map<char, vector<int>> pos;
         for(int j = 0; j < s.length(); j++){
 			char key = s.at(j);
-            if(pos.find(j) == pos.end()){
+            if(pos.find(key) == pos.end()){
 				pos[key] = {j};
 			}
 			else{
-				pos[key].push_back(key);
+				pos[key].push_back(j);
 			}
         }
 		int last_index = 0, new_index;
@@ -55,10 +55,13 @@ int main()
 			char key = t.at(k);
 			if(pos.find(key) != pos.end()){
 				new_index = bb(pos[key], last_index, 0, pos[key].size()-1);
-				if(new_index == pos[key].size() - 1){
+
+				cout << "newindex: " << new_index << endl; 
+
+				if(new_index == pos[key].size()){
 					new_index = last_index;
 				}
-				//cout << new_index << endl; 
+
 				if(new_index <= last_index){
 					op++;
 				}
@@ -78,3 +81,13 @@ int main()
     }
     return 0;
 }
+
+/*
+3
+aabce
+ace
+abacaba
+aax
+ty
+yyt
+*/
