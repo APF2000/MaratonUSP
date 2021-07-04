@@ -73,11 +73,20 @@ void print_spaces(int qtty)
  }
 
 
-int binomial(int i){
-// n!/2!(n-2)! - n_asc!/2 
-    int binom;
-    binom = i*(i-1)/2;
-    return binom;
+
+	print_spaces(depth + 1);
+	cout << "d: {";
+	print_tree(root->sons[true], depth + 1);
+	print_spaces(depth + 1);
+	cout << "} " << endl;
+
+	print_spaces(depth + 1);
+	cout << "e: {";
+	print_tree(root->sons[false], depth + 1);
+	print_spaces(depth + 1);
+	cout << "} " << endl;
+
+
 }
 
 int main()
@@ -143,7 +152,7 @@ int main()
 		asc_node *new_node = &seqs[i];
 		insert_node(root, new_node, &count);
     }
-	//print_tree(root, 0);
+	print_tree(root, 0);
 
 	// Resetar ponteiros
 	for (int i = 0; i < n; i++)
@@ -181,10 +190,99 @@ int main()
       }
       
     }
+  
+	print_tree(root, 0);
 
-	//print_tree(root, 0);
 
 	cout << count << endl;
 
     return 0;
+  
+}
+
+/*
+4
+2 2 4
+2 1 3
+2 3 5
+2 1 1
+
+            (2, 4)
+        (1,1)       (1, 3)
+                		(3, 5)
+
+			(1,1)
+					(3,5)
+				(1,3)	(2,4)
+2 4 2 4
+2 4 2 4
+1 3 1 3
+1 3 1 3
+3 5 3 5
+3 5 3 5
+
+2 3
+2 5
+1 5
+
+1 5
+1 3
+1 4
+3 4
+1 2
+
+
+10
+3 62 24 39
+1 17
+1 99
+1 60
+1 64
+1 30
+2 79 29
+2 20 73
+2 85 37
+1 100
+
+		17
+				99
+			60		100
+		30		64
+					79
+						85
+
+					   100
+				85
+		79			  99
+	30		64
+17		60
+
+5
+1 1
+1 1
+1 2
+1 4
+1 3
+
+             1
+      1             2
+                        4
+                    3
+
+
+
+             3
+        2        4
+     1
+   1
+
+1 2
+1 2
+2 4
+1 4
+1 4
+1 3
+1 3
+2 3
+*/
 }
