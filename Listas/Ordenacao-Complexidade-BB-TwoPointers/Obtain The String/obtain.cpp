@@ -4,6 +4,8 @@
 using namespace std;
 
 int bb(vector<int> v, int index, int esq, int dir){
+	cout << "{" << index << ", " << esq << ", " << dir<< "}, ";
+
 	int m;
 	int size = v.size();
 	m = (esq + dir)/2;
@@ -54,8 +56,9 @@ int main()
 		for(int k = 0; k < t.size(); k++){
 			char key = t.at(k);
 			if(pos.find(key) != pos.end()){
-
+				cout << key << ": ";
 				new_index = bb(pos[key], last_index, 0, pos[key].size()-1);
+				cout << endl;
 
 				if(new_index <= last_index){
 					ops++;
