@@ -4,7 +4,7 @@
 using namespace std;
 
 int bb(vector<int> v, int index, int esq, int dir){
-	cout << "{" << index << ", " << esq << ", " << dir<< "}, ";
+	//cout << "{" << index << ", " << esq << ", " << dir<< "}, ";
 
 	int m;
 	int size = v.size();
@@ -56,9 +56,25 @@ int main()
 		for(int k = 0; k < t.size(); k++){
 			char key = t.at(k);
 			if(pos.find(key) != pos.end()){
+
+				cout << "k = " << k << ", size = " << t.size() << endl;
+
+				chrono::steady_clock sc;   // create an object of `steady_clock` class
+				auto start = sc.now();     // start timer
+
+				// do stuff....
+
+				auto end = sc.now();   
+
 				cout << key << ": ";
+
 				new_index = bb(pos[key], last_index, 0, pos[key].size()-1);
-				cout << endl;
+
+    			// end timer (starting & ending is done by measuring the time at the moment the process started & ended respectively)
+				auto time_span = static_cast<chrono::duration<double>>(end - start);   // measure time span between start & end
+				cout<<" Operation took: " << time_span.count() *1000000000 << " nano seconds !!!" << endl;
+				
+				//cout << endl;
 
 				if(new_index <= last_index){
 					ops++;
