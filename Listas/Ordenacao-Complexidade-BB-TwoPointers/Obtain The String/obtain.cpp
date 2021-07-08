@@ -61,7 +61,6 @@ int main()
 
             if(pos.find(key) == pos.end()){
 				aux.last = 0;
-				aux.v = {j};
 				pos[key] = aux;
 			}
 			else{
