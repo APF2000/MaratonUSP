@@ -1,4 +1,5 @@
 // https://br.spoj.com/problems/ELEICOES/
+// Resolvido: https://br.spoj.com/status/
 
 #include<iostream>
 #include<map>
