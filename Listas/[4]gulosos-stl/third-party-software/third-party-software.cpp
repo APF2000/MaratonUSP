@@ -11,8 +11,8 @@ typedef long l;
 
 struct sort_pair_vector {
     bool operator()(const pair<l,l> &p1, const pair<l,l> &p2) {
-        if(p1.first != p2.first) return (p1.first > p2.first);
-		return (p1.second > p2.second);
+        if(p1.first != p2.first) return (p1.first < p2.first);
+		return (p1.second < p2.second);
     }
 };
 
