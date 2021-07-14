@@ -35,7 +35,43 @@ int main()
 	}
 	
 	sort(libs.begin(), libs.end(), sort_pair_vector());
-	for(pair<l, l> lib : libs) cout << lib.first << " " << lib.second << endl;
+	
+	pair<l, l> first_lib = libs[0];
+	l min = first_lib.first, max = first_lib.second;
+	l last_min = min, last_max = max;
+
+	l count = 1;
+	bool last_had_intersec = false;
+
+	for(pair<l, l> lib : libs) 
+	{
+		l new_min = lib.first, new_max = lib.second;
+
+		if(new_min > max) // posterior ao maximo global
+		{
+			if(!last_had_intersec)
+			{
+				cout << "NO" << endl;
+				return 0;
+			}
+
+			max = last_max;
+			last_had_intersec = false;
+			count++;
+		}else
+		{
+			last_had_intersec = true;
+		}
+
+		if(min == 1 && (max == m || new_max == m))
+		{
+			cout << ++count << endl;
+			return 0;
+		}
+
+		last_min = new_min;
+		last_max = new_max;
+	}
 
 	return 0;
 }
