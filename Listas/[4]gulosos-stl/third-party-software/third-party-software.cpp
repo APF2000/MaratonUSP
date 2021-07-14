@@ -1,22 +1,33 @@
 // https://codeforces.com/gym/102215/problem/E
 
-#include<iostream>
+#include <iostream>
+#include <utility>
+#include <algorithm>
 
 using namespace std;
 
+typedef long l;
+
+struct sort_pair {
+    bool operator()(const pair<l,l> &p1, const pair<l,l> &p2) {
+        if(p1.first != p2.first) return (p1.first > p2.first);
+		return (p1.second > p2.second);
+    }
+};
+
 int main()
 {
-	long n; // 1 ≤ n ≤ 200.000
-	long m; // 1 ≤ m ≤ 10^9 
+	l n; // 1 ≤ n ≤ 200.000
+	l m; // 1 ≤ m ≤ 10^9 
 
 	cin >> n >> m;
 
-	for (long i = 0; i < n; i++)
+	for (l i = 0; i < n; i++)
 	{
-		long min, max;
+		l min, max;
 		cin >> min >> max;
 
-
+		pair<l, l> aux(min, max);
 	}
 	
 
