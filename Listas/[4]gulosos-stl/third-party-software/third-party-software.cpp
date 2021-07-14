@@ -37,40 +37,43 @@ int main()
 	sort(libs.begin(), libs.end(), sort_pair_vector());
 	
 	pair<l, l> first_lib = libs[0];
-	l min = first_lib.first, max = first_lib.second;
-	l last_min = min, last_max = max;
+	l glob_min = first_lib.first, glob_max = first_lib.second;
+	l last_min = glob_min, last_max = glob_max;
+
+	if(glob_min != 1)
+	{
+		cout << "NO1" << endl;
+		return 0;
+	}
 
 	l count = 1;
-	bool last_had_intersec = false;
+	//bool last_had_intersec = false;
+	//l last_index = m - 1;
 
-	for(pair<l, l> lib : libs) 
+	for(int i = 1; i < n; i++) 
 	{
-		l new_min = lib.first, new_max = lib.second;
+		int j = i;
+		for(; j < n && libs[j].first <= glob_max; j++);
+		i = j;
+		//if(i == j);
 
-		if(new_min > max) // posterior ao maximo global
-		{
-			if(!last_had_intersec)
-			{
-				cout << "NO" << endl;
-				return 0;
-			}
+		l new_max;
+		if(i != n - 1) new_max = libs[i - 1].second;
+		else new_max = libs[i].second;
 
-			max = last_max;
-			last_had_intersec = false;
-			count++;
-		}else
+		if(new_max <= glob_max)
 		{
-			last_had_intersec = true;
-		}
-
-		if(min == 1 && (max == m || new_max == m))
-		{
-			cout << ++count << endl;
+			cout << "NO2" << endl;
 			return 0;
+		}else{
+			glob_max = new_max;
+			count++;
 		}
+	}
 
-		last_min = new_min;
-		last_max = new_max;
+	if(glob_max == m)
+	{
+		cout << "YES" << endl;
 	}
 
 	return 0;
