@@ -52,14 +52,15 @@ int main()
 
 	for(int i = 1; i < n; i++) 
 	{
-		int j = i;
-		for(; j < n && libs[j].first <= glob_max; j++);
-		i = j;
+		//int j = i;
+		for(; i < n && libs[i].first <= glob_max; i++);
+		//i = j;
 		//if(i == j);
 
 		l new_max;
-		if(i != n - 1) new_max = libs[i - 1].second;
-		else new_max = libs[i].second;
+		if()
+		//if(i != n - 1) new_max = libs[i - 1].second;
+		//else new_max = libs[i].second;
 
 		if(new_max <= glob_max)
 		{
@@ -71,10 +72,8 @@ int main()
 		}
 	}
 
-	if(glob_max == m)
-	{
-		cout << "YES" << endl;
-	}
+	if(glob_max == m) cout << "YES" << endl;
+	else cout << "NO3" << endl;
 
 	return 0;
 }
