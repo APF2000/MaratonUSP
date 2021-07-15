@@ -36,9 +36,9 @@ int main()
 	
 	sort(libs.begin(), libs.end(), sort_pair_vector());
 	
-	pair<l, l> first_lib = libs[0];
-	l glob_min = first_lib.first, glob_max = first_lib.second;
-	l last_min = glob_min, last_max = glob_max;
+	//pair<l, l> first_lib = libs[0];
+	//l glob_min = first_lib.first, glob_max = first_lib.second;
+	//l last_min = glob_min, last_max = glob_max;
 
 	if(glob_min != 1)
 	{
@@ -52,13 +52,19 @@ int main()
 
 	for(int i = 1; i < n; i++) 
 	{
+		pair<l, l> last = libs[i - 1];
 		//int j = i;
-		for(; i < n && libs[i].first <= glob_max; i++);
+		for(; i < n && libs[i].first <= last.second; i++);
+		pair<l, l> next = libs[i];
 		//i = j;
 		//if(i == j);
+		if(next == last) continue; // testar linha 
+		//if(next.first == last.first && next.second == last.second) continue;
 
-		l new_max;
-		if()
+		if(last.second < next.first) count++;
+
+		//l new_max;
+		/*if()
 		//if(i != n - 1) new_max = libs[i - 1].second;
 		//else new_max = libs[i].second;
 
@@ -69,7 +75,7 @@ int main()
 		}else{
 			glob_max = new_max;
 			count++;
-		}
+		}*/
 	}
 
 	if(glob_max == m) cout << "YES" << endl;
