@@ -1,18 +1,21 @@
 // https://codeforces.com/gym/102215/problem/E
 
 #include <iostream>
-#include <utility>
+//#include <utility>
 #include <algorithm>
 #include <vector>
+#include <tuple>
 
 using namespace std;
 
 typedef long l;
 
-struct sort_pair_vector {
-    bool operator()(const pair<l,l> &p1, const pair<l,l> &p2) {
-        if(p1.first != p2.first) return (p1.first < p2.first);
-		return (p1.second < p2.second);
+struct sort_tuple_vector {
+    bool operator()(const tuple<l,l,l> &t1, const tuple<l,l,l> &t2) {
+		l t1f = get<0>(t1), t1s = get<1>(t1);
+		l t2f = get<0>(t2), t2s = get<1>(t2);
+        if(t1f != t2f) return (t1f < t2f);
+		return (t1s < t2s);
     }
 };
 
@@ -23,45 +26,54 @@ int main()
 
 	cin >> n >> m;
 
-	vector<pair<l, l>> libs;
+	vector<tuple<l, l, l>> libs;
 
 	for (l i = 0; i < n; i++)
 	{
 		l min, max;
 		cin >> min >> max;
 
-		pair<l, l> lib(min, max);
+		tuple<l, l, l> lib(min, max, i);
 		libs.push_back(lib);
 	}
 	
-	sort(libs.begin(), libs.end(), sort_pair_vector());
+	sort(libs.begin(), libs.end(), sort_tuple_vector());
+	vector<l> used_libs = {1};
 	
-	//pair<l, l> first_lib = libs[0];
+	//tuple<l, l> first_lib = libs[0];
 	//l glob_min = first_lib.first, glob_max = first_lib.second;
 	//l last_min = glob_min, last_max = glob_max;
 
-	if(glob_min != 1)
+	/*if(glob_min != 1)
 	{
 		cout << "NO1" << endl;
 		return 0;
-	}
+	}*/
 
 	l count = 1;
 	//bool last_had_intersec = false;
 	//l last_index = m - 1;
+	bool possible = true;
 
 	for(int i = 1; i < n; i++) 
 	{
-		pair<l, l> last = libs[i - 1];
+		tuple<l, l, l> last = libs[i - 1];
 		//int j = i;
-		for(; i < n && libs[i].first <= last.second; i++);
-		pair<l, l> next = libs[i];
+		for(; i < n && get<0>(libs[i]) <= get<1>(last); i++);
+		tuple<l, l, l> next = libs[i];
 		//i = j;
 		//if(i == j);
 		if(next == last) continue; // testar linha 
 		//if(next.first == last.first && next.second == last.second) continue;
 
-		if(last.second < next.first) count++;
+		if(get<1>(last) < get<0>(next)) 
+		{
+			count++;
+			used_libs.push_back(get<2>(next)); // libs[0] => library #1
+		}else{
+			possible = false;
+			break;
+		}
 
 		//l new_max;
 		/*if()
@@ -78,8 +90,16 @@ int main()
 		}*/
 	}
 
-	if(glob_max == m) cout << "YES" << endl;
-	else cout << "NO3" << endl;
+	cout << (possible ? "YES" : "NO") << endl;
+	if(possible) 
+	{
+		cout << count << endl;
+		for(long lib : used_libs)
+		{
+			cout << lib << " ";
+		}
+		cout << endl;
+	}
 
 	return 0;
 }
