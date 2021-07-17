@@ -27,6 +27,7 @@ int main()
 	cin >> n >> m;
 
 	vector<tuple<l, l, l>> libs;
+	long min_first = m, max_second = 0;
 
 	for (l i = 0; i < n; i++)
 	{
@@ -35,6 +36,9 @@ int main()
 
 		tuple<l, l, l> lib(min, max, i);
 		libs.push_back(lib);
+
+		if(min < min_first) min_first = min;
+		if(max > max_second) max_second = max;
 	}
 	
 	sort(libs.begin(), libs.end(), sort_tuple_vector());
@@ -52,8 +56,10 @@ int main()
 	l count = 1;
 	//bool last_had_intersec = false;
 	//l last_index = m - 1;
-	l first_el = get<0>(libs[0]), last_el = get<1>(libs[n - 1]);
-	bool possible = (first_el == 1 && last_el == m);
+
+	//l first_el = get<0>(libs[0]), last_el = get<1>(libs[n - 1]);
+	//bool possible = (first_el == 1 && last_el == m);
+	bool possible = (min_first == 1 && max_second == m);
 
 	l index = 0;
 	for(index = 0; index < n && get<0>(libs[index]) == 1; index++);
