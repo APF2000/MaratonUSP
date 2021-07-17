@@ -69,13 +69,14 @@ int main()
 		tuple<l, l, l> last = libs[i - 1];
 		//int j = i;
 		for(; i < n && get<0>(libs[i]) <= get<1>(last); i++);
+		if(i == n) i = n - 1;
 		tuple<l, l, l> next = libs[i];
 		//i = j;
 		//if(i == j);
 		if(next == last) continue; // testar linha 
 		//if(next.first == last.first && next.second == last.second) continue;
 
-		if(get<1>(last) < get<0>(next)) 
+		if(get<1>(last) <= get<0>(next)) 
 		{
 			count++;
 			used_libs.push_back(get<2>(next) + 1); // libs[0] => library #1
