@@ -38,7 +38,6 @@ int main()
 	}
 	
 	sort(libs.begin(), libs.end(), sort_tuple_vector());
-	vector<l> used_libs = {1};
 	
 	//tuple<l, l> first_lib = libs[0];
 	//l glob_min = first_lib.first, glob_max = first_lib.second;
@@ -53,9 +52,19 @@ int main()
 	l count = 1;
 	//bool last_had_intersec = false;
 	//l last_index = m - 1;
-	bool possible = true;
+	l first_el = get<0>(libs[0]), last_el = get<1>(libs[n - 1]);
+	bool possible = (first_el == 1 && last_el == m);
 
-	for(int i = 1; i < n; i++) 
+	l index = 0;
+	for(index = 0; index < n && get<0>(libs[index]) == 1; index++);
+
+	tuple<l, l, l> first_lib = libs[index - 1];
+
+	vector<l> used_libs = { get<2>(first_lib) + 1 };
+
+	l min = get<0>(first_lib), max = get<1>(first_lib);
+
+	for(l i = index; i < n && possible && max != m; i++) 
 	{
 		tuple<l, l, l> last = libs[i - 1];
 		//int j = i;
@@ -69,10 +78,11 @@ int main()
 		if(get<1>(last) < get<0>(next)) 
 		{
 			count++;
-			used_libs.push_back(get<2>(next)); // libs[0] => library #1
+			used_libs.push_back(get<2>(next) + 1); // libs[0] => library #1
+			max = get<1>(next);
 		}else{
 			possible = false;
-			break;
+			//break;
 		}
 
 		//l new_max;
