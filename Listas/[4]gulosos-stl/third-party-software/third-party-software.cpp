@@ -92,7 +92,7 @@ int main()
 		if(next == last) continue; // testar linha 
 		//if(next.first == last.first && next.second == last.second) continue;
 
-		if(get<1>(last) <= get<0>(next)) 
+		if(get<1>(last) >= get<0>(next) - 1 && get<1>(next) > get<1>(last)) 
 		{
 			count++;
 			used_libs.push_back(get<2>(next) + 1); // libs[0] => library #1
