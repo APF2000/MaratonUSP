@@ -74,9 +74,19 @@ int main()
 	{
 		tuple<l, l, l> last = libs[i - 1];
 		//int j = i;
-		for(; i < n && get<0>(libs[i]) <= get<1>(last); i++);
+		l best_index = i;
+		for(; i < n && get<0>(libs[i]) <= get<1>(last); i++)
+		{
+			l aux_max = get<1>(libs[i]);
+			if(aux_max > max)
+			{
+				max = aux_max;
+				best_index = i;
+			}
+		}
 		if(i == n) i = n - 1;
-		tuple<l, l, l> next = libs[i];
+		if(get<1>(libs[i]) > get<1>(libs[best_index])) best_index = i;
+		tuple<l, l, l> next = libs[best_index];
 		//i = j;
 		//if(i == j);
 		if(next == last) continue; // testar linha 
