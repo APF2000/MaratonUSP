@@ -1,7 +1,6 @@
 // https://codeforces.com/gym/102215/problem/E
 
 #include <iostream>
-//#include <utility>
 #include <algorithm>
 #include <vector>
 #include <tuple>
@@ -42,38 +41,23 @@ int main()
 	}
 	
 	sort(libs.begin(), libs.end(), sort_tuple_vector());
-	
-	//tuple<l, l> first_lib = libs[0];
-	//l glob_min = first_lib.first, glob_max = first_lib.second;
-	//l last_min = glob_min, last_max = glob_max;
 
-	/*if(glob_min != 1)
-	{
-		cout << "NO1" << endl;
-		return 0;
-	}*/
-
-	l count = 1;
-	//bool last_had_intersec = false;
-	//l last_index = m - 1;
-
-	//l first_el = get<0>(libs[0]), last_el = get<1>(libs[n - 1]);
-	//bool possible = (first_el == 1 && last_el == m);
-	bool possible = (min_first == 1 && max_second == m);
 
 	l index = 0;
 	for(index = 0; index < n && get<0>(libs[index]) == 1; index++);
 
-	tuple<l, l, l> first_lib = libs[index - 1];
 
+	l count = 1;
+	bool possible = (min_first == 1 && max_second == m);
+
+	tuple<l, l, l> first_lib = libs[index - 1];
 	vector<l> used_libs = { get<2>(first_lib) + 1 };
 
-	l min = get<0>(first_lib), max = get<1>(first_lib);
+	l max = get<1>(first_lib);
 
 	for(l i = index; i < n && possible && max != m; i++) 
 	{
 		tuple<l, l, l> last = libs[i - 1];
-		//int j = i;
 		l best_index = i;
 		for(; i < n && get<0>(libs[i]) <= get<1>(last); i++)
 		{
@@ -87,10 +71,9 @@ int main()
 		if(i == n) i = n - 1;
 		if(get<1>(libs[i]) > get<1>(libs[best_index])) best_index = i;
 		tuple<l, l, l> next = libs[best_index];
-		//i = j;
-		//if(i == j);
-		if(next == last) continue; // testar linha 
-		//if(next.first == last.first && next.second == last.second) continue;
+	
+	
+		if(next == last) continue; // funciona para tuplas ? 
 
 		if(get<1>(last) >= get<0>(next) - 1 && get<1>(next) > get<1>(last)) 
 		{
@@ -99,22 +82,7 @@ int main()
 			max = get<1>(next);
 		}else{
 			possible = false;
-			//break;
 		}
-
-		//l new_max;
-		/*if()
-		//if(i != n - 1) new_max = libs[i - 1].second;
-		//else new_max = libs[i].second;
-
-		if(new_max <= glob_max)
-		{
-			cout << "NO2" << endl;
-			return 0;
-		}else{
-			glob_max = new_max;
-			count++;
-		}*/
 	}
 
 	cout << (possible ? "YES" : "NO") << endl;
