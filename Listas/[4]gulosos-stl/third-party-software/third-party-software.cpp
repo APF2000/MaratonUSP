@@ -3,29 +3,49 @@
 #include <iostream>
 #include <algorithm>
 #include <vector>
-#include <tuple>
+//#include <tuple>
 
 using namespace std;
 
 typedef long l;
 
-struct sort_tuple_vector {
-    bool operator()(const tuple<l,l,l> &t1, const tuple<l,l,l> &t2) {
-		l t1f = get<0>(t1), t1s = get<1>(t1);
-		l t2f = get<0>(t2), t2s = get<1>(t2);
-        if(t1f != t2f) return (t1f < t2f);
-		return (t1s < t2s);
-    }
+class Container{
+	public:
+		l first, second, index;
+		Container (l f, l s, l i)
+		{
+			first = f;
+			second = s;
+			index = i;
+		}
+		bool operator < (Container c) {
+			if(first != c.first) return (first < c.first);
+			return (second < c.second);
+		}
+		bool operator == (Container c) {
+			return (first == c.first && second == c.second);
+		}
 };
+
+/*struct sort_container_vector {
+	bool operator()(Container c1, Container c2) {
+		if(c1.first != c2.first) return (c1.first < c2.first);
+		return (c1.second < c2.second);
+		//l t1f = t1.first, t1s = t1.second;
+		//l t2f = t2.first, t2s = t2.second;
+		//if(t1f != t2f) return (t1f < t2f);
+		//return (t1s < t2s);
+	}
+};*/
 
 int main()
 {
-	l n; // 1 ≤ n ≤ 200.000
+	l n; // 1 ≤ n ≤ 200.first00
 	l m; // 1 ≤ m ≤ 10^9 
 
 	cin >> n >> m;
 
-	vector<tuple<l, l, l>> libs;
+	vector<Container> libs;
 	long min_first = m, max_second = 0;
 
 	for (l i = 0; i < n; i++)
@@ -33,35 +53,35 @@ int main()
 		l min, max;
 		cin >> min >> max;
 
-		tuple<l, l, l> lib(min, max, i);
+		Container lib(min, max, i);
 		libs.push_back(lib);
 
 		if(min < min_first) min_first = min;
 		if(max > max_second) max_second = max;
 	}
 	
-	sort(libs.begin(), libs.end(), sort_tuple_vector());
+	sort(libs.begin(), libs.end());//, sort_container_vector());
 
 
 	l index = 0;
-	for(index = 0; index < n && get<0>(libs[index]) == 1; index++);
+	for(index = 0; index < n && libs[index].first == 1; index++);
 
 
 	l count = 1;
 	bool possible = (min_first == 1 && max_second == m);
 
-	tuple<l, l, l> first_lib = libs[index - 1];
-	vector<l> used_libs = { get<2>(first_lib) + 1 };
+	Container first_lib = libs[index - 1];
+	vector<l> used_libs = { first_lib.index + 1 };
 
-	l max = get<1>(first_lib);
+	l max = first_lib.second;
 
 	for(l i = index; i < n && possible && max != m; i++) 
 	{
-		tuple<l, l, l> last = libs[i - 1];
+		Container last = libs[i - 1];
 		l best_index = i;
-		for(; i < n && get<0>(libs[i]) <= get<1>(last); i++)
+		for(; i < n && libs[i].first <= last.second; i++)
 		{
-			l aux_max = get<1>(libs[i]);
+			l aux_max = libs[i].second;
 			if(aux_max > max)
 			{
 				max = aux_max;
@@ -69,17 +89,17 @@ int main()
 			}
 		}
 		if(i == n) i = n - 1;
-		if(get<1>(libs[i]) > get<1>(libs[best_index])) best_index = i;
-		tuple<l, l, l> next = libs[best_index];
+		if(libs[i].second > libs[best_index].second) best_index = i;
+		Container next = libs[best_index];
 	
 	
-		if(next == last) continue; // funciona para tuplas ? 
+		if(next == last) continue; // funciona para classes ? 
 
-		if(get<1>(last) >= get<0>(next) - 1 && get<1>(next) > get<1>(last)) 
+		if(last.second >= next.first - 1 && next.second > last.second) 
 		{
 			count++;
-			used_libs.push_back(get<2>(next) + 1); // libs[0] => library #1
-			max = get<1>(next);
+			used_libs.push_back(next.index + 1); // libs[0] => library #1
+			max = next.second;
 		}else{
 			possible = false;
 		}
