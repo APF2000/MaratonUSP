@@ -3,7 +3,6 @@
 #include <iostream>
 #include <algorithm>
 #include <vector>
-//#include <tuple>
 
 using namespace std;
 
@@ -26,17 +25,6 @@ class Container{
 			return (first == c.first && second == c.second);
 		}
 };
-
-/*struct sort_container_vector {
-	bool operator()(Container c1, Container c2) {
-		if(c1.first != c2.first) return (c1.first < c2.first);
-		return (c1.second < c2.second);
-		//l t1f = t1.first, t1s = t1.second;
-		//l t2f = t2.first, t2s = t2.second;
-		//if(t1f != t2f) return (t1f < t2f);
-		//return (t1s < t2s);
-	}
-};*/
 
 int main()
 {
