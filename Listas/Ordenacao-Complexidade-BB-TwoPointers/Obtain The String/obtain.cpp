@@ -4,6 +4,8 @@
 using namespace std;
 
 int bb(vector<int> v, int index, int esq, int dir){
+	//cout << "{" << index << ", " << esq << ", " << dir<< "}, ";
+
 	int m;
 	int size = v.size();
 	m = (esq + dir)/2;
@@ -24,21 +26,6 @@ int bb(vector<int> v, int index, int esq, int dir){
 	}
 }
 
-struct v_and_last
-{
-	int last;
-	vector<int> v;
-};
-
-typedef struct v_and_last vl;
-
-int next_index(vl *el)
-{
-	int *last = &(el->last);
-	*last = (*last + 1) % el->v.size();
-
-	return( el->v[*last] );
-}
 
 int main()
 {
@@ -50,37 +37,59 @@ int main()
     {
 		bool no_letter = false;
 		int ops = 1;
-		map<char, vl> pos;
+		map<char, vector<int>> pos;
 
         cin >> s;
         cin >> t;
 
         for(int j = 0; j < s.length(); j++){
 			char key = s.at(j);
-			vl aux;
-
             if(pos.find(key) == pos.end()){
-				aux.last = 0;
-				pos[key] = aux;
+				pos[key] = {j};
 			}
 			else{
-				pos[key].v.push_back(j);
+				pos[key].push_back(j);
 			}
         }
 
 		int last_index = -1, new_index;
+		map<char, vector<int>> mem;
 		for(int k = 0; k < t.size(); k++){
 			char key = t.at(k);
+			bool primeira_vez = true;
+			int  count = 0;
 			if(pos.find(key) != pos.end()){
 
-				//new_index = bb(pos[key], last_index, 0, pos[key].size()-1);
-				new_index = next_index(&pos[key]);
+				//cout << "k = " << k << ", size = " << t.size() << endl;
+
+				chrono::steady_clock sc;   // create an object of `steady_clock` class
+				auto start = sc.now();     // start timer
+
+				// do stuff....
+
+				auto end = sc.now();   
+
+				//cout << key << ": ";
+				if(primeira_vez)
+				new_index = bb(pos[key], last_index, 0, pos[key].size()-1);
+				else{
+				cout << mem[key][count] << endl;
+				new_index = bb(pos[key], last_index, mem[key][count], pos[key].size()-1);
+				count++;
+				}
+
+    			// end timer (starting & ending is done by measuring the time at the moment the process started & ended respectively)
+				auto time_span = static_cast<chrono::duration<double>>(end - start);   // measure time span between start & end
+				//cout<<" Operation took: " << time_span.count() *1000000000 << " nano seconds !!!" << endl;
+				
+				//cout << endl;
 
 				if(new_index <= last_index){
 					ops++;
 				}
-
+				mem[key].push_back(new_index);
 				last_index = new_index;
+				primeira_vez = false;
 			}
 			else{
 				no_letter = true;
