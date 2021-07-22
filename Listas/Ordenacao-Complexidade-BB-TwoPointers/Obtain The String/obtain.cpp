@@ -3,26 +3,26 @@
 
 using namespace std;
 
-int bb(vector<int> v, int index, int esq, int dir){
-	//cout << "{" << index << ", " << esq << ", " << dir<< "}, ";
+int bb(vector<int> v, int id_string, int esq, int dir){
+	//cout << "{" << id_string << ", " << esq << ", " << dir<< "}, ";
 
 	int m;
 	int size = v.size();
 	m = (esq + dir)/2;
 	if(esq >= dir)
 	{
-		if(index >= v[m]) return v[(m + 1) % size];
-		else return v[m];
+		if(id_string >= v[m]) return (m+1)%size; //v[(m + 1) % size];
+		else return m; //v[m];
 	}
 
-	if(v[m] < index){
-		return bb(v, index, m + 1, dir);
+	if(v[m] < id_string){
+		return bb(v, id_string, m + 1, dir);
 	}
-	else if(v[m] > index){
-		return bb(v, index, esq, m - 1);
+	else if(v[m] > id_string){
+		return bb(v, id_string, esq, m - 1);
 	}
 	else{
-		return v[(m + 1) % v.size()];
+		return (m+1)%size; //v[(m + 1) % v.size()];
 	}
 }
 
@@ -38,7 +38,7 @@ int main()
 		bool no_letter = false;
 		int ops = 1;
 		map<char, vector<int>> pos;
-
+		map<char, int> mem;
         cin >> s;
         cin >> t;
 
@@ -46,50 +46,23 @@ int main()
 			char key = s.at(j);
             if(pos.find(key) == pos.end()){
 				pos[key] = {j};
+				mem[key] = 0;
 			}
 			else{
 				pos[key].push_back(j);
 			}
         }
 
-		int last_index = -1, new_index;
-		map<char, vector<int>> mem;
+		int last_id_vec = -1, new_id_vec;
 		for(int k = 0; k < t.size(); k++){
-			char key = t.at(k);
-			bool primeira_vez = true;
-			int  count = 0;
+			char key = t.at(k);	
 			if(pos.find(key) != pos.end()){
-
-				//cout << "k = " << k << ", size = " << t.size() << endl;
-
-				chrono::steady_clock sc;   // create an object of `steady_clock` class
-				auto start = sc.now();     // start timer
-
-				// do stuff....
-
-				auto end = sc.now();   
-
-				//cout << key << ": ";
-				if(primeira_vez)
-				new_index = bb(pos[key], last_index, 0, pos[key].size()-1);
-				else{
-				cout << mem[key][count] << endl;
-				new_index = bb(pos[key], last_index, mem[key][count], pos[key].size()-1);
-				count++;
-				}
-
-    			// end timer (starting & ending is done by measuring the time at the moment the process started & ended respectively)
-				auto time_span = static_cast<chrono::duration<double>>(end - start);   // measure time span between start & end
-				//cout<<" Operation took: " << time_span.count() *1000000000 << " nano seconds !!!" << endl;
-				
-				//cout << endl;
-
-				if(new_index <= last_index){
+				new_id_vec = bb(pos[key], last_id_vec, mem[key], pos[key].size()-1);
+				mem[key] = new_id_vec;
+				if(pos[key][new_id_vec] <= pos[key][last_id_vec]){
 					ops++;
 				}
-				mem[key].push_back(new_index);
-				last_index = new_index;
-				primeira_vez = false;
+				last_id_vec = new_id_vec;
 			}
 			else{
 				no_letter = true;
@@ -105,7 +78,8 @@ int main()
     }
     return 0;
 }
-
+//mem: guardar indices (item) do vetor t, então n usar o count++
+//usar ideia do pires do outro branch
 /*
 3
 aabce
