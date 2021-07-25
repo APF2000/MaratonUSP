@@ -1,22 +1,29 @@
 // https://codeforces.com/gym/102215/problem/E
 
 #include <iostream>
-//#include <utility>
 #include <algorithm>
 #include <vector>
-#include <tuple>
 
 using namespace std;
 
 typedef long l;
 
-struct sort_tuple_vector {
-    bool operator()(const tuple<l,l,l> &t1, const tuple<l,l,l> &t2) {
-		l t1f = get<0>(t1), t1s = get<1>(t1);
-		l t2f = get<0>(t2), t2s = get<1>(t2);
-        if(t1f != t2f) return (t1f < t2f);
-		return (t1s < t2s);
-    }
+class Container{
+	public:
+		l first, second, index;
+		Container (l f, l s, l i)
+		{
+			first = f;
+			second = s;
+			index = i;
+		}
+		bool operator < (Container c) {
+			if(first != c.first) return (first < c.first);
+			return (second < c.second);
+		}
+		bool operator == (Container c) {
+			return (first == c.first && second == c.second);
+		}
 };
 
 int main()
@@ -26,79 +33,67 @@ int main()
 
 	cin >> n >> m;
 
-	vector<tuple<l, l, l>> libs;
+	vector<Container> libs;
+	long min_first = m, max_second = 0;
 
 	for (l i = 0; i < n; i++)
 	{
 		l min, max;
 		cin >> min >> max;
 
-		tuple<l, l, l> lib(min, max, i);
+		Container lib(min, max, i);
 		libs.push_back(lib);
+
+		if(min < min_first) min_first = min;
+		if(max > max_second) max_second = max;
 	}
 	
-	sort(libs.begin(), libs.end(), sort_tuple_vector());
-	
-	//tuple<l, l> first_lib = libs[0];
-	//l glob_min = first_lib.first, glob_max = first_lib.second;
-	//l last_min = glob_min, last_max = glob_max;
+	sort(libs.begin(), libs.end());//, sort_container_vector());
 
-	/*if(glob_min != 1)
-	{
-		cout << "NO1" << endl;
-		return 0;
-	}*/
-
-	l count = 1;
-	//bool last_had_intersec = false;
-	//l last_index = m - 1;
-	l first_el = get<0>(libs[0]), last_el = get<1>(libs[n - 1]);
-	bool possible = (first_el == 1 && last_el == m);
 
 	l index = 0;
-	for(index = 0; index < n && get<0>(libs[index]) == 1; index++);
+	for(index = 0; index < n && libs[index].first == 1; index++);
 
-	tuple<l, l, l> first_lib = libs[index - 1];
 
-	vector<l> used_libs = { get<2>(first_lib) + 1 };
+	l count = 1;
+	bool possible = (min_first == 1 && max_second == m);
 
-	l min = get<0>(first_lib), max = get<1>(first_lib);
+	Container first_lib = libs[index - 1];
+	vector<l> used_libs = { first_lib.index + 1 };
+
+	l max = first_lib.second;
 
 	for(l i = index; i < n && possible && max != m; i++) 
 	{
-		tuple<l, l, l> last = libs[i - 1];
-		//int j = i;
-		for(; i < n && get<0>(libs[i]) <= get<1>(last); i++);
-		tuple<l, l, l> next = libs[i];
-		//i = j;
-		//if(i == j);
-		if(next == last) continue; // testar linha 
-		//if(next.first == last.first && next.second == last.second) continue;
+		Container last = libs[i - 1];
+		l best_index = i;
+		for(; i < n && libs[i].first <= last.second - 1; i++)
+		{
+			l aux_max = libs[i].second;
+			if(aux_max > max)
+			{
+				max = aux_max;
+				best_index = i;
+			}
+		}
+		if(i == n) i = n - 1;
+		if(libs[i].second > libs[best_index].second) best_index = i;
+		Container next = libs[best_index];
+	
+	
+		if(next == last) continue; // funciona para classes ? 
 
-		if(get<1>(last) < get<0>(next)) 
+		if(last.second >= next.first - 1 && next.second > last.second) 
 		{
 			count++;
-			used_libs.push_back(get<2>(next) + 1); // libs[0] => library #1
-			max = get<1>(next);
+			used_libs.push_back(next.index + 1); // libs[0] => library #1
+			max = next.second;
 		}else{
 			possible = false;
-			//break;
 		}
-
-		//l new_max;
-		/*if()
-		//if(i != n - 1) new_max = libs[i - 1].second;
-		//else new_max = libs[i].second;
-
-		if(new_max <= glob_max)
-		{
-			cout << "NO2" << endl;
-			return 0;
-		}else{
-			glob_max = new_max;
-			count++;
-		}*/
 	}
+
+	//sort(used_libs.begin(), used_libs.end());
 
 	cout << (possible ? "YES" : "NO") << endl;
 	if(possible) 
