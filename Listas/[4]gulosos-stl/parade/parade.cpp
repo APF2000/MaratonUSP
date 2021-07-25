@@ -10,12 +10,11 @@ int main()
 {
 	int n;
 	cin >> n;
+
 	for(int i = 0; i < n ; i ++){
-		cout << "Caso " << i << endl << endl;
 		int numMob;
-		cout << "Esperando numMob" << endl;
 		cin >> numMob;
-		int nextMobExpected = numMob;
+		int nextMobExpected = 1;
 		stack<int> orderedMobs;
 		stack<int> waitTurnMobs;
 
@@ -37,16 +36,14 @@ int main()
 					while(nextMobExpected == waitTurnMobs.top() ){
 						waitTurnMobs.pop();
 						orderedMobs.push(nextMobExpected);
-						nextMobExpected--;
+						nextMobExpected++;
 						if(waitTurnMobs.empty()){
 							break;
 						}
 					}
 				}
 			}
-			cout << "j vale " << j << endl;
 		}
-			cout << "verificando caso" << endl;
 		  if(orderedMobs.size()==numMob){
 
  		 		cout << "yes" << endl;
@@ -108,6 +105,13 @@ yes
 yes
 no
 yes
+yes
+yes
+
+yes
+yes
+yes
+no
 yes
 yes
 */
