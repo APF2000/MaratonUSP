@@ -48,10 +48,10 @@ int main(){
 	}
 	//cout << "alo" << endl;
 	int mmdc = mdc(a);
-	cout <<  "mdc " << mmdc << endl;
+	//cout <<  "mdc " << mmdc << endl;
 	for (int i = 0; i < n; i++)
 	{
-		cout << "printando i: " << i << " n: " << n << " a[i] " << a[i] << endl;
+		// /cout << "printando i: " << i << " n: " << n << " a[i] " << a[i] << endl;
 		a[i] /= mmdc;
 	}
 	//cout << "l 29 " << mmdc << endl;
@@ -66,16 +66,18 @@ int main(){
 		
 				primos_entre_si = true;
 				maior_elemento = a[i];
-				cout << "l 39 " << maior_elemento << endl;
+				//cout << "l 39 " << maior_elemento << endl;
 				break;
 			}
 		}
 	}
-	maior_elemento++;
+	if(maior_elemento * mmdc < k) maior_elemento = k / mmdc;
+	else maior_elemento++;
+
 	cout << maior_elemento << endl;
 	for (int i = 0; i < maior_elemento; i++)
 	{
-		cout << mmdc*i << " ";
+		cout << mmdc * i << " ";
 	}
 	cout << endl;
 	return 0;
