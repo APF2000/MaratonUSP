@@ -10,7 +10,7 @@ int main()
 {
 	int n;
 	cin >> n;
-
+  
 	for(int i = 0; i < n ; i ++){
 		int numMob;
 		cin >> numMob;
@@ -36,6 +36,7 @@ int main()
 					while(nextMobExpected == waitTurnMobs.top() ){
 						waitTurnMobs.pop();
 						orderedMobs.push(nextMobExpected);
+
 						nextMobExpected++;
 						if(waitTurnMobs.empty()){
 							break;
@@ -105,9 +106,6 @@ yes
 yes
 no
 yes
-yes
-yes
-
 yes
 yes
 yes
