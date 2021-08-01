@@ -10,11 +10,20 @@ int main()
 {
 	int n;
 	cin >> n;
+<<<<<<< HEAD
 
 	for(int i = 0; i < n ; i ++){
 		int numMob;
 		cin >> numMob;
 		int nextMobExpected = 1;
+=======
+	for(int i = 0; i < n ; i ++){
+		cout << "Caso " << i << endl << endl;
+		int numMob;
+		cout << "Esperando numMob" << endl;
+		cin >> numMob;
+		int nextMobExpected = numMob;
+>>>>>>> 2fbfc09288ae061265318ccf6fa6c0da046d1331
 		stack<int> orderedMobs;
 		stack<int> waitTurnMobs;
 
@@ -36,14 +45,24 @@ int main()
 					while(nextMobExpected == waitTurnMobs.top() ){
 						waitTurnMobs.pop();
 						orderedMobs.push(nextMobExpected);
+<<<<<<< HEAD
 						nextMobExpected++;
+=======
+						nextMobExpected--;
+>>>>>>> 2fbfc09288ae061265318ccf6fa6c0da046d1331
 						if(waitTurnMobs.empty()){
 							break;
 						}
 					}
 				}
 			}
+<<<<<<< HEAD
 		}
+=======
+			cout << "j vale " << j << endl;
+		}
+			cout << "verificando caso" << endl;
+>>>>>>> 2fbfc09288ae061265318ccf6fa6c0da046d1331
 		  if(orderedMobs.size()==numMob){
 
  		 		cout << "yes" << endl;
@@ -107,6 +126,7 @@ no
 yes
 yes
 yes
+<<<<<<< HEAD
 
 yes
 yes
@@ -114,4 +134,6 @@ yes
 no
 yes
 yes
+=======
+>>>>>>> 2fbfc09288ae061265318ccf6fa6c0da046d1331
 */
