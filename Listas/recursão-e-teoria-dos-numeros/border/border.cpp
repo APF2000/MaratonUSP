@@ -49,29 +49,13 @@ int main(){
 	
 	for (int i = 0; i < n; i++)
 	{
-		
 		a[i] /= mmdc;
 	}
-	
+	mmdc = our_gcd(k, mmdc);
 	sort(a.begin(), a.end());
 	int maior_elemento = 1; 
-	bool primos_entre_si = false;
-	for (int i = n-1; i > 0 && !primos_entre_si; i--)
-	{
-		for (int j = i-1; j >= 0; j += -1)
-		{
-			if(our_gcd(a[j], a[i]) == 1){
-		
-				primos_entre_si = true;
-				maior_elemento = a[i];
-				
-				break;
-			}
-		}
-	}
-	mmdc = our_gcd(k, mmdc);
-	if(n != 0 && maior_elemento * mmdc < k) maior_elemento = k / mmdc;
-	
+	maior_elemento = k / mmdc;
+	if( n==0 ) maior_elemento = 1;
 
 	cout << maior_elemento << endl;
 	for (int i = 0; i < maior_elemento; i++)
