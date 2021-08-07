@@ -4,69 +4,69 @@
 #include <unordered_set>
 #include <algorithm>
 using namespace std;
-unsigned long long int prox_primo(unsigned long long int maior_primo, vector<unsigned long long int> primos){
-	maior_primo = maior_primo + 2;
-	bool isPrime = false;
-	while(!isPrime){
-		//cout << maior_primo << endl;
-		unsigned long long int i;
-		for( i = 0; primos[i]*primos[i] <= maior_primo; i++){
-			if(maior_primo%primos[i] == 0){
-				break;
-			}
-		}
-		if(primos[i]*primos[i] > maior_primo){
-			isPrime = true;
-		} else {
-			maior_primo = maior_primo + 2;
-		}
-	}
-	return maior_primo;
-}
+typedef unsigned long long int ull;
+using namespace std;
 
-vector<unsigned long long int> prims_ate_n( unsigned long long int maior_el){
-	unsigned long long int maior_primo = 7;
-	vector<unsigned long long int> primos;
-	primos.push_back(2);
-	primos.push_back(3);
-	primos.push_back(5);
-	primos.push_back(7);
-	while(maior_el >= maior_primo*maior_primo){
-			//cout << "Buscando proximo primo" << endl;
-			maior_primo = prox_primo(maior_primo, primos);
-			//cout << maior_primo << endl;
-			primos.push_back(maior_primo);
-	}
-	return primos;
+const ull maxn = 1000000;
+
+int eh_primo[maxn]; // -1 => indefinido, 0 => composto e 1 => primo.
+                    // Lembre-se de inicializar "eh_primo" com -1, ou na main ou
+                    // na própria função crivo, no seu começo.
+
+void crivo(ull n){
+    // Inicializando "eh_primo" com -1, pois não sabemos nada sobre nenhum número, inicialmente.
+    for(ull i=1; i<=n; i++){
+        eh_primo[i] = -1;
+    }
+    
+    // Para cada número de 2 até n
+    for(ull i = 2; i <= n; i++){
+            
+        // checo se o número atual é indefinido.
+        if(eh_primo[i] == -1){
+            
+            // Se ele for, indico que ele é primo
+            eh_primo[i] = 1;
+    
+            // e que os múltiplos dele são compostos.
+            for(ull j = i + i; j <= n; j += i){
+                eh_primo[j] = 0;
+            }
+        }
+    }
 }
 
 int main(){
 	int n;
-	vector<unsigned long long int> primos;
-	vector<unsigned long long int> nums;
-	unordered_set<unsigned long long int> primos_ao_quadrado;
-	
+	vector<ull> nums;
+	unordered_set<ull> primos_ao_quadrado;
+	ull raiz_maior_el;
 	cin >> n;
 	// Obtendo maior valor
-	unsigned long long int maior_el = 0;
+	ull maior_el = 0;
 	for(int i = 0; i < n; i++){
-		unsigned long long int aux;
+		ull aux;
 		cin >> aux;
 		if(aux > maior_el){
 			maior_el = aux;
 		}
 		nums.push_back(aux);
 	}
-	//criando lista de primos
-	primos = prims_ate_n(maior_el);
 	
-	//criando set de quadrados
-	for(int i = 0; i < primos.size(); i++){
-		primos_ao_quadrado.insert(primos[i]*primos[i]);
-	}
+	for(raiz_maior_el = 0; raiz_maior_el*raiz_maior_el < maior_el; raiz_maior_el++){
 
+	}
+	crivo(raiz_maior_el);
+	primos_ao_quadrado.insert(4);
+	ull i;
+	for( i = 1; i < raiz_maior_el+2 ; i = i + 2){
+		if(eh_primo[i] == 1){
+			primos_ao_quadrado.insert((i)*(i));
+		}
+		
+	}
 	for(int i = 0; i < n; i++){
-		unsigned long long int aux;
+		ull aux;
 		aux = nums[i];
 		if(primos_ao_quadrado.find(aux) != primos_ao_quadrado.end()){
 			cout << "YES" << endl;
