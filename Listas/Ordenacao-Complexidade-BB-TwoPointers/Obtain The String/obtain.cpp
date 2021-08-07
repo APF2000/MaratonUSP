@@ -3,35 +3,36 @@
 
 using namespace std;
 
-int bb(vector<int> v, int id_string, int esq, int dir){
-	//cout << "{" << id_string << ", " << esq << ", " << dir<< "}, ";
-
+int bb(vector<int> v, int index, int esq, int dir){
 	int m;
-	int size = v.size();
 	m = (esq + dir)/2;
-	if(esq >= dir)
-	{
-		if(id_string >= v[m]) return (m+1)%size; //v[(m + 1) % size];
-		else return m; //v[m];
+	if(m == esq){
+		/*if(m == v.size()-1){
+			return -1;
+		} */
+		return m+1;
 	}
-
-	if(v[m] < id_string){
-		return bb(v, id_string, m + 1, dir);
+	if(v[m] < index){
+		return bb(v, index, m, dir);
 	}
-	else if(v[m] > id_string){
-		return bb(v, id_string, esq, m - 1);
+	else if(v[m] > index){
+		return bb(v, index, esq, m);
 	}
 	else{
-		return (m+1)%size; //v[(m + 1) % v.size()];
+		/*if(m == v.size()-1){
+			return -1;
+		}*/
+		return m+1;
 	}
 }
-
-
+// 1 3 5 8 10 15 23
+// 1 4 7 9 13 14
 int main()
 {
-    string s, t;
-
-    int T;
+    string s, t, z;
+    string prov;
+    int T, op;
+	bool no_letter = false;
     cin >> T;
     for (int i = 0; i < T; i++)
     {
@@ -41,28 +42,31 @@ int main()
 		map<char, int> mem;
         cin >> s;
         cin >> t;
-
+		z = "";
+		op = 0;
+		map<char, vector<int>> pos;
         for(int j = 0; j < s.length(); j++){
 			char key = s.at(j);
-            if(pos.find(key) == pos.end()){
+            if(pos.find(j) == pos.end()){
 				pos[key] = {j};
-				mem[key] = 0;
 			}
 			else{
-				pos[key].push_back(j);
+				pos[key].push_back(key);
 			}
         }
-
-		int last_id_vec = -1, new_id_vec;
+		int last_index = 0, new_index;
 		for(int k = 0; k < t.size(); k++){
-			char key = t.at(k);	
+			char key = t.at(k);
 			if(pos.find(key) != pos.end()){
-				new_id_vec = bb(pos[key], last_id_vec, mem[key], pos[key].size()-1);
-				mem[key] = new_id_vec;
-				if(pos[key][new_id_vec] <= pos[key][last_id_vec]){
-					ops++;
+				new_index = bb(pos[key], last_index, 0, pos[key].size()-1);
+				if(new_index == pos[key].size() - 1){
+					new_index = last_index;
 				}
-				last_id_vec = new_id_vec;
+				//cout << new_index << endl; 
+				if(new_index <= last_index){
+					op++;
+				}
+				last_index = new_index;
 			}
 			else{
 				no_letter = true;
@@ -73,7 +77,7 @@ int main()
 			cout << "-1" << endl;
 		}
 		else{
-			cout << ops << endl;
+			cout << op << endl;
 		}
     }
     return 0;
