@@ -10,20 +10,20 @@ void findPrimes(int n, vector<int> &primes){
 	int teste = 3;
 	primes.push_back(primo);
 	while(teste <= n){
-	bool achou_primo = true;
-	//cout << "teste " << teste << endl;
-	for(int count_prim = 0; count_prim < primes.size(); count_prim++){
-			if(teste % primes[count_prim] == 0){
-				achou_primo = false;
-				break;
+		bool achou_primo = true;
+		//cout << "teste " << teste << endl;
+		for(int count_prim = 0; count_prim < primes.size(); count_prim++){
+				if(teste % primes[count_prim] == 0){
+					achou_primo = false;
+					break;
+				}
 			}
+		if(achou_primo){
+			primo = teste;
+			primes.push_back(primo);
+		//cout << "primo " << primo << endl;
 		}
-	if(achou_primo){
-		primo = teste;
-		primes.push_back(primo);
-	//	cout << "primo " << primo << endl;
-	}
-	teste++;
+		teste++;
 	}
 }
 
