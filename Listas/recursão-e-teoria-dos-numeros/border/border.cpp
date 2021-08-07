@@ -62,7 +62,6 @@ int main(){
 	for (int i = 0; i < maior_elemento; i++)
 	{
 		cout << mmdc * i << " ";
-
 	}
 	cout << endl;
 	return 0;
