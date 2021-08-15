@@ -67,7 +67,7 @@ int main()
 	{
 		Container last = libs[i - 1];
 		l best_index = i;
-		for(; i < n && libs[i].first <= last.second - 1; i++)
+		for(; i < n && libs[i].first <= last.second; i++)
 		{
 			l aux_max = libs[i].second;
 			if(aux_max > max)
@@ -76,8 +76,10 @@ int main()
 				best_index = i;
 			}
 		}
-		if(i == n) i = n - 1;
-		if(libs[i].second > libs[best_index].second) best_index = i;
+
+		if(i == n) i = n - 1; // corrige se o FOR de cima passar do ultimo indice
+		if(libs[i].first <= last.second && libs[i].second > libs[best_index].second) 
+			best_index = i;
 		Container next = libs[best_index];
 	
 	
