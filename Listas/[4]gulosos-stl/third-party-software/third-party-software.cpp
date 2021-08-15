@@ -10,19 +10,19 @@ typedef long l;
 
 class Container{
 	public:
-		l first, second, index;
+		l fst, snd, idx;
 		Container (l f, l s, l i)
 		{
-			first = f;
-			second = s;
-			index = i;
+			fst = f;
+			snd = s;
+			idx = i;
 		}
 		bool operator < (Container c) {
-			if(first != c.first) return (first < c.first);
-			return (second < c.second);
+			if(fst != c.fst) return (fst < c.fst);
+			return (snd < c.snd);
 		}
 		bool operator == (Container c) {
-			return (first == c.first && second == c.second);
+			return (fst == c.fst && snd == c.snd);
 		}
 };
 
@@ -48,22 +48,51 @@ int main()
 	
 	vector<l> used_libs;
 	bool possible = true;
-	l count = 1;
+	l count = 0;
 
-	for(l i = 0; i < n; i++) 
+	Container maior(0, 0, 0);
+	for(l i = 0; i < n && maior.snd != m; i++) 
 	{
-	
+		std::cout << "[INFO] teste" << endl;
+		Container last = libs[i];
+		Container next(0, 0, 0);
+
+		if(i == n - 1) next = maior;
+		else next = libs[i + 1];
+
+		if(last.fst == next.fst)
+		{	// ja ta ordenado, entao se ta na frente eh maior necessariamente
+			maior = next; 
+		}else{
+			if(last.snd < next.fst - 1)
+			{
+				possible = false;
+				break;
+			}else{
+				// Pensar neste exemplo:
+				// 1 2
+				// 1 3
+				// 1 10
+				// 11 15
+				// 11 17
+				// 11 20
+				used_libs.push_back(maior.idx + 1);
+				count++;
+
+				maior = next;
+			}
+		}
 	}
 
-	cout << (possible ? "YES" : "NO") << endl;
+	std::cout << (possible ? "YES" : "NO") << endl;
 	if(possible) 
 	{
-		cout << count << endl;
+		std::cout << count << endl;
 		for(long lib : used_libs)
 		{
-			cout << lib << " ";
+			std::cout << lib << " ";
 		}
-		cout << endl;
+		std::cout << endl;
 	}
 
 	return 0;
