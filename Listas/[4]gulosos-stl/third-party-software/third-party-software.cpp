@@ -50,25 +50,29 @@ int main()
 	bool possible = true;
 	l count = 0;
 
-	Container maior(0, 0, 0);
-	for(l i = 0; i < n && maior.snd != m; i++) 
+	Container maior = libs[0];//(0, 0, 0);
+	for(l i = 0; i < n /*&& maior.snd != m*/; i++) 
 	{
-		std::cout << "[INFO] teste" << endl;
+		std::cout << "[INFO]i: " << i << ", n: " << n << endl;
 		Container last = libs[i];
 		Container next(0, 0, 0);
 
-		if(i == n - 1) next = maior;
+		if(i == n - 1) next = Container(last.fst + 1, last.snd + 1, 0);//maior;
 		else next = libs[i + 1];
 
+		std::cout << "[INFO] " << last.fst << " == " << next.fst << "?" << endl;
 		if(last.fst == next.fst)
 		{	// ja ta ordenado, entao se ta na frente eh maior necessariamente
+			std::cout << "[INFO] batata" << endl;
 			maior = next; 
 		}else{
 			if(last.snd < next.fst - 1)
 			{
+				std::cout << "[INFO] impossivel, pois " << last.snd << " < " << next.fst - 1 << endl;
 				possible = false;
 				break;
 			}else{
+				std::cout << "[INFO] adicionando " << maior.fst << ", " << maior.snd << endl;
 				// Pensar neste exemplo:
 				// 1 2
 				// 1 3
