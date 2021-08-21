@@ -10,9 +10,12 @@ bool analaisador(string s, string *kbrd){
 	if(kbrd->size() == 0){ //nó inicial
 		kbrd += s[0];
 	}
-	for (int i = 0; i < s.size(); i++)
+	for (int i = 1; i < s.size(); i++)
 	{
-		
+		if(visitados[kbrd[i]] == NULL){
+
+		}
+		visitados[kbrd[1]] = s[i];
 	}
 	
 }
