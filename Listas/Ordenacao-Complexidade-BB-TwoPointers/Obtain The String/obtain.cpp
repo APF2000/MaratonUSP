@@ -25,6 +25,18 @@ int bb(vector<int> v, int index, int esq, int dir){
 		return m+1;
 	}
 }
+
+void foo(int* new_index, int* last_index, map<char, vector<int>> pos, char key, int* op){
+	*new_index = bb(pos[key], *last_index, *last_index, pos[key].size()-1);
+	if(*new_index == pos[key].size() - 1){
+			*new_index = *last_index;
+		}
+		//cout << new_index << endl; 
+	if(*new_index <= *last_index){
+		*op++;
+	}
+	*last_index = *new_index;
+}
 // 1 3 5 8 10 15 23
 // 1 4 7 9 13 14
 int main()
@@ -57,15 +69,7 @@ int main()
 		for(int k = 0; k < t.size(); k++){
 			char key = t.at(k);
 			if(pos.find(key) != pos.end()){
-				new_index = bb(pos[key], last_index, 0, pos[key].size()-1);
-				if(new_index == pos[key].size() - 1){
-					new_index = last_index;
-				}
-				//cout << new_index << endl; 
-				if(new_index <= last_index){
-					op++;
-				}
-				last_index = new_index;
+				foo(&new_index, &last_index, pos, key, &op);
 			}
 			else{
 				no_letter = true;
