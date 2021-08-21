@@ -3,7 +3,7 @@
 
 using namespace std;
 
-int bb(vector< int> v, int index, int esq, int dir){
+int bb(vector<int> v, int index, int esq, int dir){
 	int m;
 	m = (esq + dir)/2;
 	if(m == esq){
@@ -38,8 +38,8 @@ int main()
     {
 		bool no_letter = false;
 		int ops = 1;
-		map<char, vector< int>> pos;
-		map<char,  int> mem;
+		map<char, vector<int>> pos;
+		map<char, int> mem;
         cin >> s;
         cin >> t;
 		z = "";
