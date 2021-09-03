@@ -64,28 +64,37 @@ int main()
 		if(last.fst == next.fst)
 		{	// ja ta ordenado, entao se ta na frente eh maior necessariamente
 			std::cout << "[INFO] batata" << endl;
-			maior = next; 
+			//maior = next; 
 		}else{
-			if(last.snd < next.fst - 1)
+			if(maior.snd < next.fst - 1)
 			{
-				std::cout << "[INFO] impossivel, pois " << last.snd << " < " << next.fst - 1 << endl;
+				std::cout << "[INFO] impossivel, pois " << maior.snd << " < " << next.fst - 1 << endl;
 				possible = false;
 				break;
-			}else{
-				std::cout << "[INFO] adicionando " << maior.fst << ", " << maior.snd << endl;
-				// Pensar neste exemplo:
-				// 1 2
-				// 1 3
-				// 1 10
-				// 11 15
-				// 11 17
-				// 11 20
-				used_libs.push_back(maior.idx + 1);
-				count++;
-
-				maior = next;
+			}else if(maior.snd == next.fst - 1)
+			{
+					used_libs.push_back(maior.idx + 1);
+					count++;				
+			}else
+			{
+				// if(maior.snd < next.fst - 1)
+				// {
+					std::cout << "[INFO] adicionando " << last.fst << ", " << last.snd << endl;
+					// Pensar neste exemplo:
+					// 1 2
+					// 1 3
+					// 1 10
+					// 11 15
+					// 11 17
+					// 11 20
+					used_libs.push_back(last.idx + 1);
+					count++;
+				// }
+				//maior = next;
 			}
 		}
+
+		if(maior < last) maior = last;
 	}
 
 	std::cout << (possible ? "YES" : "NO") << endl;
