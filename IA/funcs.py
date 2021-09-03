@@ -3,7 +3,6 @@ from math import gcd
 from functools import reduce
 import random
 
-
 def pega_input(in_put):
     # Duration, num of Intersections, num of Streets, num of Vehicles, 
     D,I,S,V,F = map(int, in_put().split())
