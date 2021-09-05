@@ -29,21 +29,40 @@ bool tem_resp(int n, int id, bool switch_a_c){
 	// se ficar encurralado, verifica os nos adjacentes e ve se e possivel
 	//cout << "id: " << id << endl;
 	
+
 	unordered_set<int> not_adj = nodes[id].not_adj;
 	char aux_letter = 0;
 
-	if(not_adj.size() == 0) 	aux_letter = 'b';
-	else if(switch_a_c) 		aux_letter = 'a';
-	else						aux_letter = 'c';
+	if(!nodes[id].check)
+	{
 
-	nodes[id].letter = aux_letter;
-	s[id] = aux_letter;
-	nodes[id].check = true;
+		if(not_adj.size() == 0) 	aux_letter = 'b';
+		else if(switch_a_c) 		aux_letter = 'a';
+		else						aux_letter = 'c';
+
+		//cout << "auxletter " << aux_letter << endl;
+
+		nodes[id].letter = aux_letter;
+		s[id] = aux_letter;
+		nodes[id].check = true;
+
+		//cout << "string ate agora: " << s << endl;
+	}else
+	{
+		aux_letter = nodes[id].letter;
+		switch_a_c = (aux_letter == 'a'); // cuidado quando for B
+	}
 
 	bool encurralado = true;
 	for(int id_not_adj : not_adj) // olha os nao adjacentes
 	{
-		if(!nodes[id_not_adj].check) encurralado = false;
+		//cout << "node " << id_not_adj << " checked: " << nodes[id_not_adj].check << endl;
+		if(!nodes[id_not_adj].check)
+		{
+			encurralado = false;
+			bool possivel = tem_resp(n, id_not_adj, !switch_a_c);
+			if(!possivel) return false;
+		} 		
 	}
 
 	if(encurralado && aux_letter != 'b')
@@ -52,13 +71,18 @@ bool tem_resp(int n, int id, bool switch_a_c){
 		{
 			if(nodes[id_not_adj].letter == aux_letter) // se o meu e 'a', o outro tem que ser 'c' e vice-versa
 			{
+				//cout << nodes[id_not_adj].letter << " " << aux_letter << endl;
+				//cout << "N TEM RESP" << endl;
 				return false;
 			}
 		}
 	}
-	if(aux_letter != 'b') switch_a_c = !switch_a_c;
+	////cout << "switch antes " << switch_a_c << endl;
+	// if(aux_letter != 'b') switch_a_c = !switch_a_c;
+	// //cout << "switch depois " << switch_a_c << endl;
 
 	if(id == n - 1) 	return true;
+	//cout << "ULTIMO RETURN" << endl;
 	return tem_resp(n, id + 1, switch_a_c);
 }
 
