@@ -50,38 +50,51 @@ int main()
 	bool possible = true;
 	l count = 0;
 
-	Container maior(0, 0, 0);
-	for(l i = 0; i < n && maior.snd != m; i++) 
+	Container maior = libs[0];//(0, 0, 0);
+	for(l i = 0; i < n /*&& maior.snd != m*/; i++) 
 	{
-		std::cout << "[INFO] teste" << endl;
+		std::cout << "[INFO]i: " << i << ", n: " << n << endl;
 		Container last = libs[i];
 		Container next(0, 0, 0);
 
-		if(i == n - 1) next = maior;
+		if(i == n - 1) next = Container(last.fst + 1, last.snd + 1, 0);//maior;
 		else next = libs[i + 1];
 
+		std::cout << "[INFO] " << last.fst << " == " << next.fst << "?" << endl;
 		if(last.fst == next.fst)
 		{	// ja ta ordenado, entao se ta na frente eh maior necessariamente
-			maior = next; 
+			std::cout << "[INFO] batata" << endl;
+			//maior = next; 
 		}else{
-			if(last.snd < next.fst - 1)
+			if(maior.snd < next.fst - 1)
 			{
+				std::cout << "[INFO] impossivel, pois " << maior.snd << " < " << next.fst - 1 << endl;
 				possible = false;
 				break;
-			}else{
-				// Pensar neste exemplo:
-				// 1 2
-				// 1 3
-				// 1 10
-				// 11 15
-				// 11 17
-				// 11 20
-				used_libs.push_back(maior.idx + 1);
-				count++;
-
-				maior = next;
+			}else if(maior.snd == next.fst - 1)
+			{
+					used_libs.push_back(maior.idx + 1);
+					count++;				
+			}else
+			{
+				// if(maior.snd < next.fst - 1)
+				// {
+					std::cout << "[INFO] adicionando " << last.fst << ", " << last.snd << endl;
+					// Pensar neste exemplo:
+					// 1 2
+					// 1 3
+					// 1 10
+					// 11 15
+					// 11 17
+					// 11 20
+					used_libs.push_back(last.idx + 1);
+					count++;
+				// }
+				//maior = next;
 			}
 		}
+
+		if(maior < last) maior = last;
 	}
 
 	std::cout << (possible ? "YES" : "NO") << endl;
