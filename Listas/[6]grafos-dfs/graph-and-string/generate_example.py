@@ -7,6 +7,8 @@ example_name = sys.argv[1]
 N = 500
 letters = ['a', 'b', 'c']
 st = ''.join(random.choices(letters, k=N))
+st = 'bbbabcbbbbbbbbb'
+
 size = len(st)
 
 in_file = open(example_name + 'input.txt', 'w')
