@@ -1,6 +1,5 @@
 // https://codeforces.com/problemset/problem/623/A
 
-// #include <bits/stdc++.h>
 #include <unordered_set>
 #include <vector>
 #include <string>
@@ -32,8 +31,6 @@ char add_letter(bool is_a, int id)
 
 	s[id] = aux_letter;
 	nodes[id].letter = aux_letter;
-
-	//cout << "s: " << s << endl;
 
 	return aux_letter;
 }
@@ -86,8 +83,6 @@ bool check_contradiction(int n)
 		
 		for(int id_adj : adj)
 		{
-			//cout << "ch : " << ch << endl;
-			//cout << "sidajd : " << s[id_adj] << endl;
 			if(ch != s[id_adj] && ch != 'b' && s[id_adj] != 'b') return false;
 		}
 	}
@@ -99,14 +94,10 @@ bool tem_resp_valida(int n, int id, bool is_a)
 	bool tem = tem_resp(n, 0, true);
 	if(!tem) return false;
 
-	//cout << "TEM RESP" << endl;
-
 	for(unsigned long i = 0; i < s.size(); i++)
 	{
 		if(s[i] == BLANK) s[i] = 'b'; // quem nao tinha sido setado ainda
 	}
-
-	//cout << "S: " << s << endl;
 
 	return check_contradiction(n);
 }
