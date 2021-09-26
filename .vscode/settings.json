@@ -1,6 +1,11 @@
 {
     "jupyter.jupyterServerType": "local",
     "files.associations": {
-        "iostream": "cpp"
+        "iostream": "cpp",
+        "vector": "cpp",
+        "iosfwd": "cpp",
+        "iterator": "cpp",
+        "random": "cpp",
+        "cmath": "cpp"
     }
 }
