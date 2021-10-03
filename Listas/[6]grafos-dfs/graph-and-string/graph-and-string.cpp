@@ -71,15 +71,22 @@ bool tem_resp(int n, int id, bool is_a)
 	return true;
 }
 
-bool check_contradiction()
+bool check_contradiction(int n)
 {
 	for(unsigned long i = 0; i < s.size(); i++)
 	{
+		unordered_set<int> adj = nodes[i].adj;
 		char ch = s[i];
-		for(int id_adj : nodes[i].adj)
+
+		if(ch == 'b')
 		{
-			// cout << "ch : " << ch << endl;
-			// cout << "sidajd : " << s[id_adj] << endl;
+			if(adj.size() != n - 1) return false; // disse que era b, mas nao ta ligado com todos
+		}
+		
+		for(int id_adj : adj)
+		{
+			//cout << "ch : " << ch << endl;
+			//cout << "sidajd : " << s[id_adj] << endl;
 			if(ch != s[id_adj] && ch != 'b' && s[id_adj] != 'b') return false;
 		}
 	}
@@ -91,7 +98,7 @@ bool tem_resp_valida(int n, int id, bool is_a)
 	bool tem = tem_resp(n, 0, true);
 	if(!tem) return false;
 
-	// cout << "TEM RESP" << endl;
+	//cout << "TEM RESP" << endl;
 
 	for(unsigned long i = 0; i < s.size(); i++)
 	{
@@ -100,7 +107,7 @@ bool tem_resp_valida(int n, int id, bool is_a)
 
 	//cout << "S: " << s << endl;
 
-	return check_contradiction();
+	return check_contradiction(n);
 }
 
 int main()
