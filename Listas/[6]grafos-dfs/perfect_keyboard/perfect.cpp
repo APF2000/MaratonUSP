@@ -22,6 +22,16 @@ node* constructor(char letter, node* next, node* previous){
 	return root;
 }
 
+
+void print_keyboard(node* keyboard)
+{
+	for(node* node = keyboard; node != NULL; node = node->next)
+	{
+		cout << node->letter;
+	}
+	cout << endl;
+}
+
 node* is_possible(string s){
 	map<char, node*> visitados;
 	char ch = s[0];
@@ -33,26 +43,35 @@ node* is_possible(string s){
 	node* end_kb = keyboard;
 
 	visitados[ch] = keyboard;
+		cout << "=============================================" << endl;
 
 	for (int i = 1; i < s.size(); i++)
 	{
 		char this_letter = s[i];
 		char last_letter = s[i - 1];
+		cout << "----------------------------------------" << endl;
 		
 		if(visitados.find(s[i]) != visitados.end())
 		{ 	// has key
-			node* this_node = visitados[this_letter];
-			node* next = this_node->next;
-			node* previous = this_node->previous;
+			cout << "HAS KEY" << endl;
 
-			if( (next != NULL && next->letter != last_letter)
-				|| (previous != NULL && previous->letter != last_letter) )
+			node* last_node = visitados[last_letter];
+			node* next = last_node->next;
+			node* previous = last_node->previous;
+
+			bool ok_keyboard = (next != NULL && next->letter == this_letter)
+				|| (previous != NULL && previous->letter == this_letter);
+
+			if(!ok_keyboard)
 			{
+				//cout << this_letter << " != " << previous->letter << endl;
 				return NULL;
 			}
+			print_keyboard(keyboard);
 		}
 		else
 		{	// hasnt key
+			cout << "HASnt KEY" << endl;
 			node* last_node = visitados[last_letter];
 			node* this_node = constructor(this_letter, NULL, last_node);
 			last_node->next = this_node;
@@ -62,6 +81,8 @@ node* is_possible(string s){
 			end_kb = this_node;
 
 			unused_letters.erase(this_letter);
+
+			print_keyboard(keyboard);
 		}
 	}
 
@@ -73,15 +94,6 @@ node* is_possible(string s){
 	}
 
 	return keyboard;
-}
-
-void print_keyboard(node* keyboard)
-{
-	for(node* node = keyboard; node != NULL; node = node->next)
-	{
-		cout << node->letter;
-	}
-	cout << endl;
 }
 
 int main(void){
