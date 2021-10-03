@@ -1,9 +1,11 @@
 //https://codeforces.com/problemset/problem/1303/C
 
-#include<iostream>
+#include <iostream>
 #include <string>
 #include <vector>
-#include<map>
+#include <map>
+#include <unordered_set>
+
 using namespace std;
 
 struct node{
@@ -20,22 +22,66 @@ node* constructor(char letter, node* next, node* previous){
 	return root;
 }
 
-bool is_possible(string* keyboard, string s){
+node* is_possible(string s){
 	map<char, node*> visitados;
-	keyboard->push_back(s[0]);
-	node *root = constructor(s[0], NULL, NULL);
-	visitados[s[0]] = root;
+	char ch = s[0];
+	node* keyboard = constructor(ch, NULL, NULL);
+
+	unordered_set<char> unused_letters;
+	for(char ch = 'a'; ch <= 'z'; ch++) unused_letters.insert(ch);
+
+	node* end_kb = keyboard;
+
+	visitados[ch] = keyboard;
+
 	for (int i = 1; i < s.size(); i++)
 	{
+		char this_letter = s[i];
+		char last_letter = s[i - 1];
 		
-		if(visitados.find(s[i]) != visitados.end()){
+		if(visitados.find(s[i]) != visitados.end())
+		{ 	// has key
+			node* this_node = visitados[this_letter];
+			node* next = this_node->next;
+			node* previous = this_node->previous;
 
+			if( (next != NULL && next->letter != last_letter)
+				|| (previous != NULL && previous->letter != last_letter) )
+			{
+				return NULL;
+			}
 		}
-		else{
-			keyboard->push_back(s[i]);
+		else
+		{	// hasnt key
+			node* last_node = visitados[last_letter];
+			node* this_node = constructor(this_letter, NULL, last_node);
+			last_node->next = this_node;
+
+			visitados[this_letter] = this_node;
+
+			end_kb = this_node;
+
+			unused_letters.erase(this_letter);
 		}
 	}
-	return false;
+
+	for(char ch : unused_letters)
+	{
+		node *aux_node = constructor(ch, NULL, NULL);
+		end_kb->next = aux_node;
+		end_kb = aux_node;
+	}
+
+	return keyboard;
+}
+
+void print_keyboard(node* keyboard)
+{
+	for(node* node = keyboard; node != NULL; node = node->next)
+	{
+		cout << node->letter;
+	}
+	cout << endl;
 }
 
 int main(void){
@@ -53,10 +99,12 @@ int main(void){
 	{
 		string s;
 		cin >> s;
-		string keyboard;
-		if(is_possible(&keyboard, s)){
+
+		node* keyboard = is_possible(s);
+		if(keyboard != NULL){
 			cout << "YES" << endl;
-			cout << keyboard << endl;
+			//cout << keyboard << endl;
+			print_keyboard(keyboard);
 		}
 		else{
 			cout << "NO" << endl;
