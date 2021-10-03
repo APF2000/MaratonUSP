@@ -44,17 +44,14 @@ node* is_possible(string s){
 	node* end_kb = keyboard;
 
 	visitados[ch] = keyboard;
-		//cout << "=============================================" << endl;
 
 	for (int i = 1; i < s.size(); i++)
 	{
 		char this_letter = s[i];
 		char last_letter = s[i - 1];
-		//cout << "----------------------------------------" << endl;
 		
 		if(visitados.find(s[i]) != visitados.end())
 		{ 	// has key
-			//cout << "HAS KEY" << endl;
 
 			node* last_node = visitados[last_letter];
 			node* next = last_node->next;
@@ -65,14 +62,11 @@ node* is_possible(string s){
 
 			if(!ok_keyboard)
 			{
-				////cout << this_letter << " != " << previous->letter << endl;
 				return NULL;
 			}
-			//print_keyboard(keyboard);
 		}
 		else
 		{	// hasnt key
-			//cout << "HASnt KEY" << endl;
 			
 			node* last_node = visitados[last_letter];
 			node* this_node;
@@ -83,8 +77,6 @@ node* is_possible(string s){
 				last_node->next = this_node;
 
 				end_kb = this_node;
-
-				//cout << "diretia " << this_letter << endl;
 			}
 			else if(last_node->previous == NULL)
 			{
@@ -92,16 +84,13 @@ node* is_possible(string s){
 				last_node->previous = this_node;
 
 				keyboard = this_node;
-				//cout << "esq " << this_letter << endl;
 			}
 			else{
-				//cout << "WTF??????????????????" << endl;
 				return NULL;
 			}
 
 			unused_letters.erase(this_letter);
 			visitados[this_letter] = this_node;
-			//print_keyboard(keyboard);
 		}
 	}
 
@@ -115,26 +104,20 @@ node* is_possible(string s){
 	return keyboard;
 }
 
-int main(void){
-	/*cout << "WIN dows" << endl;
-	node *no1;//= new node;
-	node *no2; //= new node;
-	no1->id = 'a';
-	no2->id = 'b';
-	no1->next = no2;
-	no2->previous = no1;
-	cout << no1->id << "   " << no2->id << endl;*/
+int main(void)
+{
 	int T;
 	cin >> T;
+
 	for (int i = 0; i < T; i++)
 	{
 		string s;
 		cin >> s;
 
 		node* keyboard = is_possible(s);
-		if(keyboard != NULL){
+		if(keyboard != NULL)
+		{
 			cout << "YES" << endl;
-			//cout << keyboard << endl;
 			print_keyboard(keyboard);
 		}
 		else{
