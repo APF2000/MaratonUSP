@@ -32,6 +32,8 @@ char add_letter(bool is_a, int id)
 	s[id] = aux_letter;
 	nodes[id].letter = aux_letter;
 
+	//cout << "s: " << s << endl;
+
 	return aux_letter;
 }
 
@@ -67,6 +69,38 @@ bool tem_resp(int n, int id, bool is_a)
 	}
 
 	return true;
+}
+
+bool check_contradiction()
+{
+	for(unsigned long i = 0; i < s.size(); i++)
+	{
+		char ch = s[i];
+		for(int id_adj : nodes[i].adj)
+		{
+			// cout << "ch : " << ch << endl;
+			// cout << "sidajd : " << s[id_adj] << endl;
+			if(ch != s[id_adj] && ch != 'b' && s[id_adj] != 'b') return false;
+		}
+	}
+	return true;
+}
+
+bool tem_resp_valida(int n, int id, bool is_a)
+{
+	bool tem = tem_resp(n, 0, true);
+	if(!tem) return false;
+
+	// cout << "TEM RESP" << endl;
+
+	for(unsigned long i = 0; i < s.size(); i++)
+	{
+		if(s[i] == BLANK) s[i] = 'b'; // quem nao tinha sido setado ainda
+	}
+
+	//cout << "S: " << s << endl;
+
+	return check_contradiction();
 }
 
 int main()
@@ -105,12 +139,7 @@ int main()
 		nodes[n2].adj.insert(n1);
 	}
 
-	if(tem_resp(n, 0, true)){
-		for(unsigned long i = 0; i < s.size(); i++)
-		{
-			if(s[i] == BLANK) s[i] = 'b'; // quem nao tinha sido setado ainda
-		}
-
+	if(tem_resp_valida(n, 0, true)){
 		cout << "Yes" << endl;
 		cout << s << endl;
 	}else{
