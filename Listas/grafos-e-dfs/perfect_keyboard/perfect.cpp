@@ -1,10 +1,41 @@
+//https://codeforces.com/problemset/problem/1303/C
+
 #include<iostream>
 #include <string>
 #include <vector>
 #include<map>
 using namespace std;
 
-bool analaisador(string s, vector<char> *kbrd){
+<<<<<<< HEAD
+struct node{
+	char letter;
+	struct node *next;
+	struct node *previous;
+};
+
+node* constructor(char letter, node* next, node* previous){
+	node *root = new node;
+	root->letter = letter;
+	root->next = next;
+	root->previous = previous;
+	return root;
+}
+
+bool is_possible(string* keyboard, string s){
+	map<char, node*> visitados;
+	keyboard->push_back(s[0]);
+	node *root = constructor(s[0], NULL, NULL);
+	visitados[s[0]] = root;
+	for (int i = 1; i < s.size(); i++)
+	{
+		
+		if(visitados.find(s[i]) != visitados.end()){
+
+		}
+		else{
+			keyboard->push_back(s[i]);
+=======
+bool analisador(string s, vector<char> *kbrd){
 	char analise;
 	int position = 0;
 	int visitados [26];
@@ -15,13 +46,13 @@ bool analaisador(string s, vector<char> *kbrd){
 	for (int i = 1; i < s.size(); i++)
 	{
 		if(visitados[s[i] - 'a'] == 0){
-			if(position == kbrd->size() - 1){
+			if(position == kbrd->size() - 1){ //insere no fim
 				kbrd->push_back(s[i]);
 				visitados[s[i] - 'a'] = 1;
 				position++;
 			}
 			else{
-				if(position == 0){
+				if(position == 0){ //insere no começo
 					visitados[s[i] - 'a'] = 1;
 					kbrd->insert(kbrd->begin(), s[i]);
 				}
@@ -30,7 +61,7 @@ bool analaisador(string s, vector<char> *kbrd){
 				}
 			}
 		}
-		else{
+		else{ 
 			if(position == kbrd->size() - 1){
 				if(kbrd->at(kbrd->size()-2) == s[i]){
 					position --;
@@ -62,28 +93,38 @@ bool analaisador(string s, vector<char> *kbrd){
 					return false;
 				}
 			}
+>>>>>>> 05d895ee1b229d03384d0ba6a395e31e73ab8af9
 		}
-		
 	}
-	return true;
+	return false;
 }
 
-int main(){
+int main(void){
+	/*cout << "WIN dows" << endl;
+	node *no1;//= new node;
+	node *no2; //= new node;
+	no1->id = 'a';
+	no2->id = 'b';
+	no1->next = no2;
+	no2->previous = no1;
+	cout << no1->id << "   " << no2->id << endl;*/
 	int T;
-	string s;
-	vector<char> kbrd;
-	bool isPossible;
 	cin >> T;
 	for (int i = 0; i < T; i++)
 	{
+		string s;
 		cin >> s;
-		isPossible = analaisador(s, &kbrd);
+<<<<<<< HEAD
+		string keyboard;
+		if(is_possible(&keyboard, s)){
+=======
+		isPossible = analisador(s, &kbrd);
 		if(isPossible){
+>>>>>>> 05d895ee1b229d03384d0ba6a395e31e73ab8af9
 			cout << "YES" << endl;
-			for(int i = 0; i < kbrd.size() - 1; i++){
-				cout << kbrd.at(i) << endl;
-			}
-		} else{
+			cout << keyboard << endl;
+		}
+		else{
 			cout << "NO" << endl;
 		}
 	}
