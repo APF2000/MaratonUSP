@@ -39,21 +39,22 @@ node* is_possible(string s){
 
 	unordered_set<char> unused_letters;
 	for(char ch = 'a'; ch <= 'z'; ch++) unused_letters.insert(ch);
+	unused_letters.erase(ch);
 
 	node* end_kb = keyboard;
 
 	visitados[ch] = keyboard;
-		cout << "=============================================" << endl;
+		//cout << "=============================================" << endl;
 
 	for (int i = 1; i < s.size(); i++)
 	{
 		char this_letter = s[i];
 		char last_letter = s[i - 1];
-		cout << "----------------------------------------" << endl;
+		//cout << "----------------------------------------" << endl;
 		
 		if(visitados.find(s[i]) != visitados.end())
 		{ 	// has key
-			cout << "HAS KEY" << endl;
+			//cout << "HAS KEY" << endl;
 
 			node* last_node = visitados[last_letter];
 			node* next = last_node->next;
@@ -64,25 +65,43 @@ node* is_possible(string s){
 
 			if(!ok_keyboard)
 			{
-				//cout << this_letter << " != " << previous->letter << endl;
+				////cout << this_letter << " != " << previous->letter << endl;
 				return NULL;
 			}
-			print_keyboard(keyboard);
+			//print_keyboard(keyboard);
 		}
 		else
 		{	// hasnt key
-			cout << "HASnt KEY" << endl;
+			//cout << "HASnt KEY" << endl;
+			
 			node* last_node = visitados[last_letter];
-			node* this_node = constructor(this_letter, NULL, last_node);
-			last_node->next = this_node;
+			node* this_node;
 
-			visitados[this_letter] = this_node;
+			if(last_node->next == NULL)
+			{
+				this_node = constructor(this_letter, NULL, last_node);
+				last_node->next = this_node;
 
-			end_kb = this_node;
+				end_kb = this_node;
+
+				//cout << "diretia " << this_letter << endl;
+			}
+			else if(last_node->previous == NULL)
+			{
+				this_node = constructor(this_letter, last_node, NULL);
+				last_node->previous = this_node;
+
+				keyboard = this_node;
+				//cout << "esq " << this_letter << endl;
+			}
+			else{
+				//cout << "WTF??????????????????" << endl;
+				return NULL;
+			}
 
 			unused_letters.erase(this_letter);
-
-			print_keyboard(keyboard);
+			visitados[this_letter] = this_node;
+			//print_keyboard(keyboard);
 		}
 	}
 
