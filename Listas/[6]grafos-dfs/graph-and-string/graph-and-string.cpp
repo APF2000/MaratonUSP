@@ -1,6 +1,5 @@
 // https://codeforces.com/problemset/problem/623/A
 
-// #include <bits/stdc++.h>
 #include <unordered_set>
 #include <vector>
 #include <string>
@@ -26,91 +25,87 @@ class node{
 string s;
 vector<node> nodes;
 
-bool tem_resp(int n, int id, bool switch_a_c){
-	// se ficar encurralado, verifica os nos adjacentes e ve se e possivel
-	//cout << "id: " << id << endl;
-	
+char add_letter(bool is_a, int id)
+{
+	char aux_letter = (is_a ? 'a' : 'c');
+
+	s[id] = aux_letter;
+	nodes[id].letter = aux_letter;
+
+	return aux_letter;
+}
+
+bool tem_resp(int n, int id, bool is_a)
+{
+	if(id >= n) return true; // passou do ultimo
+
+	nodes[id].check = true; // elemento foi checado
+
+	char previous_letter = s[id];
+	char aux_letter = add_letter(is_a, id);
+
+	// entrou em contradicao
+	if(previous_letter != BLANK && previous_letter != aux_letter) return false;
 
 	unordered_set<int> not_adj = nodes[id].not_adj;
-	unordered_set<int> adj = nodes[id].adj;
-	char aux_letter = 0;
-
-	if(!nodes[id].check)
+	if(not_adj.size() == 0) // primeira(s) letra(s) e(sao) b
 	{
-
-		if(not_adj.size() == 0) 	aux_letter = 'b';
-		else if(switch_a_c) 		aux_letter = 'a';
-		else						aux_letter = 'c';
-
-		//cout << "auxletter " << aux_letter << endl;
-
-		nodes[id].letter = aux_letter;
-		s[id] = aux_letter;
-		nodes[id].check = true;
-
-		//cout << "string ate agora: " << s << endl;
-	}else
-	{
-		//cout << "ja tinha sido checkado" << endl;
-		aux_letter = nodes[id].letter;
-		switch_a_c = (aux_letter == 'a'); // cuidado quando for B
+		s[id] = 'b';
+		return tem_resp(n, id + 1, is_a);
 	}
 
-	bool encurralado = true;
-	for(int id_not_adj : not_adj) // olha os nao adjacentes
+	for(int id_not_adj : not_adj)
 	{
-		//cout << "node " << id_not_adj << " checked: " << nodes[id_not_adj].check << endl;
-		if(!nodes[id_not_adj].check)
+		node *aux_node = &nodes[id_not_adj];
+		if(aux_node->check)
 		{
-			//cout << "not checked" << endl;
-			encurralado = false;
-			bool possivel = tem_resp(n, id_not_adj, !switch_a_c);
-			if(!possivel) return false;
-		}
-		else if(nodes[id_not_adj].letter == aux_letter) 
+			if(aux_node->letter == aux_letter) return false;
+		}else
 		{
-			//cout << "deu pau" << endl;
-			return false; 		
+			if(!tem_resp(n, id_not_adj, !is_a)) return false;
 		}
 	}
 
-	//cout << "encurralado? " << encurralado << endl;
-	if(encurralado && aux_letter != 'b')
-	{
-		for(int id_not_adj : not_adj) // olha os nao adjacentes
-		{
-			if(nodes[id_not_adj].letter == aux_letter) // se o meu e 'a', o outro tem que ser 'c' e vice-versa
-			{
-				//cout << nodes[id_not_adj].letter << " " << aux_letter << endl;
-				//cout << "N TEM RESP" << endl;
-				return false;
-			}
-		}
+	return true;
+}
 
-		for(int id_adj : adj) // olha os adjacentes
+bool check_contradiction(int n)
+{
+	for(unsigned long i = 0; i < s.size(); i++)
+	{
+		unordered_set<int> adj = nodes[i].adj;
+		char ch = s[i];
+
+		if(ch == 'b')
 		{
-			char letter = nodes[id_adj].letter;
-			if(letter != aux_letter && letter != 'b' && letter != BLANK)
-			{
-				//cout << "return false " << "nodes[idajd].letter " << nodes[id_adj].letter << endl;
-				return false;
-			}
+			if(adj.size() != n - 1) return false; // disse que era b, mas nao ta ligado com todos
+		}
+		
+		for(int id_adj : adj)
+		{
+			if(ch != s[id_adj] && ch != 'b' && s[id_adj] != 'b') return false;
 		}
 	}
-	////cout << "switch antes " << switch_a_c << endl;
-	// if(aux_letter != 'b') switch_a_c = !switch_a_c;
-	// //cout << "switch depois " << switch_a_c << endl;
+	return true;
+}
 
-	//cout << "id == n-1? " << (id == n-1) << endl;
-	if(id == n - 1) 	return true;
-	//cout << "ULTIMO RETURN" << endl;
-	return tem_resp(n, id + 1, switch_a_c);
+bool tem_resp_valida(int n, int id, bool is_a)
+{
+	bool tem = tem_resp(n, 0, true);
+	if(!tem) return false;
+
+	for(unsigned long i = 0; i < s.size(); i++)
+	{
+		if(s[i] == BLANK) s[i] = 'b'; // quem nao tinha sido setado ainda
+	}
+
+	return check_contradiction(n);
 }
 
 int main()
 {
 	int n, m;
-	//vector<node> nodes;
+	
 	unordered_set<int> aux_s;
 
 	cin >> n >> m;
@@ -124,8 +119,7 @@ int main()
 	{
 		node aux(aux_s);
 		aux.not_adj.erase(i);
-		//aux.adj.erase(i);
-
+		
 		nodes.push_back(aux);
 		s.push_back(BLANK);
 	}
@@ -136,7 +130,7 @@ int main()
 		cin >> n1 >> n2;
 		n1--;
 		n2--;
-		//cout << "n1: " << n1 << ", n2: " << n2 << endl;
+		
 		nodes[n1].not_adj.erase(n2); // tira os que tem conexao
 		nodes[n2].not_adj.erase(n1);
 
@@ -144,7 +138,7 @@ int main()
 		nodes[n2].adj.insert(n1);
 	}
 
-	if(tem_resp(n, 0, true)){
+	if(tem_resp_valida(n, 0, true)){
 		cout << "Yes" << endl;
 		cout << s << endl;
 	}else{
