@@ -1,5 +1,6 @@
 {
 	"files.associations": {
+<<<<<<< HEAD
 		"iostream": "cpp",
 		"*.tcc": "cpp",
 		"deque": "cpp",
@@ -8,5 +9,8 @@
 		"unordered_set": "cpp",
 		"vector": "cpp",
 		"ostream": "cpp"
+=======
+		"iostream": "cpp"
+>>>>>>> 74a8b39 (New examples)
 	}
 }

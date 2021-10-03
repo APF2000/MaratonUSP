@@ -7,8 +7,11 @@ example_name = sys.argv[1]
 N = 500
 letters = ['a', 'b', 'c']
 st = ''.join(random.choices(letters, k=N))
+<<<<<<< HEAD
 st = 'bbbabcbbbbbbbbb'
 
+=======
+>>>>>>> 74a8b39 (New examples)
 size = len(st)
 
 in_file = open(example_name + 'input.txt', 'w')
@@ -27,4 +30,8 @@ for i in range(size):
 in_file.write(f'{size} {connections}\n')
 in_file.write(content)
 
+<<<<<<< HEAD
 out_file.write(f'Yes\n{st}')
+=======
+out_file.write(f'Yes\n{st}')
+>>>>>>> 74a8b39 (New examples)
