@@ -109,7 +109,7 @@ int count_clean_nodes(map< long, node > graph, long a, long b)
 
 		cout << "erase " << node_key << endl;
 
-		if(node_key != b)
+		if(node_key != b && node_key != a)
 		{
 			cout << "count++ " << endl;
 			cout << "nodekey == " << node_key << " != " << b << " != " << a << endl;
@@ -120,7 +120,7 @@ int count_clean_nodes(map< long, node > graph, long a, long b)
 
 		for(long adj : n.adjs)
 		{
-			if(adj != a)
+			if(adj != a && adj != b)
 			{
 				clean_nodes.insert(adj);
 			}
@@ -131,7 +131,7 @@ int count_clean_nodes(map< long, node > graph, long a, long b)
 		graph.erase(node_key);
 	}
 	
-	return count - 1;
+	return count;
 }
 
 long solve(map< long, node > graph, long a, long b)
