@@ -1,4 +1,5 @@
 import sys
+from math import sqrt
 
 def print_two_cycles(n):
 	m = n + 1
@@ -33,4 +34,6 @@ b = 1
 
 print(2)
 print_two_cycles(n)
+
+n = min(n, 1000)
 print_all_connected(n)
