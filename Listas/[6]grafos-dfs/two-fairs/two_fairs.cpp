@@ -2,157 +2,108 @@
 
 #include <iostream>
 #include <map>
+#include <set>
 #include <unordered_set>
-#include <queue>
+//#include <queue>
+#include <algorithm>
 
 using namespace std;
 
-struct node
+// struct node
+// {
+// 	unordered_set<long> adjs;
+// 	//bool dirty;
+// };
+
+// node construct_node(unordered_set<long> adjs)
+// {
+// 	node n;
+// 	n.adjs = adjs;
+
+// 	//n.dirty = false;
+
+// 	return n;
+// }
+
+unordered_set<long> paint_nodes(map<long, unordered_set<long> > graph, long begin, long end)
 {
-	unordered_set<long> adjs;
-	//bool dirty;
-};
+	unordered_set<long> painted_nodes = {};
+	unordered_set<long> remaining_nodes = { begin };
 
-node construct_node(unordered_set<long> adjs)
-{
-	node n;
-	n.adjs = adjs;
-
-	//n.dirty = false;
-
-	return n;
-}
-
-unordered_set<long> find_direct_paths_adj_to_b(map< long, node > graph, long a, long b)
-{
-	unordered_set<long> direct_paths = {};
-
-	node n_a = graph[a];
-	queue<long> nodes_to_visit;
-	nodes_to_visit.push(a);
-
-	unordered_set<long> visited_nodes = {a};
-
-	while(!nodes_to_visit.empty())
+	while(!remaining_nodes.empty())
 	{
-		//cout << "================" << endl;
+		long next_node = *(remaining_nodes.begin());
 
-		long key_node = nodes_to_visit.front();
-		//cout << "keynode " << key_node << endl;
-		//visited_nodes.insert(key_node);
+		painted_nodes.insert(next_node);
 
-		// not visited into queue
-		for(long adj : graph[key_node].adjs)
+		for(long adj_node : graph[next_node])
 		{
-			if(adj == b){
-				//cout << "touched fair from " << key_node << " to " << adj << endl;
-				if(key_node != a && key_node != b)
-				{
-					//cout << "insert " << key_node << " to directpath" << endl;
-					direct_paths.insert(key_node);
-				}
-			} 
-			else if(visited_nodes.find(adj) == visited_nodes.end())
-			{ 
-				//cout << "notvisited " << adj << endl;
-				nodes_to_visit.push(adj);
-				visited_nodes.insert(adj);
-			}
-		}
-
-		nodes_to_visit.pop();
-		//for(queue<long> aux = nodes_to_visit; !aux.empty(); aux.pop()) 
-			//cout << "nodes_to_visit: " << aux.front() << endl;
-	}
-
-	//for(long el : direct_paths) //cout << "direct path: " << el << endl;
-
-	return direct_paths;
-}
-
-void remove_dirty_nodes(map< long, node > *graph, long a, long b, unordered_set<long> direct_nodes)
-{
-	while(!direct_nodes.empty())
-	{
-		long node_key = *(direct_nodes.begin());
-		direct_nodes.erase(node_key);
-
-		//cout << "remove node " << node_key << endl;
-
-		node n = (*graph)[node_key];
-
-		for(long adj : n.adjs)
-		{
-			if(adj != a && adj != b)
+			if(adj_node != end && painted_nodes.find(adj_node) == painted_nodes.end())
 			{
-				direct_nodes.insert(adj);
+				// if not end AND not painted yet
+				remaining_nodes.insert(adj_node);	
 			}
-
-			(*graph)[adj].adjs.erase(node_key);
 		}
+	}	
 
-		graph->erase(node_key);
-	}
+	return painted_nodes;
 }
 
-unsigned long long count_clean_nodes(map< long, node > graph, long a, long b)
+set<long> diff_sets(set<long> s1, set<long> s2)
 {
-	node n = graph[a];
-	unordered_set<long> clean_nodes = {a};
-	unsigned long long count = 0;
-	//cout << "ccccccccccccccccccc" << endl;
+	set<long> s3;
 
-	while(!clean_nodes.empty())
+	set_difference(s1.begin(), s1.end(),
+             s2.begin(), s2.end(),
+             inserter(s3, s3.begin()));
+			
+	return s3;
+}
+
+void print_set(set<long> s)
+{
+	for(long el : s)
 	{
-		long node_key = *(clean_nodes.begin());
-		clean_nodes.erase(node_key);
-
-		//cout << "erase " << node_key << endl;
-
-		if(node_key != b && node_key != a)
-		{
-			//cout << "count++ " << endl;
-			//cout << "nodekey == " << node_key << " != " << b << " != " << a << endl;
-			count++;
-		}
-
-		node n = graph[node_key];
-
-		for(long adj : n.adjs)
-		{
-			if(adj != a && adj != b)
-			{
-				clean_nodes.insert(adj);
-			}
-
-			graph[adj].adjs.erase(node_key);
-		}
-
-		graph.erase(node_key);
+		cout << el << " ";
 	}
-	
-	return count;
+	cout << endl;
 }
 
-unsigned long long solve(map< long, node > graph, long a, long b)
+unsigned long long solve(map<long, unordered_set<long> > graph, long a, long b)
 {
-	unordered_set<long> direct_nodes = find_direct_paths_adj_to_b(graph, a, b);
-	remove_dirty_nodes(&graph, a, b, direct_nodes);
-	unsigned long long clean_a = count_clean_nodes(graph, a, b);
-	unsigned long long clean_b = count_clean_nodes(graph, b, a);
+	unordered_set<long> us_a = paint_nodes(graph, a, b);
+	unordered_set<long> us_b = paint_nodes(graph, b, a);
 
-	return clean_a * clean_b;
+	set<long> a_paint, b_paint;
+
+	for(long el : us_a) a_paint.insert(el);
+	for(long el : us_b) a_paint.insert(el);
+
+	set<long> a_exclusive = diff_sets(a_paint, b_paint);
+	set<long> b_exclusive = diff_sets(b_paint, a_paint);
+
+	cout << "------------\nprinting sets" << endl;
+	print_set(a_paint);
+	print_set(b_paint);
+	print_set(a_exclusive);
+	print_set(b_exclusive);
+	cout << "-----------" << endl;
+
+
+	return 0;
 }
 
-void add_edge(map< long, node > *graph, long v1, long v2)
+void add_edge(map<long, unordered_set<long> > *graph, long v1, long v2)
 {
+
 	if(graph->find(v1) == graph->end())
 	{
-		node n = construct_node({});
-		(*graph)[v1] = n;
+		unordered_set<long> s = {};
+
+		(*graph)[v1] = s;
 	}
 
-	(*graph)[v1].adjs.insert(v2);
+	(*graph)[v1].insert(v2);
 }
 
 int main()
@@ -165,7 +116,7 @@ int main()
 		long n, m, a, b;
 		cin >> n >> m >> a >> b;
 
-		map< long, node > graph;
+		map< long, unordered_set<long> > graph;
 
 		for (int j = 0; j < m; j++)
 		{
