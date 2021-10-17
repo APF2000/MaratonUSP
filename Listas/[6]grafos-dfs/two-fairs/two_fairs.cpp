@@ -4,35 +4,22 @@
 #include <map>
 #include <set>
 #include <unordered_set>
-//#include <queue>
 #include <algorithm>
 
 using namespace std;
-
-// struct node
-// {
-// 	unordered_set<long> adjs;
-// 	//bool dirty;
-// };
-
-// node construct_node(unordered_set<long> adjs)
-// {
-// 	node n;
-// 	n.adjs = adjs;
-
-// 	//n.dirty = false;
-
-// 	return n;
-// }
 
 unordered_set<long> paint_nodes(map<long, unordered_set<long> > graph, long begin, long end)
 {
 	unordered_set<long> painted_nodes = {};
 	unordered_set<long> remaining_nodes = { begin };
 
+	cout << "beg, end: (" << begin << ", " << end << ")" << endl;
+
 	while(!remaining_nodes.empty())
 	{
 		long next_node = *(remaining_nodes.begin());
+
+		cout << "proximo: " << next_node << endl;
 
 		painted_nodes.insert(next_node);
 
@@ -41,9 +28,12 @@ unordered_set<long> paint_nodes(map<long, unordered_set<long> > graph, long begi
 			if(adj_node != end && painted_nodes.find(adj_node) == painted_nodes.end())
 			{
 				// if not end AND not painted yet
+				cout << "add " << adj_node << endl;
 				remaining_nodes.insert(adj_node);	
 			}
 		}
+
+		remaining_nodes.erase(next_node);
 	}	
 
 	return painted_nodes;
@@ -77,7 +67,7 @@ unsigned long long solve(map<long, unordered_set<long> > graph, long a, long b)
 	set<long> a_paint, b_paint;
 
 	for(long el : us_a) a_paint.insert(el);
-	for(long el : us_b) a_paint.insert(el);
+	for(long el : us_b) b_paint.insert(el);
 
 	set<long> a_exclusive = diff_sets(a_paint, b_paint);
 	set<long> b_exclusive = diff_sets(b_paint, a_paint);
@@ -90,7 +80,7 @@ unsigned long long solve(map<long, unordered_set<long> > graph, long a, long b)
 	cout << "-----------" << endl;
 
 
-	return 0;
+	return (a_exclusive.size() - 1) * (b_exclusive.size() - 1);
 }
 
 void add_edge(map<long, unordered_set<long> > *graph, long v1, long v2)
