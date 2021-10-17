@@ -1,25 +1,21 @@
 // https://codeforces.com/problemset/problem/1276/B
 
 #include <iostream>
-#include <map>
+#include <unordered_map>
 #include <set>
 #include <unordered_set>
 #include <algorithm>
 
 using namespace std;
 
-unordered_set<long> paint_nodes(map<long, unordered_set<long> > graph, long begin, long end)
+unordered_set<long> paint_nodes(unordered_map<long, unordered_set<long> > graph, long begin, long end)
 {
 	unordered_set<long> painted_nodes = {};
 	unordered_set<long> remaining_nodes = { begin };
 
-	//cout << "beg, end: (" << begin << ", " << end << ")" << endl;
-
 	while(!remaining_nodes.empty())
 	{
 		long next_node = *(remaining_nodes.begin());
-
-		//cout << "proximo: " << next_node << endl;
 
 		painted_nodes.insert(next_node);
 
@@ -28,7 +24,6 @@ unordered_set<long> paint_nodes(map<long, unordered_set<long> > graph, long begi
 			if(adj_node != end && painted_nodes.find(adj_node) == painted_nodes.end())
 			{
 				// if not end AND not painted yet
-				//cout << "add " << adj_node << endl;
 				remaining_nodes.insert(adj_node);	
 			}
 		}
@@ -43,23 +38,29 @@ set<long> diff_sets(set<long> s1, set<long> s2)
 {
 	set<long> s3;
 
-	set_difference(s1.begin(), s1.end(),
-             s2.begin(), s2.end(),
-             inserter(s3, s3.begin()));
+	set_difference(
+			s1.begin(), s1.end(),
+        	s2.begin(), s2.end(),
+        	inserter(s3, s3.begin())
+	);
 			
 	return s3;
 }
 
-void print_set(set<long> s)
+set<long> intersec_sets(set<long> s1, set<long> s2)
 {
-	for(long el : s)
-	{
-		//cout << el << " ";
-	}
-	//cout << endl;
+	set<long> s3;
+
+	set_intersection(
+			s1.begin(), s1.end(),
+			s2.begin(), s2.end(),
+			inserter(s3, s3.begin())
+	);
+			
+	return s3;
 }
 
-unsigned long long solve(map<long, unordered_set<long> > graph, long a, long b)
+unsigned long long solve(unordered_map<long, unordered_set<long> > graph, long a, long b)
 {
 	unordered_set<long> us_a = paint_nodes(graph, a, b);
 	unordered_set<long> us_b = paint_nodes(graph, b, a);
@@ -69,21 +70,21 @@ unsigned long long solve(map<long, unordered_set<long> > graph, long a, long b)
 	for(long el : us_a) a_paint.insert(el);
 	for(long el : us_b) b_paint.insert(el);
 
-	set<long> a_exclusive = diff_sets(a_paint, b_paint);
-	set<long> b_exclusive = diff_sets(b_paint, a_paint);
+	// set<long> a_exclusive = diff_sets(a_paint, b_paint);
+	// set<long> b_exclusive = diff_sets(b_paint, a_paint);
 
-	// //cout << "------------\nprinting sets" << endl;
-	// print_set(a_paint);
-	// print_set(b_paint);
-	// print_set(a_exclusive);
-	// print_set(b_exclusive);
-	// cout << "-----------" << endl;
+	set<long> intersec = intersec_sets(a_paint, b_paint);
 
+	unsigned long long s_a, s_b, s_i;
+	s_a = us_a.size();
+	s_b = us_b.size();
+	s_i = intersec.size();
 
-	return (a_exclusive.size() - 1) * (b_exclusive.size() - 1);
+	return (s_a - s_i - 1) * (s_b - s_i - 1);
+	//return (a_exclusive.size() - 1) * (b_exclusive.size() - 1);
 }
 
-void add_edge(map<long, unordered_set<long> > *graph, long v1, long v2)
+void add_edge(unordered_map<long, unordered_set<long> > *graph, long v1, long v2)
 {
 
 	if(graph->find(v1) == graph->end())
@@ -106,7 +107,7 @@ int main()
 		long n, m, a, b;
 		cin >> n >> m >> a >> b;
 
-		map< long, unordered_set<long> > graph;
+		unordered_map< long, unordered_set<long> > graph;
 
 		for (int j = 0; j < m; j++)
 		{
@@ -119,7 +120,6 @@ int main()
 		
 		unsigned long long ans = solve(graph, a, b);
 		cout << ans << endl;
-		//cout << "-------------------------------" << endl;
 	}
 	
 
