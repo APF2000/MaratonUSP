@@ -10,12 +10,12 @@ struct competitor
 struct ranking
 {
 	long id, xi;
-	ranking *next;
+	ranking *next, *last;
 };
 
 bool ord_competitor(competitor c1, competitor c2)
 {
-	return (c1.f < c2.f);
+	return (c1.p < c2.p);
 }
 
 // bool ord_ranking(ranking r1, ranking r2)
@@ -31,17 +31,19 @@ int main()
 
 	cin >> y >> n;
 
-	//cout << "ok1 " << endl;
+	////cout << "ok1 " << endl;
 	for(long i = 0; i < y; i++){
 		ranking *r = new ranking();
 		cin >> r->xi;
 		r->id = i;
 		r->next = NULL;
+		r->last = NULL;
 
 		if(i == 0) root_rs = r;
 		else
 		{
 			last_r->next = r;
+			r->last = last_r;
 		}
 
 		last_r = r;
@@ -52,7 +54,7 @@ int main()
 	// ranking *aux = rs;
 	// while(aux != nULL)
 	// {
-	// 	cout << "r: " << aux->xi << endl;
+	// 	//cout << "r: " << aux->xi << endl;
 	// 	aux = aux->next;
 	// }
 
@@ -70,18 +72,20 @@ int main()
 
 		cs.push_back(c);
 
-		//cout << "a = " << a << endl;
-		//cout << "f = " << f << endl;
-		//cout << "a+f= " << a+f << endl;
+		//cout << "competitor: " << c.a << ", " << c.p << ", " << c.f << endl;
+
+		////cout << "a = " << a << endl;
+		////cout << "f = " << f << endl;
+		////cout << "a+f= " << a+f << endl;
 		// for(long j = a; j < a+f; j++){
-		// 	//cout << "j = " << j << " x[j] = " << x[j] << endl;
-		// 	//cout << "x[j]-p " << x[j] - p << endl;
+		// 	////cout << "j = " << j << " x[j] = " << x[j] << endl;
+		// 	////cout << "x[j]-p " << x[j] - p << endl;
 		// 	if(x[j]-p >= 0) azar++;
 		// }
 		// if(x[a-1]-p >= 0){
 		// 	azar = 0;
 		// }
-		// cout << azar << endl;
+		// //cout << azar << endl;
 		// azar = 0;	
 	}
 
@@ -93,17 +97,48 @@ int main()
 		//ranking *last_r_for_c;// = mp[c.p];
 		long count = 0;
 
+		//cout << "competitor2: " << c.a << ", " << c.p << ", " << c.f << endl;
+
+
 		for (long i = c.a; i < c.a + c.f; i++)
 		{
 			if(mp.find(i) != mp.end()) // achou no map
 			{
-				ranking *aux_r = mp[i];
-				if(aux_r->xi < c.p) // se a classificacao pra passar eh mais competitiva
+				ranking *current_r = mp[i];
+				if(current_r->xi < c.p) // se a classificacao pra passar eh mais competitiva
 				{
+					ranking *next = current_r->next;
+					ranking *last = current_r->last;
+
+
+					// religa a lista ligada
+					if(last != NULL)
+					{
+						last->next = next;
+					}else
+					{
+						root_rs = root_rs->next;
+					}
+					
+					if(next != NULL)
+					{
+						next->last = last;
+					}
+
+					//cout << "------------------" << endl;
+					//mp[i - 1]->next = mp[i + 1]; // religa a lista ligada
+
 					mp.erase(i);
-					mp[i - 1]->next = mp[i + 1]; // religa a lista ligada
+
+					ranking *aux = root_rs;
+					while(aux != NULL)
+					{
+						//cout << "r: " << aux->xi << endl;
+						aux = aux->next;
+					}
 				}else
 				{
+					//cout << "ma sorte++" << endl;
 					count ++;
 				}
 			}
