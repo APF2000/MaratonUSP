@@ -4,6 +4,7 @@ using namespace std;
 
 struct competitor
 {
+	long id;
 	long a, p, f;
 };
 
@@ -70,6 +71,8 @@ int main()
 		c.p = p;
 		c.f = f;
 
+		c.id = i;
+
 		cs.push_back(c);
 
 		//cout << "competitor: " << c.a << ", " << c.p << ", " << c.f << endl;
@@ -92,12 +95,17 @@ int main()
 	sort(cs.begin(), cs.end(), ord_competitor); // n log n
 	//sort(rs.begin(), rs.end(), ord_ranking); // y log y
 
+	vector<long> scores;
+	for (int i = 0; i < n; i++) scores.push_back(-1);
+
 	for(competitor c : cs)
 	{
 		//ranking *last_r_for_c;// = mp[c.p];
 		long count = 0;
 
-		//cout << "competitor2: " << c.a << ", " << c.p << ", " << c.f << endl;
+		// cout << "--------------------" << endl;
+
+		// cout << "competitor2: " << c.a << ", " << c.p << ", " << c.f << endl;
 
 
 		for (long i = c.a; i < c.a + c.f; i++)
@@ -144,8 +152,14 @@ int main()
 			}
 		}
 
-		cout << count << endl;
+		//cout << count << endl;
+		scores[c.id] = count;
 		
+	}
+
+	for(long score : scores)
+	{
+		cout << score << endl;
 	}
 
 	return 0;
