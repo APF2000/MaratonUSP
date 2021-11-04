@@ -7,7 +7,7 @@ struct node
 	long id;
 	bool dead;
 	long father_id;
-	vector<long> children;
+	vector<long> children = {};
 };
 
 map<long, node*> sucessao;
@@ -25,12 +25,32 @@ bool king_died(long person_id){
 
 void born(long pai_id){
 	id++;
-	node son;
-	son.id = id;
-	son.dead = false;
-	son.father_id = pai_id;
+	node *son = new node();
+
+	son->id = id;
+	son->dead = false;
+	son->father_id = pai_id;
+
+	//son->children = *(new vector<long>());
+
 	sucessao[pai_id]->children.push_back(id);
-	sucessao.insert(pair<long, node*>(id, &son));
+	// cout << "born to be wild" << endl;
+	// cout << "id:" << id << endl;
+	// cout << "pai:" << pai_id << endl;
+
+	sucessao[id] = son;
+
+	for(pair<long, node*> el: sucessao)
+		{
+			//cout << "batata2" << endl;
+			// cout << el.first << ": " << &(el.second->children) << " : {";
+			// for(long num : el.second->children)
+			// {
+			// 	cout << num << ", ";
+			// }
+			// cout << "}" << endl;
+		}
+	//sucessao.insert(pair<long, node*>(id, &son));
 }
 void dead(long dead_id){
 	sucessao[dead_id]->dead = true;
@@ -42,8 +62,24 @@ bool king_has_children(long person_id){
 
 void set_next_king(long person_id)
 {
-	if(king_has_children(person_id)){
+	if(king_has_children(person_id))
+	{
+		// cout << "person id: " << person_id << endl;
+		// for(pair<long, node*> el: sucessao)
+		// {
+		// 	cout << "batata" << endl;
+		// 	cout << el.first << ": {";
+		// 	for(long num : el.second->children)
+		// 	{
+		// 		cout << num << ", ";
+		// 	}
+		// 	cout << "}" << endl;
+		// }
+
+		// cout << "antes" << endl;
+
 		vector<long> children = sucessao[person_id]->children;
+		//cout << "depois" << endl;
 		for(int i = 0; i < children.size(); i++){
 			if(!sucessao[children[i]]->dead){
 				current_king_id = children[i];
