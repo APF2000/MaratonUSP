@@ -5,17 +5,17 @@
 
 using namespace std;
 
-int n;
-unordered_map<int, unordered_map<int, int>> scores;
+long n;
+unordered_map<long, unordered_map<long, long>> scores;
 
-void add_score(int v1, int v2)
+void add_score(long v1, long v2)
 {
 	if(scores.find(v1) == scores.end())
 	{
 		scores[v1] = {};
 	}
 
-	pair<int, int> aux;
+	pair<long, long> aux;
 	aux.first = v2;
 	aux.second = -1;
 
@@ -25,19 +25,19 @@ void add_score(int v1, int v2)
 int main()
 {
 	cin >> n;
-	for (int i = 0; i < n; i++)
+	for (long i = 0; i < n; i++)
 	{
-		int v1, v2;
+		long v1, v2;
 		cin >> v1 >> v2;
 
 		add_score(v1, v2);
 		add_score(v2, v1);
 	}
 
-	for(pair<int, unordered_map<int, int>> el : scores)
+	for(pair<long, unordered_map<long, long>> el : scores)
 	{
 		cout << el.first << " : {";
-		for(pair<int, int> el2 : el.second)
+		for(pair<long, long> el2 : el.second)
 		{
 			cout << " {" << el2.first << " : " << el2.second << "}, ";
 		} 
