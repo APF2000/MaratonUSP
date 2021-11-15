@@ -71,7 +71,7 @@ void calc_score(long root, long req_node, long *score, long *qtty)
 int main()
 {
 	cin >> n;
-	for (long i = 0; i < n; i++)
+	for (long i = 0; i < n - 1; i++)
 	{
 		long v1, v2;
 		cin >> v1 >> v2;
@@ -81,7 +81,7 @@ int main()
 	}
 
 	long max_score = -1;
-	for (long i = 0; i < n; i++)
+	for (long i = 0; i < n - 1; i++)
 	{
 		long new_score, new_qtty;
 		calc_score(i + 1, i + 1, &new_score, &new_qtty);
