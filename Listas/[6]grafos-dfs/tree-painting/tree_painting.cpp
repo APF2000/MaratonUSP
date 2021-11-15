@@ -25,7 +25,7 @@ void calc_score(long root, long req_node, long *score, long *qtty)
 {
 	long new_score = 1;
 	long new_qtty = 1;
-	
+
 	for(pair<long, long> child : scores[req_node])
 	{
 		long c_node = child.first;
@@ -63,7 +63,7 @@ int main()
 	}
 
 	long max_score = -1;
-	for (long i = 0; i < n - 1; i++)
+	for (long i = 0; i < n; i++)
 	{
 		long new_score, new_qtty;
 		calc_score(i + 1, i + 1, &new_score, &new_qtty);
