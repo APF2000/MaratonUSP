@@ -15,11 +15,7 @@ void add_score(long v1, long v2)
 		scores[v1] = {};
 	}
 
-	pair<long, long> aux;
-	aux.first = v2;
-	aux.second = -1;
-
-	scores[v1].insert(aux);// = m_aux;
+	scores[v1][v2] = -1;// = m_aux;
 }
 
 int main()
