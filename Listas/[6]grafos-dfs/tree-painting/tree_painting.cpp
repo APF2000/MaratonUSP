@@ -1,22 +1,24 @@
 // https://codeforces.com/problemset/problem/1187/E
 
 #include <iostream>
+#include <vector>
 #include <unordered_map>
 
 using namespace std;
 
 long n;
 long count = 0;
-unordered_map<long, unordered_map<long, long>> scores;
-unordered_map<long, unordered_map<long, long>> qttys;
+vector<unordered_map<long, long>> scores;
+vector<unordered_map<long, long>> qttys;
 
 void add_score(long v1, long v2)
 {
-	if(scores.find(v1) == scores.end())
-	{
-		scores[v1] = {};
-		qttys[v1] = {};
-	}
+	// if(scores.find(v1) == scores.end())
+	// {
+	// 	scores[v1] = {};
+	// 	qttys[v1] = {};
+	// }
+	//cout << "v1: " << v1 << ", v2: " << v2 << endl;
 
 	scores[v1][v2] = -1;
 	qttys[v1][v2] = -1;
@@ -55,14 +57,22 @@ void calc_score(long root, long req_node, long *score, long *qtty)
 int main()
 {
 	cin >> n;
+	for (long i = 0; i < n; i++)
+	{
+		scores.push_back({});
+		qttys.push_back({});
+	}
+
 	for (long i = 0; i < n - 1; i++)
 	{
 		long v1, v2;
 		cin >> v1 >> v2;
 
-		add_score(v1, v2);
-		add_score(v2, v1);
+		add_score(v1 - 1, v2 - 1);
+		add_score(v2 - 1, v1 - 1);
 	}
+
+		//cout << "oi" << endl;
 
 	long max_score = -1;
 	for (long i = 0; i < n; i++)
