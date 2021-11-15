@@ -25,11 +25,7 @@ void calc_score(long root, long req_node, long *score, long *qtty)
 {
 	long new_score = 1;
 	long new_qtty = 1;
-
-	//cout << "------------------------" << endl;
-	//cout << "root: " << root << ", node: " << req_node << endl; 
-	//cout << "&score: " << score << ", &qtty: " << qtty << endl; 
-
+	
 	for(pair<long, long> child : scores[req_node])
 	{
 		long c_node = child.first;
@@ -38,26 +34,12 @@ void calc_score(long root, long req_node, long *score, long *qtty)
 
 		if(c_node == root) continue;
 
-		//cout << c_node << ", " << c_score << endl;
-		if(c_score != -1 && c_qtty != -1)
+		if(c_score == -1 || c_qtty == -1)
 		{
-			
-			//cout << "new_score1: "<< new_score << endl;
-			//cout << "new_qtty1: "<< new_qtty << endl;
-		}
-		else
-		{
-			//long add_score, add_qtty;
-			
 			calc_score(req_node, c_node, &c_score, &c_qtty);
 
 			scores[req_node][c_node] = c_score;
 			qttys[req_node][c_node] = c_qtty;
-
-			//new_score += (2 * c_score);
-
-			//cout << "c_score: "<< c_score << endl;
-			//cout << "new_score2: "<< new_score << endl;
 		}	
 
 		new_qtty += c_qtty;
@@ -89,17 +71,6 @@ int main()
 	}
 
 	cout << max_score << endl;
-
-	for(pair<long, unordered_map<long, long>> el : scores)
-	{
-		//cout << el.first << " : {";
-		for(pair<long, long> el2 : el.second)
-		{
-			//cout << " {" << el2.first << " : " << el2.second << "}, ";
-		} 
-
-		//cout << "}" << endl;
-	}
 
 	return 0;
 }
