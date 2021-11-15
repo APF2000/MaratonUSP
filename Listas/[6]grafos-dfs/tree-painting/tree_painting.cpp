@@ -6,6 +6,7 @@
 using namespace std;
 
 long n;
+long count = 0;
 unordered_map<long, unordered_map<long, long>> scores;
 unordered_map<long, unordered_map<long, long>> qttys;
 
@@ -36,6 +37,7 @@ void calc_score(long root, long req_node, long *score, long *qtty)
 
 		if(c_score == -1 || c_qtty == -1)
 		{
+			count++;
 			calc_score(req_node, c_node, &c_score, &c_qtty);
 
 			scores[req_node][c_node] = c_score;
@@ -71,6 +73,31 @@ int main()
 	}
 
 	cout << max_score << endl;
+	cout << count << endl;
+
+	for(pair<long, unordered_map<long, long>> el : scores)
+	{
+		cout << el.first << " : {";
+		for(pair<long, long> el2 : el.second)
+		{
+			cout << " {" << el2.first << " : " << el2.second << "}, ";
+		} 
+
+		cout << "}" << endl;
+	}
+
+	cout << "-------------------------------" << endl;
+
+	for(pair<long, unordered_map<long, long>> el : qttys)
+	{
+		cout << el.first << " : {";
+		for(pair<long, long> el2 : el.second)
+		{
+			cout << " {" << el2.first << " : " << el2.second << "}, ";
+		} 
+
+		cout << "}" << endl;
+	}
 
 	return 0;
 }
