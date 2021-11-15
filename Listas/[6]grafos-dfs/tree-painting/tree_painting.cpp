@@ -73,31 +73,31 @@ int main()
 	}
 
 	cout << max_score << endl;
-	cout << count << endl;
+	// cout << count << endl;
 
-	for(pair<long, unordered_map<long, long>> el : scores)
-	{
-		cout << el.first << " : {";
-		for(pair<long, long> el2 : el.second)
-		{
-			cout << " {" << el2.first << " : " << el2.second << "}, ";
-		} 
+	// for(pair<long, unordered_map<long, long>> el : scores)
+	// {
+	// 	cout << el.first << " : {";
+	// 	for(pair<long, long> el2 : el.second)
+	// 	{
+	// 		cout << " {" << el2.first << " : " << el2.second << "}, ";
+	// 	} 
 
-		cout << "}" << endl;
-	}
+	// 	cout << "}" << endl;
+	// }
 
-	cout << "-------------------------------" << endl;
+	// cout << "-------------------------------" << endl;
 
-	for(pair<long, unordered_map<long, long>> el : qttys)
-	{
-		cout << el.first << " : {";
-		for(pair<long, long> el2 : el.second)
-		{
-			cout << " {" << el2.first << " : " << el2.second << "}, ";
-		} 
+	// for(pair<long, unordered_map<long, long>> el : qttys)
+	// {
+	// 	cout << el.first << " : {";
+	// 	for(pair<long, long> el2 : el.second)
+	// 	{
+	// 		cout << " {" << el2.first << " : " << el2.second << "}, ";
+	// 	} 
 
-		cout << "}" << endl;
-	}
+	// 	cout << "}" << endl;
+	// }
 
 	return 0;
 }
