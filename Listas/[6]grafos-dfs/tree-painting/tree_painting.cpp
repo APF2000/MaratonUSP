@@ -135,12 +135,6 @@ void calc_score(long root, long req_node, long *score, long *qtty)
 int main()
 {
 	cin >> n;
-	for (long i = 0; i < n; i++)
-	{
-		scores.push_back({});
-		qttys.push_back({});
-	}
-
 	for (long i = 0; i < n - 1; i++)
 	{
 		long v1, v2;
