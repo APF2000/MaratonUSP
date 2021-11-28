@@ -5,7 +5,6 @@
 #include <iostream>
 #include <unordered_map>
 #include <unordered_set>
-//#include <queue>
 #include <vector>
 
 using namespace std;
@@ -23,27 +22,13 @@ unordered_set<int> visited = {};
 
 bool can_paint(int p, int q, int c)
 {
-	// DEBUG(p);
-	// DEBUG(q);
-	// DEBUG(c);
-	// cout << endl;
-
 	visited.insert(p);
-
-	//unordered_set<int> not_visited = graph[p].adjs, visited = {};
+	
 	if(p == q)
 	{
-		cout << "painting " << p << endl;
 		graph[p].c = c;
 		return true;
 	}
-
-	// cout << p << " : {";
-	// for (int child : graph[p].adjs)
-	// {
-	// 	cout << child << ", " << endl;
-	// }
-	// cout << "}" << endl;
 
 	for (int child : graph[p].adjs)
 	{
@@ -52,28 +37,11 @@ bool can_paint(int p, int q, int c)
 		if(can_paint(child, q, c))
 		{
 			graph[p].c = c;
-			cout << "painting " << p << endl;
 			return true;
 		}
 	}
-	
 
-	
-	// graph[p].c = c;
-	// graph[q].c = c;
-
-	// while(!not_visited.empty())
-	// {
-	// 	long child = *( not_visited.begin() );
-
-	// 	if(child == q) break;
-	// 	if(visited.find(child) != visited.end()) continue;
-
-	// 	not_visited.erase(child);
-	// 	visited.insert(child);
-
-	// 	graph[child].c = c;
-	// }
+	return false;
 }
 
 int main()
@@ -99,12 +67,6 @@ int main()
 
 		can_paint(p, q, c);
 		visited = {};
-
-		// for (int i = 0; i < n; i++)
-		// {
-		// 	cout << graph[i].c << " ";
-		// }
-		// cout << endl;
 	}
 
 	for (int i = 1; i <= n; i++)
