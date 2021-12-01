@@ -32,14 +32,14 @@ bool foo(int p, int c)
 bool can_paint(int p, int q, int c)
 {
 	visited.insert(p);
-	//DEBUG(p);
-	//DEBUG(q);
-	//DEBUG(c);
-	// << endl;
+	DEBUG(p);
+	DEBUG(q);
+	DEBUG(c);
+	cout << endl;
 	
 	if(p == q) 
 	{
-			// << "1" << endl;
+		cout << "1" << endl;
 		return foo(p, c);
 	}
 
@@ -48,7 +48,7 @@ bool can_paint(int p, int q, int c)
 	{
 		int child = child_routes[q];
 		path.push(child);
-		// << "\n2" << endl;
+		cout << "\n2" << endl;
 		can_paint(child, q, c);
 		return foo(p, c);
 	}
@@ -57,7 +57,7 @@ bool can_paint(int p, int q, int c)
 	{
 		if(visited.find(child) != visited.end()) continue;
 		
-		//DEBUG(child);
+		DEBUG(child);
 
 		
 
@@ -75,16 +75,12 @@ bool can_paint(int p, int q, int c)
 			}
 			
 
-			// DEBUG(p);
-			// DEBUG(child);
-			// cout << ": {";
-			// for(int el : graph[p].routes[child])
-			// {
-			// 	cout << el << " ";
-			// }
-			// cout << "}" << endl;
+			DEBUG(p);
+			DEBUG(child);
+			cout << endl;
+			cout << p << " -> " << q << "? : " << graph[p].routes[child] << endl;
 
-			//cout << "3" << endl;
+			cout << "3" << endl;
 			//cin >> child;
 			return foo(p, c);
 		}
