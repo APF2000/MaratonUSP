@@ -57,7 +57,7 @@ bool can_paint(int p, int q, int c)
 	{
 		if(visited.find(child) != visited.end()) continue;
 		
-		DEBUG(child);
+		//DEBUG(child);
 
 		
 
@@ -86,6 +86,7 @@ bool can_paint(int p, int q, int c)
 		}
 	}
 
+	cout << "IMPOSSIBLE" << endl;
 	return false;
 }
 
@@ -107,6 +108,7 @@ int main()
 
 	for (int i = 0; i < m; i++)
 	{
+		cout << "-------------------" << endl;
 		int p, q, c;
 		cin >> p >> q >> c;
 
@@ -114,6 +116,13 @@ int main()
 
 		visited = {};
 		path = {};
+
+
+		for (int j = 1; j <= n; j++)
+		{
+			cout << graph[j].c << " ";
+		}
+		cout << endl;	
 	}
 
 	for (int i = 1; i <= n; i++)
