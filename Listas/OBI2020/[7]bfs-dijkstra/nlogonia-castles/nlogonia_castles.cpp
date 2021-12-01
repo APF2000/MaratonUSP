@@ -70,7 +70,7 @@ bool can_paint(int p, int q, int c)
 			{
 				int next_in_stack = aux_path.top();
 
-				graph[p].routes[child] = next_in_stack;
+				graph[p].routes[next_in_stack] = child;
 				aux_path.pop();
 			}
 			
