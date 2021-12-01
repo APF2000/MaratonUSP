@@ -42,6 +42,16 @@ bool can_paint(int p, int q, int c)
 			// << "1" << endl;
 		return foo(p, c);
 	}
+
+	unordered_map<int, int> child_routes = graph[p].routes;
+	if( child_routes.find(q) != child_routes.end() )
+	{
+		int child = child_routes[q];
+		path.push(child);
+		// << "\n2" << endl;
+		can_paint(child, q, c);
+		return foo(p, c);
+	}
 	
 	for (int child : graph[p].adjs)
 	{
@@ -49,14 +59,7 @@ bool can_paint(int p, int q, int c)
 		
 		//DEBUG(child);
 
-		unordered_map<int, int> child_routes = graph[p].routes;
-		if( child_routes.find(q) != child_routes.end() )
-		{
-			path.push(child);
-			// << "\n2" << endl;
-			can_paint(child, q, c);
-			return foo(p, c);
-		}
+		
 
 		if(can_paint(child, q, c))
 		{
