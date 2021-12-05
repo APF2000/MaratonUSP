@@ -47,10 +47,18 @@ bool can_paint(int p, int q, int c)
 	if( child_routes.find(q) != child_routes.end() )
 	{
 		int child = child_routes[q];
-		path.push(child);
-		//cout << "\n2" << endl;
-		can_paint(child, q, c);
-		return foo(p, c);
+		
+		while(child != q)
+		{
+			graph[child].c = c;
+			path.push(child);
+			child = graph[child].routes[q];
+		}
+
+		graph[p].c = c;
+		graph[q].c = c;
+
+		return true;
 	}
 	
 	for (int child : graph[p].adjs)
