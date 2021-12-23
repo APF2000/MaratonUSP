@@ -78,6 +78,7 @@ int calc_min_holes()
 int main()
 {
 	cin >> n >> m;
+	n += 2; // begin + (middle (n)) + end
 
 	for (int i = 0; i < n; i++)
 	{
@@ -107,5 +108,7 @@ int main()
 	cout << min_holes << endl;
 
 	cout << "Fim" << endl;
+	for(auto el : pesos) cout << el << " ,";
+	cout << endl;
 	return 0;
 }
