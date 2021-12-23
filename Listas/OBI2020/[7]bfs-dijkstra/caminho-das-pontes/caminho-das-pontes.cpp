@@ -1,7 +1,5 @@
 // https://neps.academy/br/exercise/297
 
-// #include <bits/stdc++.h>
-
 #include <iostream>
 #include <cstdio>
 #include <set>
@@ -27,7 +25,6 @@ class conn{
 
 unordered_map<int, set<conn>> graph;
 
-//unordered_map<int, unordered_map<int, bool>> vis_edges;
 unordered_set<int> vis_nodes;
 
 queue<int> next_nodes;
@@ -82,13 +79,7 @@ int main()
 
 	for (int i = 0; i < n; i++)
 	{
-		pesos.push_back( MAX_INT );
-		// for (int j = 0; j < m; j++)
-		// {
-		// 	vis_edges[i][j] = false;
-		// 	vis_edges[j][i] = false;
-		// }
-		
+		pesos.push_back( MAX_INT );		
 	}
 	pesos[0] = 0;
 	
@@ -107,8 +98,5 @@ int main()
 	int min_holes = calc_min_holes();
 	cout << min_holes << endl;
 
-	cout << "Fim" << endl;
-	for(auto el : pesos) cout << el << " ,";
-	cout << endl;
 	return 0;
 }
