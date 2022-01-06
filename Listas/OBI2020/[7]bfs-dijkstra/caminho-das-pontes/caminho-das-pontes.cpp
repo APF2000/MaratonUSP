@@ -68,11 +68,11 @@ int calc_min_holes()
 		int this_node = next_nodes.front();
 		next_nodes.pop();
 
-		//cout << "------------------oi" << endl;
+		cout << "------------------oi" << endl;
 		
 		vis_nodes.insert(this_node);
-		//debug_v(vis_nodes);
-		//debug_ln(this_node);
+		debug_v(vis_nodes);
+		debug_ln(this_node);
 
 
 		for(conn edge : graph[this_node])
@@ -81,8 +81,8 @@ int calc_min_holes()
 			int adj_id = edge.adj;
 			int best_adj_peso = pesos[adj_id];
 
-			//cout << "oi4" << endl;
-			//debug_ln(adj_id);
+			cout << "oi4" << endl;
+			debug_ln(adj_id);
 			if( vis_nodes.find(adj_id) == vis_nodes.end() ) // never seen
 			{
 				next_nodes.push(adj_id);
@@ -100,14 +100,14 @@ int calc_min_holes()
 			{
 				pesos[adj_id] = new_peso;
 			}
-			// debug_v(pesos);
+			debug_v(pesos);
 
 			// << "oi2" << endl;
 		}
 	}
 			// << "oi3" << endl;
 
-		// debug_v(vis_nodes);
+		debug_v(vis_nodes);
 	return pesos[n - 1];
 }
 
