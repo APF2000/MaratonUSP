@@ -63,16 +63,16 @@ int calc_min_holes()
 	next_nodes.push(0);
 	vis_nodes = {};
 	
-	while( vis_nodes.size() < n - 2 )
+	while( vis_nodes.size() < n )
 	{
 		int this_node = next_nodes.front();
 		next_nodes.pop();
 
-		// << "------------------oi" << endl;
+		//cout << "------------------oi" << endl;
 		
 		vis_nodes.insert(this_node);
-		//_v(vis_nodes);
-		//_ln(this_node);
+		//debug_v(vis_nodes);
+		//debug_ln(this_node);
 
 
 		for(conn edge : graph[this_node])
@@ -81,18 +81,18 @@ int calc_min_holes()
 			int adj_id = edge.adj;
 			int best_adj_peso = pesos[adj_id];
 
-			// << "oi4" << endl;
-			//_ln(adj_id);
+			//cout << "oi4" << endl;
+			//debug_ln(adj_id);
 			if( vis_nodes.find(adj_id) == vis_nodes.end() ) // never seen
 			{
 				next_nodes.push(adj_id);
-				//_q(next_nodes);
+				// debug_q(next_nodes);
 			}
 
 			int best_this_peso = pesos[this_node];
 			if(best_this_peso == MAX_INT)
 			{
-				// << "EU SOU BURRO" << endl;
+				cout << "EU SOU BURRO" << endl;
 			}
 
 			int new_peso = best_this_peso + edge_peso;
@@ -100,13 +100,14 @@ int calc_min_holes()
 			{
 				pesos[adj_id] = new_peso;
 			}
-			//_v(pesos);
+			// debug_v(pesos);
 
 			// << "oi2" << endl;
 		}
 	}
 			// << "oi3" << endl;
 
+		// debug_v(vis_nodes);
 	return pesos[n - 1];
 }
 
