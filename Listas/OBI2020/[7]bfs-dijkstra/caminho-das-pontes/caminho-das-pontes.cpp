@@ -8,6 +8,11 @@
 #include <vector>
 #include <queue>
 
+
+#define debug(VAR) cout << #VAR << " = " << VAR << ", ";
+#define debug_ln(VAR) cout << #VAR << " = " << VAR << endl;
+#define debug_v(v) for(auto el : v) cout << el << ", "; cout << endl;
+
 #define MAX_INT ~(1 << 31)
 
 using namespace std;
@@ -41,8 +46,11 @@ int calc_min_holes()
 	{
 		int this_node = next_nodes.front();
 		next_nodes.pop();
+
+		cout << "oi" << endl;
 		
 		vis_nodes.insert(this_node);
+
 
 		for(conn edge : graph[this_node])
 		{
@@ -66,8 +74,11 @@ int calc_min_holes()
 			{
 				pesos[adj_id] = new_peso;
 			}
+
+			cout << "oi2" << endl;
 		}
 	}
+			cout << "oi3" << endl;
 
 	return pesos[n - 1];
 }
