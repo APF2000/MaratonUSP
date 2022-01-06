@@ -17,6 +17,18 @@
 
 using namespace std;
 
+void debug_q(queue<int> q)
+{
+	while(q.size() != 0)
+	{
+		int el = q.front();
+		q.pop();
+
+		cout << el << ", ";
+	}
+	cout << endl;
+}
+
 class conn{
 	public:
 		int peso;
@@ -50,7 +62,9 @@ int calc_min_holes()
 		cout << "oi" << endl;
 		
 		vis_nodes.insert(this_node);
-
+		debug_v(vis_nodes);
+		debug_q(next_nodes);
+		debug(n);
 
 		for(conn edge : graph[this_node])
 		{

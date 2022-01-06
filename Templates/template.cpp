@@ -8,6 +8,18 @@
 
 #include <iostream>
 
+void debug_q(queue<int> q)
+{
+	while(q.size() != 0)
+	{
+		int el = q.front();
+		q.pop();
+
+		cout << el << ", ";
+	}
+	cout << endl;
+}
+
 using namespace std;
 
 int main()
