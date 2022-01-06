@@ -11,7 +11,7 @@
 
 #define debug(VAR) cout << #VAR << " = " << VAR << ", ";
 #define debug_ln(VAR) cout << #VAR << " = " << VAR << endl;
-#define debug_v(v) for(auto el : v) cout << el << ", "; cout << endl;
+#define debug_v(v) cout << #v << " : {"; for(auto el : v) cout << el << ", "; cout << "}" << endl;
 
 #define MAX_INT ~(1 << 31)
 
@@ -19,6 +19,7 @@ using namespace std;
 
 void debug_q(queue<int> q)
 {
+	cout << "queue : {";
 	while(q.size() != 0)
 	{
 		int el = q.front();
@@ -26,7 +27,7 @@ void debug_q(queue<int> q)
 
 		cout << el << ", ";
 	}
-	cout << endl;
+	cout << "}" << endl;
 }
 
 class conn{
@@ -35,7 +36,7 @@ class conn{
 		int adj;
 
 		bool operator < (conn other) const{
-			return peso < other.peso;
+			return adj < other.adj;
 		}
 	
 };
@@ -54,17 +55,17 @@ int calc_min_holes()
 	next_nodes.push(0);
 	vis_nodes = {0};
 	
-	while( vis_nodes.size() < n )
+	while( vis_nodes.size() < n - 2 )
 	{
 		int this_node = next_nodes.front();
 		next_nodes.pop();
 
-		cout << "oi" << endl;
+		cout << "------------------oi" << endl;
 		
 		vis_nodes.insert(this_node);
 		debug_v(vis_nodes);
-		debug_q(next_nodes);
-		debug(n);
+		debug_ln(this_node);
+
 
 		for(conn edge : graph[this_node])
 		{
@@ -72,9 +73,12 @@ int calc_min_holes()
 			int adj_id = edge.adj;
 			int best_adj_peso = pesos[adj_id];
 
+			cout << "oi4" << endl;
+			debug_ln(adj_id);
 			if( vis_nodes.find(adj_id) == vis_nodes.end() ) // never seen
 			{
 				next_nodes.push(adj_id);
+				debug_q(next_nodes);
 			}
 
 			int best_this_peso = pesos[this_node];
@@ -88,6 +92,7 @@ int calc_min_holes()
 			{
 				pesos[adj_id] = new_peso;
 			}
+			debug_v(pesos);
 
 			cout << "oi2" << endl;
 		}
@@ -118,6 +123,15 @@ int main()
 		co.adj = t;
 		co.peso = b;
 		graph[s].insert(co);
+
+		set<conn> s_aux = graph[s];
+
+		debug(s);
+		for(conn co : s_aux)
+		{
+			debug(co.adj);
+		}
+		cout << endl;
 	}
 
 	int min_holes = calc_min_holes();
