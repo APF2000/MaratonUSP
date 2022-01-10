@@ -23,5 +23,15 @@ void debug_q(queue<int> q)
 
 int main()
 {
+	// [opcional] calcula djikstra inicial sem conexoes especiais
+	// junta todos os nos especiais e chama de conexoes especiais
+	// enquanto tiverem conexoes especiais:
+	// 		calcula djikstra
+	//		remove conexoes espceiais no meio do caminho
+	//		[opcional] se tiver uma conexao especial e nao-especial ao mesmo tempo:
+	//					retorna o valor do djikstra inicial
+	// 		[opcional] se o novo menor caminho ja eh igual ao menor caminho sem conexoes especiais:
+	//					retorna o valor do djikstra inicial (tambem)
+
 	return 0;
 }
