@@ -44,7 +44,7 @@ def upper_bound(pics):
 			n_horizs += 1
 
 	n_all_tags = len(all_tags)
-	##print(n_all_tags, n_verts, n_horizs)
+	###print(n_all_tags, n_verts, n_horizs)
 
 	return (n_all_tags // 3) * ( n_horizs + n_verts // 2 )
 
@@ -56,7 +56,7 @@ def calc_score(tags1, tags2):
 	exclusive2 = len(tags2) - intersec
 
 	score = min([intersec, exclusive1, exclusive2])
-	#print(score)
+	##print(score)
 
 	return score
 
@@ -64,11 +64,11 @@ def optimize(pics):
 	verts = [ pic for pic in pics if pic.is_vertical ]
 	horzs = [ pic for pic in pics if not pic.is_vertical ]
 
-	##print(verts)
-	##print( horzs)
+	###print(verts)
+	###print( horzs)
 
 	random.shuffle(verts)
-	##print(verts)
+	###print(verts)
 
 	horzs = [ Slide( [horz] ) for horz in horzs]
 	new_verts = []
@@ -78,28 +78,28 @@ def optimize(pics):
 		new_verts.append( Slide( [vert1, vert2] ) )
 
 	verts = new_verts
-	##print(verts)
-	##print(horzs)
+	###print(verts)
+	###print(horzs)
 
 	slides = horzs + verts
 
 	random.shuffle(slides)
 	last_slide = slides[0]
 	slides = slides[1:]
-	#print(slides)
-	#print(last_slide)
+	##print(slides)
+	##print(last_slide)
 
 	slide_show = [last_slide]
 	random.shuffle(slides)
-	print(len(slides))
-	print(last_slide)
+	#print(len(slides))
+	#print(last_slide)
 	while len(slides) != 0:
 		# slide_to_remove = None
 		# max_score = -1
 		# for slide in slides:
 		# 	pass
 		sub_slides = random.sample(slides, min(len(slides), 20))
-		print(sub_slides)
+		#print(sub_slides)
 		new_score = -1
 		new_slide = None
 		for slide in sub_slides:
@@ -112,9 +112,9 @@ def optimize(pics):
 		slide_show.append(new_slide)
 	#slide_show = slides
 	
-	#print('batata')	
+	##print('batata')	
 
-	print(slide_show)
+	#print(slide_show)
 
 	return slide_show
 
@@ -145,7 +145,7 @@ for i in range(n):
 
 	pics.append( Pic(is_vertical, tags, i) )
 
-###print(pics)
-###print(upper_bound(pics))
+####print(pics)
+####print(upper_bound(pics))
 slide_show = optimize(pics)
 calc_score_from_slide_show(slide_show)
