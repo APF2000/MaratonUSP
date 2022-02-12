@@ -44,19 +44,31 @@ def upper_bound(pics):
 			n_horizs += 1
 
 	n_all_tags = len(all_tags)
-	#print(n_all_tags, n_verts, n_horizs)
+	##print(n_all_tags, n_verts, n_horizs)
 
 	return (n_all_tags // 3) * ( n_horizs + n_verts // 2 )
+
+def calc_score(tags1, tags2):
+	intersec = tags1.intersection(tags2)
+	intersec = len(intersec)
+
+	exclusive1 = len(tags1) - intersec
+	exclusive2 = len(tags2) - intersec
+
+	score = min([intersec, exclusive1, exclusive2])
+	#print(score)
+
+	return score
 
 def optimize(pics):
 	verts = [ pic for pic in pics if pic.is_vertical ]
 	horzs = [ pic for pic in pics if not pic.is_vertical ]
 
-	#print(verts)
-	#print( horzs)
+	##print(verts)
+	##print( horzs)
 
 	random.shuffle(verts)
-	#print(verts)
+	##print(verts)
 
 	horzs = [ Slide( [horz] ) for horz in horzs]
 	new_verts = []
@@ -66,30 +78,58 @@ def optimize(pics):
 		new_verts.append( Slide( [vert1, vert2] ) )
 
 	verts = new_verts
-	#print(verts)
-	#print(horzs)
+	##print(verts)
+	##print(horzs)
 
 	slides = horzs + verts
 
 	random.shuffle(slides)
-	first = slides[0]
+	last_slide = slides[0]
 	slides = slides[1:]
-	print(slides)
-	print(first)
+	#print(slides)
+	#print(last_slide)
 
-	slide_show = [first]
+	slide_show = [last_slide]
+	random.shuffle(slides)
+	print(len(slides))
+	print(last_slide)
 	while len(slides) != 0:
 		# slide_to_remove = None
 		# max_score = -1
 		# for slide in slides:
 		# 	pass
-		random.shuffle(slides)
-		slide_to_remove = slides[0]
-		slides = slides[1:]
+		sub_slides = random.sample(slides, min(len(slides), 20))
+		print(sub_slides)
+		new_score = -1
+		new_slide = None
+		for slide in sub_slides:
+			score = calc_score(last_slide.tags, slide.tags)
+			if score > new_score:
+				new_slide = slide
+				new_score = score
 
-		slide_show.append(slide_to_remove)
+		slides.remove(slide)
+		slide_show.append(new_slide)
+	#slide_show = slides
+	
+	#print('batata')	
 
 	print(slide_show)
+
+	return slide_show
+
+def calc_score_from_slide_show(slide_show):
+	total_score = 0
+	n = len(slide_show) - 1
+	for i in range(n):
+		tags1 = slide_show[i].tags
+		tags2 = slide_show[i + 1].tags
+
+		score = calc_score(tags1, tags2)
+		total_score += score		
+
+	print(total_score)
+
 
 
 f_is_vertical = lambda a : a == 'V'
@@ -105,6 +145,7 @@ for i in range(n):
 
 	pics.append( Pic(is_vertical, tags, i) )
 
-##print(pics)
-##print(upper_bound(pics))
-optimize(pics)
+###print(pics)
+###print(upper_bound(pics))
+slide_show = optimize(pics)
+calc_score_from_slide_show(slide_show)
