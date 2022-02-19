@@ -3,8 +3,9 @@ import sys
 n = int(input())
 l = []
 
-pct_dislike = float(sys.argv[1])
-min_dislike = int(n * pct_dislike) 
+# pct_dislike = float(sys.argv[1])
+# min_dislike = int(n * pct_dislike) 
+min_dislike = int(sys.argv[1])
 
 count_likes = {}
 count_dislikes = {}
@@ -37,6 +38,6 @@ for ing, count in count_dislikes.items():
 print(len(ings), end=' ')
 for ing in ings:
     print(ing, end=' ')
-print()
+#print()
 
 #print(count_dislikes, count_likes)
