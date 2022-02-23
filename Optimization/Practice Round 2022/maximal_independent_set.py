@@ -1,4 +1,4 @@
-from collections import OrderedDict
+# from collections import OrderedDict
 
 def foo(graph, my_id, likes, count_dislikes):
     for ing_like in likes[my_id]:
@@ -63,10 +63,10 @@ chosen_people = [False for _ in range(n)]
 #H = [21,1,45,78,3,5]
 # Use heapify to rearrange the elements
 
-g_sorted = enumerate(graph)
+#g_sorted = enumerate(graph)
 #print(g_sorted)
-g_sorted = sorted(g_sorted, key=(lambda x : -len(x[1])))
-g_sorted = OrderedDict(g_sorted)
+#g_sorted = sorted(g_sorted, key=(lambda x : -len(x[1])))
+#g_sorted = OrderedDict(g_sorted)
 #print(g_sorted)
 
 # heapq.heapify(g_sorted)
@@ -74,43 +74,44 @@ g_sorted = OrderedDict(g_sorted)
 # heapq.heappop(g_sorted)
 # print(g_sorted)
 
-while len(g_sorted) > 0:
+while True:#len(g_sorted) > 0:
     #print('asiusdhusd')
-    # should_break = True
-    # for i, s in enumerate(graph):
-    #     if len(s) > 0:
-    #         should_break = False
-    #         break
+    should_break = True
+    for i, s in enumerate(graph):
+        if len(s) > 0:
+            should_break = False
+            break
 
-    # if should_break:
-    #     #print('alo')
-    #     break
+    if should_break:
+        #print('alo')
+        break
 
-    # g_sorted = enumerate(graph)
-    # g_sorted = sorted(g_sorted, key=(lambda el : len(el[1]) ) )
-    worst_node = g_sorted.popitem(True)#heapq.heappop(g_sorted)
+    g_sorted = enumerate(graph)
+    g_sorted = sorted(g_sorted, key=(lambda el : len(el[1]) ) )
+    print(g_sorted)
+    worst_node = g_sorted[-1]#g_sorted.popitem(True)#heapq.heappop(g_sorted)
     #print(worst_node)
     my_id = worst_node[0]
     nbors = graph[my_id]
 
     #print(g_sorted)
 
-    for nbor in nbors.copy():
-        nbors2 = graph[nbor]
-        for nbor2 in nbors2:
-            graph[nbor2].discard(nbor)
-        g_sorted.popitem(nbor)
-        graph[nbor] = set()
+    # for nbor in nbors.copy():
+    #     nbors2 = graph[nbor]
+    #     for nbor2 in nbors2:
+    #         graph[nbor2].discard(nbor)
+    #     g_sorted.popitem(nbor)
+    #     graph[nbor] = set()
 
-    # for nobr in nbors:
-    #     graph[nbor].discard(my_id)
+    for nbor in nbors:
+        graph[nbor].discard(my_id)
     #print(graph[my_id])
 
-    #graph[my_id] = set()
+    graph[my_id] = set()
     chosen_people[my_id] = True
 
 #print(graph)
-#print(chosen_people)
+print(chosen_people)
 ings = set()
 for i, chosen in enumerate(chosen_people):
     if chosen:
