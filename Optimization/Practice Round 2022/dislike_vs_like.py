@@ -5,7 +5,7 @@ def foo(orig_ing, count_dislikes, count_likes):
     dislikes = count_dislikes.get(orig_ing, 0)
     likes = count_likes.get(orig_ing, 0)
 
-    #print(dislikes, likes, orig_ing)
+    print(dislikes, likes, orig_ing)
 
     return ( dislikes / (likes + dislikes), dislikes, -likes,  orig_ing )
     # for ing, dislikes in count_dislikes.items():
