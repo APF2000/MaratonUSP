@@ -56,7 +56,6 @@ for i in range(n):
     
 #print(graph)
 
-chosen_people = [False for _ in range(n)]
 
 #print(graph)
 
@@ -74,6 +73,8 @@ chosen_people = [False for _ in range(n)]
 # heapq.heappop(g_sorted)
 # print(g_sorted)
 
+chosen_people = [len(s) == 0 for s in graph]
+
 while True:#len(g_sorted) > 0:
     #print('asiusdhusd')
     should_break = True
@@ -83,35 +84,37 @@ while True:#len(g_sorted) > 0:
             break
 
     if should_break:
-        #print('alo')
+        print('alo')
         break
 
     g_sorted = enumerate(graph)
     g_sorted = sorted(g_sorted, key=(lambda el : len(el[1]) ) )
     print(g_sorted)
-    worst_node = g_sorted[-1]#g_sorted.popitem(True)#heapq.heappop(g_sorted)
-    #print(worst_node)
-    my_id = worst_node[0]
-    nbors = graph[my_id]
+    best_node = g_sorted[-1]#g_sorted.popitem(True)#heapq.heappop(g_sorted)
+    #print(best_node)
+    my_id = best_node[0]
+    nbors = graph[my_id].copy()
 
     #print(g_sorted)
+    
+    for nbor in nbors:#.copy():
+        nbors2 = graph[nbor]#.copy()
+        for nbor2 in nbors2:#.copy():
+            #print('g1', graph)
+            graph[nbor2].discard(nbor)
+            #print('g2', graph)
+        #g_sorted.popitem(nbor)
+        graph[nbor] = set()#[i for i in range(n)])
 
-    # for nbor in nbors.copy():
-    #     nbors2 = graph[nbor]
-    #     for nbor2 in nbors2:
-    #         graph[nbor2].discard(nbor)
-    #     g_sorted.popitem(nbor)
-    #     graph[nbor] = set()
+    # for nbor in nbors:
+    #     graph[nbor].discard(my_id)
+    # #print(graph[my_id])
 
-    for nbor in nbors:
-        graph[nbor].discard(my_id)
-    #print(graph[my_id])
-
-    graph[my_id] = set()
+    graph[my_id] = set()#[i for i in range(n)])
     chosen_people[my_id] = True
 
 #print(graph)
-print(chosen_people)
+#print(chosen_people)
 ings = set()
 for i, chosen in enumerate(chosen_people):
     if chosen:
