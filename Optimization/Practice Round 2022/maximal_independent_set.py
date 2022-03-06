@@ -84,14 +84,21 @@ while True:#len(g_sorted) > 0:
             break
 
     if should_break:
-        print('alo')
+        #print('alo')
         break
 
     g_sorted = enumerate(graph)
     g_sorted = sorted(g_sorted, key=(lambda el : len(el[1]) ) )
-    print(g_sorted)
+    #print(g_sorted)
     best_node = g_sorted[-1]#g_sorted.popitem(True)#heapq.heappop(g_sorted)
     #print(best_node)
+    for node in g_sorted:
+        s = node[1]
+        if len(s) > 0:
+            best_node = node
+            break
+    #print(best_node)
+            
     my_id = best_node[0]
     nbors = graph[my_id].copy()
 
