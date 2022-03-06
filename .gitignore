@@ -1,3 +1,7 @@
+# C compile outputs
+a.out
+*.exe
+
 # Google hashcode
 IA/out/
 
