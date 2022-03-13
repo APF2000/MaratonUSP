@@ -68,8 +68,11 @@ projs = []
 skill_to_projs = {}
 
 all_skills = set()
-f_names = ['b']#, 'b', 'c', 'd', 'e', 'f', 'g']
+f_names = ['a', 'b', 'c', 'd', 'e', 'f', 'g']
 for f_name in f_names:
+    print('-----------')
+    print('file: ', f_name)
+
     in_file = open('in/' + f_name + '.in')
     out_file = open('out/' + f_name + '.out')
 
@@ -147,7 +150,7 @@ for f_name in f_names:
         proj_id = proj_info['proj_id']
         proj = projs[ proj_id ]
         new_people_ids = set( proj_info['people_ids'] )
-        print('new_people_ids', new_people_ids)
+        # print('new_people_ids', new_people_ids)
 
         id_day = 0
         while True:
@@ -155,10 +158,10 @@ for f_name in f_names:
             active_people_ids = day_info.get('active_people_ids', set())
             active_proj_ids = day_info.get('active_proj_ids', set())
 
-            print('active_people_ids', active_people_ids)
+            #print('active_people_ids', active_people_ids)
 
             conflict_people_ids = active_people_ids.intersection( new_people_ids ) 
-            print('conflict_people_ids', conflict_people_ids)
+            #print('conflict_people_ids', conflict_people_ids)
             if len(conflict_people_ids) == 0:
                 proj.first_day_of_work = id_day
 
@@ -176,8 +179,8 @@ for f_name in f_names:
 
             id_day += 1
 
-        print('proj', proj)
-        print('id_day', id_day)
+        # print('proj', proj)
+        # print('id_day', id_day)
 
     #print('schedule', schedule)
     #print('worker_ids', worker_ids)
