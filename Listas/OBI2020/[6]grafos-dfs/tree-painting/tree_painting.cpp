@@ -10,17 +10,30 @@ using namespace std;
 
 #define DEBUG(x) cout << #x << " = " << x << ", ";
 
+void debug_map_map(unordered_map<long, unordered_map<long, long>> mm)
+{
+	for(auto el : mm)
+	{
+		cout << el.first << " : { ";
+		for(auto el2 : el.second)
+		{
+			cout << "(" << el2.first << ", " << el2.second << "), ";
+		}
+		cout << "}" << endl;
+	}
+}
+
 long n;
 long count = 0;
 unordered_map<long, unordered_map<long, long>> scores, qttys;
-unordered_map<long, unordered_set<long>> not_visited, conns;
-unordered_map<long , long> fathers;
+unordered_map<long, unordered_set<long>> graph; //not_visited
+//unordered_map<long , long> fathers;
 
 void add_score(long v1, long v2)
 {
-	if(conns.find(v1) == conns.end())
+	if(graph.find(v1) == graph.end())
 	{
-		conns[v1] = {};
+		graph[v1] = {};
 		//visited[v1] = {};
 	}
 
@@ -28,7 +41,7 @@ void add_score(long v1, long v2)
 	DEBUG(v2);
 	cout << endl;
 
-	conns[v1].insert(v2);
+	graph[v1].insert(v2);
 
 
 	if(scores.find(v1) == scores.end())
@@ -42,12 +55,16 @@ void add_score(long v1, long v2)
 	qttys[v1][v2] = -1;
 }
 
-void initial_score(long root, long req_node, long *score, long *qtty)
+void calc_score_and_qtty(long root, long req_node)//, long *score, long *qtty)
 {
-	long new_score = 1;
 	long new_qtty = 1;
+	long new_score = 1;
 
-	for(long child : conns[req_node])
+	// long a;
+	// cin >> a;
+
+
+	for(long child : graph[req_node])
 	{
 		long c_node = child;
 		long c_score = scores[req_node][c_node];
@@ -55,35 +72,43 @@ void initial_score(long root, long req_node, long *score, long *qtty)
 
 		if(c_node == root) continue;
 
+		// DEBUG(&(scores[req_node][c_node]));
+		// DEBUG(&scores[req_node][c_node]);
+
 		DEBUG(c_node);
 		DEBUG(req_node);
+		DEBUG(new_qtty);
+		DEBUG(new_score);
 		cout << endl;
 
+		DEBUG(c_score);
+		DEBUG(c_qtty);
+		cout << endl;
 
 		if(c_score == -1 || c_qtty == -1)
 		{
-			count++;
-			initial_score(req_node, c_node, &c_score, &c_qtty);
-
-			scores[req_node][c_node] = c_score;
-			qttys[req_node][c_node] = c_qtty;
-
-			fathers[c_node] = req_node;
-			cout << "------------------" << endl;
-			for(pair<long, long> aux : fathers)
-			{
-				DEBUG(aux.first);
-				DEBUG(aux.second);
-				cout << endl;
-			}
+			calc_score_and_qtty(req_node, c_node);
+			c_score = scores[req_node][c_node];
+			c_qtty = qttys[req_node][c_node];
 		}	
+
+		DEBUG(c_score);
+		DEBUG(c_qtty);
+		cout << endl;
 
 		new_qtty += c_qtty;
 		new_score += (c_score + c_qtty);
 	}
 
-	*score = new_score;
-	*qtty = new_qtty;
+
+	DEBUG(root);
+	DEBUG(req_node);
+	DEBUG(new_qtty);
+	DEBUG(new_score);
+	cout << endl;
+	
+	qttys[root][req_node] = new_qtty;
+	scores[root][req_node] = new_score;
 }
 
 int main()
@@ -99,68 +124,26 @@ int main()
 		add_score(v2, v1);
 	}
 
-	
-	long new_score, new_qtty;
-	initial_score(1, 1, &new_score, &new_qtty);
-	scores[0][1] = new_score;
-	qttys[0][1] = new_qtty;
-
-	unordered_set<long> children = conns[1], visited;
-	while(!children.empty())
+	for (long i = 1; i <= n; i++)
 	{
-		long child = *( children.begin() );
-		long father = fathers[child];
+		cout << "aaaaaaa" << endl;
+		add_score(0, i);
+		// add_score(i, 0);
 
-		children.erase(child);
-		//visited.insert(child);
+		debug_map_map(qttys);
 
-		for(long grand_child : conns[child])
-		{
-			//if(visited.find(grand_child) != visited.end()) continue;
-			if(grand_child == father) continue;
-
-			children.insert(grand_child);
-		}
-
-		// rerooting
-		long sc_father = scores[father][child];
-		long qt_father = qttys[father][child] - 1;
-		long qt_other_children = 0;
-
-		for(long brother : conns[father])
-		{
-			if(brother == child) continue;
-
-			DEBUG(brother);
-			qt_other_children += qttys[father][brother];
-		}
-
-		long score_except_my_subtree = sc_father - (qt_father - 1);
-		long new_score = score_except_my_subtree + qt_other_children;
-
-		scores[child][father] = score_except_my_subtree;
-		qttys[child][father] = qt_father;
-
-		DEBUG(child);
-		DEBUG(father);
-
-		DEBUG(sc_father);
-		DEBUG(qt_father);
-		DEBUG(qt_other_children);
-		DEBUG(score_except_my_subtree);
-		DEBUG(new_score);
-
-		cout << endl;
-
-		int aaaaaaaaaaaaaaaa;
-		cin >> aaaaaaaaaaaaaaaa;
+		calc_score_and_qtty(0, i);
 	}
-	
-	//long max_score = -1;
-	//if(new_score > max_score) max_score = new_score;
+
+	long max_score = -1;
+	for (int i = 1; i <= n; i++)
+	{
+		long new_score = scores[0][i];
+		if(new_score > max_score) max_score = new_score;
+	}
 
 
-	// cout << max_score << endl;
+	cout << max_score << endl;
 	// cout << count << endl;
 
 	return 0;
