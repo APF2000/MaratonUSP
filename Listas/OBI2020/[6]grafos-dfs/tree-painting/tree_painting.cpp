@@ -8,18 +8,18 @@
 
 using namespace std;
 
-#define DEBUG(x) cout << #x << " = " << x << ", ";
+#define debug(x) //cout << #x << " = " << x << ", ";
 
 void debug_map_map(unordered_map<long, unordered_map<long, long>> mm)
 {
 	for(auto el : mm)
 	{
-		cout << el.first << " : { ";
+		//cout << el.first << " : { ";
 		for(auto el2 : el.second)
 		{
-			cout << "(" << el2.first << ", " << el2.second << "), ";
+			//cout << "(" << el2.first << ", " << el2.second << "), ";
 		}
-		cout << "}" << endl;
+		//cout << "}" << endl;
 	}
 }
 
@@ -37,9 +37,9 @@ void add_score(long v1, long v2)
 		//visited[v1] = {};
 	}
 
-	DEBUG(v1);
-	DEBUG(v2);
-	cout << endl;
+	//debug(v1);
+	//debug(v2);
+	////cout << endl;
 
 	graph[v1].insert(v2);
 
@@ -72,18 +72,18 @@ void calc_score_and_qtty(long root, long req_node)//, long *score, long *qtty)
 
 		if(c_node == root) continue;
 
-		// DEBUG(&(scores[req_node][c_node]));
-		// DEBUG(&scores[req_node][c_node]);
+		// //debug(&(scores[req_node][c_node]));
+		// //debug(&scores[req_node][c_node]);
 
-		DEBUG(c_node);
-		DEBUG(req_node);
-		DEBUG(new_qtty);
-		DEBUG(new_score);
-		cout << endl;
+		//debug(c_node);
+		//debug(req_node);
+		//debug(new_qtty);
+		//debug(new_score);
+		////cout << endl;
 
-		DEBUG(c_score);
-		DEBUG(c_qtty);
-		cout << endl;
+		//debug(c_score);
+		//debug(c_qtty);
+		//cout << endl;
 
 		if(c_score == -1 || c_qtty == -1)
 		{
@@ -92,20 +92,20 @@ void calc_score_and_qtty(long root, long req_node)//, long *score, long *qtty)
 			c_qtty = qttys[req_node][c_node];
 		}	
 
-		DEBUG(c_score);
-		DEBUG(c_qtty);
-		cout << endl;
+		//debug(c_score);
+		//debug(c_qtty);
+		//cout << endl;
 
 		new_qtty += c_qtty;
 		new_score += (c_score + c_qtty);
 	}
 
 
-	DEBUG(root);
-	DEBUG(req_node);
-	DEBUG(new_qtty);
-	DEBUG(new_score);
-	cout << endl;
+	//debug(root);
+	//debug(req_node);
+	//debug(new_qtty);
+	//debug(new_score);
+	//cout << endl;
 	
 	qttys[root][req_node] = new_qtty;
 	scores[root][req_node] = new_score;
@@ -126,11 +126,11 @@ int main()
 
 	for (long i = 1; i <= n; i++)
 	{
-		cout << "aaaaaaa" << endl;
+		//cout << "aaaaaaa" << endl;
 		add_score(0, i);
 		// add_score(i, 0);
 
-		debug_map_map(qttys);
+		//debug_map_map(qttys);
 
 		calc_score_and_qtty(0, i);
 	}
@@ -144,7 +144,7 @@ int main()
 
 
 	cout << max_score << endl;
-	// cout << count << endl;
+	// //cout << count << endl;
 
 	return 0;
 }
