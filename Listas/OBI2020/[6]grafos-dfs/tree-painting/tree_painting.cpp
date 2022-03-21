@@ -5,6 +5,7 @@
 #include <unordered_map>
 #include <unordered_set>
 #include <vector>
+#include <cstdlib>
 
 using namespace std;
 
@@ -25,8 +26,11 @@ void debug_map_map(unordered_map<long, unordered_map<long, long>> mm)
 
 long n;
 long count = 0;
+long max_score;
 unordered_map<long, unordered_map<long, long>> scores, qttys;
-unordered_map<long, unordered_set<long>> graph, visited;
+unordered_map<long, unordered_set<long>> graph;//, visited;
+vector<pair<long, long>> visited_branchs;
+unordered_map<long, long> partial_scores, partial_qttys;
 //unordered_map<long , long> fathers;
 
 void add_score(long v1, long v2)
@@ -60,28 +64,30 @@ void calc_score_and_qtty(long root, long req_node)//, long *score, long *qtty)
 	long new_qtty = 1;
 	long new_score = 1;
 
+	visited_branchs.push_back( {root, req_node} );
+
 	// long a;
 	// cin >> a;
 	//cout << "aaaaaaa" << endl;
 	// continue only if branch was not visited
-	if(visited.find(root) == visited.end()) // init root visited nodes
-	{
-		visited[root] = {};
-	}
+	// if(visited.find(root) == visited.end()) // init root visited nodes
+	// {
+	// 	visited[root] = {};
+	// }
 
 
-	debug(root);
-	debug(req_node);
-	cout << endl;
+	// debug(root);
+	// debug(req_node);
+	// cout << endl;
 
-	unordered_set<long> aux_visited = visited[root];
-	if(aux_visited.find(req_node) != aux_visited.end()) // found
-	{
-		cout << "aaaaaaa2" << endl;
-		return;
-	}
+	// unordered_set<long> aux_visited = visited[root];
+	// if(aux_visited.find(req_node) != aux_visited.end()) // found
+	// {
+	// 	cout << "aaaaaaa2" << endl;
+	// 	return;
+	// }
 
-	visited[root].insert(req_node);
+	// visited[root].insert(req_node);
 
 
 	for(long child : graph[req_node])
@@ -90,16 +96,16 @@ void calc_score_and_qtty(long root, long req_node)//, long *score, long *qtty)
 		long c_score = scores[req_node][c_node];
 		long c_qtty = qttys[req_node][c_node];
 
-		// if(c_node == root) continue;
+		if(c_node == root) continue;
 
 		// //debug(&(scores[req_node][c_node]));
 		// //debug(&scores[req_node][c_node]);
 
-		debug(req_node);
-		debug(c_node);
-		debug(new_qtty);
-		debug(new_score);
-		cout << endl;
+		// debug(req_node);
+		// debug(c_node);
+		// debug(new_qtty);
+		// debug(new_score);
+		// cout << endl;
 
 		//debug(c_score);
 		//debug(c_qtty);
@@ -115,12 +121,14 @@ void calc_score_and_qtty(long root, long req_node)//, long *score, long *qtty)
 		//debug(c_score);
 		//debug(c_qtty);
 		//cout << endl;
+		partial_qttys[req_node] += c_qtty;
+		partial_scores[req_node] += (c_score + c_qtty);
 
-		if(c_node != root)
-		{
-			new_qtty += c_qtty;
-			new_score += (c_score + c_qtty);
-		}
+		// if(c_node != root)
+		// {
+		new_qtty += c_qtty;
+		new_score += (c_score + c_qtty);
+		//}
 	}
 
 
@@ -132,6 +140,45 @@ void calc_score_and_qtty(long root, long req_node)//, long *score, long *qtty)
 	qttys[root][req_node] = new_qtty;
 	scores[root][req_node] = new_score;
 	
+}
+
+void calc_remaning_score_and_qtty()
+{
+	for(auto branch : visited_branchs)
+	{
+		long ex_root = branch.first;
+		long ex_child = branch.second;
+		cout << ex_root << " " << ex_child << endl;
+
+		long pqr = partial_qttys[ex_root];
+		long pqc = partial_qttys[ex_child];
+
+		long psr = partial_scores[ex_root];
+		long psc = partial_scores[ex_child];
+
+		long qtty_other_children = pqr - pqc;
+		long score_subtree_child = psc - pqc - psr;
+		long score_other_children = max_score - n - ;//psc - pqr - score_subtree_child;
+
+debug(qtty_other_children);
+// debug(score_subtree_child);
+debug(score_other_children);
+cout << endl;
+		// long pseg = partial_scores[grandfather];
+		// long pqeg = partial_qttys[grandfather];
+
+		debug(psc);
+		debug(pqc);
+		debug(psr);
+		debug(pqr);
+		cout << endl;
+
+		long new_qtty = qtty_other_children;
+		long new_score = score_other_children;
+	
+		qttys[ex_child][ex_root] = new_qtty;
+		scores[ex_child][ex_root] = new_score;
+	}
 }
 
 int main()
@@ -154,21 +201,41 @@ int main()
 
 		//debug_map_map(qttys);
 
+
+		partial_scores[i] = 1;
+		partial_qttys[i] = 1;
 		
 	}
 
 	// long max_score = -1;
 	calc_score_and_qtty(0, 1);
-	long max_score = scores[0][1];
+	max_score = scores[0][1];
 	debug_map_map(qttys);
 	debug_map_map(scores);
 
-	// for (int i = 1; i <= n; i++)
-	// {
-	// 	long new_score = scores[0][i];
-	// 	if(new_score > max_score) max_score = new_score;
-	// }
+	for(auto branch : visited_branchs)
+	{
+		cout << branch.first << " " << branch.second << endl;
+	}
+	cout << "==============" << endl;
 
+	for(auto qtty : partial_qttys)
+	{
+		cout << qtty.first << " " << qtty.second << endl;
+	}
+	cout << "==============" << endl;
+
+	for(auto score : partial_scores)
+	{
+		cout << score.first << " " << score.second << endl;
+	}
+	cout << "==============" << endl;
+
+	calc_remaning_score_and_qtty();
+	debug_map_map(qttys);
+	cout << "==============" << endl;
+	debug_map_map(scores);
+	
 
 	cout << max_score << endl;
 	// //cout << count << endl;
