@@ -26,7 +26,6 @@ void debug_map_map(unordered_map<long, unordered_map<long, long>> mm)
 
 long n;
 long count = 0;
-long max_score;
 unordered_map<long, unordered_map<long, long>> scores, qttys;
 unordered_map<long, unordered_set<long>> graph;//, visited;
 vector<pair<long, long>> visited_branchs;
@@ -127,7 +126,7 @@ void calc_remaning_score_and_qtty(long root)
 {
 	pair<long, long> aux_struct = {root, 0};
 	queue<pair<long, long>> next_structs;
-	unordered_set<long> visited;
+	unordered_set<long> visited = {root};
 
 	next_structs.push(aux_struct);
 
@@ -136,10 +135,13 @@ void calc_remaning_score_and_qtty(long root)
 		pair<long, long> aux_struct = next_structs.front();
 		next_structs.pop();
 
+		cout << "---------------" << endl;
+
 		cout << next_structs.size() << endl;
 
 		long node = aux_struct.first;
 		long father = aux_struct.second;
+
 
 		debug(node);
 		debug(father);
@@ -150,10 +152,14 @@ void calc_remaning_score_and_qtty(long root)
 			aux_struct = { child, node };
 			if(visited.find(child) == visited.end()) // not visited
 			{
+				debug(child);
+				cout << endl;
 				next_structs.push(aux_struct);
 				visited.insert(child);
 			}
 		}
+		
+		if(father == 0) continue;
 
 		long score_father = scores[0][father];
 		long score_node = partial_scores[node];
@@ -161,10 +167,22 @@ void calc_remaning_score_and_qtty(long root)
 		long qtty_father = qttys[0][father];
 		long qtty_node = partial_qttys[node];
 
-		scores[node][father] = score_father - (score_node + qtty_node);
-		qttys[node][father] = qtty_father - qtty_node;
+		long new_score = score_father - (score_node + qtty_node);
+		long new_qtty = qtty_father - qtty_node;
 
-		scores[0][node] = score_father - (score_node + qtty_node) + (score_node - qtty_node) + n;
+
+		debug(score_father);
+		debug(qtty_father);
+		debug(score_node);
+		debug(qtty_node);
+		debug(new_score);
+		debug(new_qtty);
+		cout << endl;
+
+		scores[node][father] = new_score;
+		qttys[node][father] = new_qtty;
+
+		scores[0][node] = new_score + (score_node - qtty_node) + n;
 		qttys[0][node] = n;
 	}
 }
@@ -195,9 +213,8 @@ int main()
 		
 	}
 
-	// long max_score = -1;
 	calc_score_and_qtty(0, 1);
-	max_score = scores[0][1];
+	//max_score = scores[0][1];
 	debug_map_map(qttys);
 	debug_map_map(scores);
 
@@ -225,6 +242,12 @@ int main()
 	debug_map_map(scores);
 	
 
+	long max_score = -1;
+	for(auto el : scores[0])
+	{
+		long new_score = el.second;
+		if(new_score > max_score) max_score = new_score;
+	}
 	cout << max_score << endl;
 	// //cout << count << endl;
 
