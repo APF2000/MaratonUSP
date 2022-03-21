@@ -5,7 +5,7 @@
 #include <unordered_map>
 #include <unordered_set>
 #include <vector>
-#include <cstdlib>
+#include <queue>
 
 using namespace std;
 
@@ -68,26 +68,10 @@ void calc_score_and_qtty(long root, long req_node)//, long *score, long *qtty)
 
 	// long a;
 	// cin >> a;
-	//cout << "aaaaaaa" << endl;
-	// continue only if branch was not visited
-	// if(visited.find(root) == visited.end()) // init root visited nodes
-	// {
-	// 	visited[root] = {};
-	// }
-
 
 	// debug(root);
 	// debug(req_node);
 	// cout << endl;
-
-	// unordered_set<long> aux_visited = visited[root];
-	// if(aux_visited.find(req_node) != aux_visited.end()) // found
-	// {
-	// 	cout << "aaaaaaa2" << endl;
-	// 	return;
-	// }
-
-	// visited[root].insert(req_node);
 
 
 	for(long child : graph[req_node])
@@ -97,9 +81,6 @@ void calc_score_and_qtty(long root, long req_node)//, long *score, long *qtty)
 		long c_qtty = qttys[req_node][c_node];
 
 		if(c_node == root) continue;
-
-		// //debug(&(scores[req_node][c_node]));
-		// //debug(&scores[req_node][c_node]);
 
 		// debug(req_node);
 		// debug(c_node);
@@ -142,42 +123,49 @@ void calc_score_and_qtty(long root, long req_node)//, long *score, long *qtty)
 	
 }
 
-void calc_remaning_score_and_qtty()
+void calc_remaning_score_and_qtty(long root)
 {
-	for(auto branch : visited_branchs)
+	pair<long, long> aux_struct = {root, 0};
+	queue<pair<long, long>> next_structs;
+	unordered_set<long> visited;
+
+	next_structs.push(aux_struct);
+
+	while(!next_structs.empty())
 	{
-		long ex_root = branch.first;
-		long ex_child = branch.second;
-		cout << ex_root << " " << ex_child << endl;
+		pair<long, long> aux_struct = next_structs.front();
+		next_structs.pop();
 
-		long pqr = partial_qttys[ex_root];
-		long pqc = partial_qttys[ex_child];
+		cout << next_structs.size() << endl;
 
-		long psr = partial_scores[ex_root];
-		long psc = partial_scores[ex_child];
+		long node = aux_struct.first;
+		long father = aux_struct.second;
 
-		long qtty_other_children = pqr - pqc;
-		long score_subtree_child = psc - pqc - psr;
-		long score_other_children = max_score - n - ;//psc - pqr - score_subtree_child;
-
-debug(qtty_other_children);
-// debug(score_subtree_child);
-debug(score_other_children);
-cout << endl;
-		// long pseg = partial_scores[grandfather];
-		// long pqeg = partial_qttys[grandfather];
-
-		debug(psc);
-		debug(pqc);
-		debug(psr);
-		debug(pqr);
+		debug(node);
+		debug(father);
 		cout << endl;
 
-		long new_qtty = qtty_other_children;
-		long new_score = score_other_children;
-	
-		qttys[ex_child][ex_root] = new_qtty;
-		scores[ex_child][ex_root] = new_score;
+		for(long child : graph[node])
+		{
+			aux_struct = { child, node };
+			if(visited.find(child) == visited.end()) // not visited
+			{
+				next_structs.push(aux_struct);
+				visited.insert(child);
+			}
+		}
+
+		long score_father = scores[0][father];
+		long score_node = partial_scores[node];
+
+		long qtty_father = qttys[0][father];
+		long qtty_node = partial_qttys[node];
+
+		scores[node][father] = score_father - (score_node + qtty_node);
+		qttys[node][father] = qtty_father - qtty_node;
+
+		scores[0][node] = score_father - (score_node + qtty_node) + (score_node - qtty_node) + n;
+		qttys[0][node] = n;
 	}
 }
 
@@ -231,7 +219,7 @@ int main()
 	}
 	cout << "==============" << endl;
 
-	calc_remaning_score_and_qtty();
+	calc_remaning_score_and_qtty(1);
 	debug_map_map(qttys);
 	cout << "==============" << endl;
 	debug_map_map(scores);
