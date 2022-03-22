@@ -5,180 +5,160 @@
 #include <unordered_map>
 #include <unordered_set>
 #include <vector>
+#include <queue>
 
 using namespace std;
 
-long n;
-long count = 0;
-unordered_map<long, unordered_map<long, long>> scores, qttys;
-unordered_map<long, unordered_set<long>> visited, not_visited;
-void add_score(long v1, long v2)
-{
-	// if(scores.find(v1) == scores.end())
-	// {
-	// 	scores[v1] = {};
-	// 	qttys[v1] = {};
-	// }
-	//cout << "v1: " << v1 << ", v2: " << v2 << endl;
+#define debug(x) cout << #x << " = " << x << ", ";
 
-	if(not_visited.find(v1) == not_visited.end())
+typedef long long ll;
+
+void debug_map_map(unordered_map<ll, unordered_map<ll, ll>> mm)
+{
+	for(auto el : mm)
 	{
-		not_visited[v1] = {};
-		visited[v1] = {};
+		cout << el.first << " : { ";
+		for(auto el2 : el.second)
+		{
+			cout << "(" << el2.first << ", " << el2.second << "), ";
+		}
+		cout << "}" << endl;
+	}
+}
+
+ll n;
+ll count = 0;
+unordered_map<ll, unordered_map<ll, ll>> scores, qttys;
+unordered_map<ll, unordered_set<ll>> graph;
+unordered_map<ll, ll> partial_scores, partial_qttys;
+
+void add_score(ll v1, ll v2)
+{
+	if(graph.find(v1) == graph.end())
+	{
+		graph[v1] = {};
 	}
 
-	not_visited[v1].insert(v2);
+	graph[v1].insert(v2);
+
+	if(scores.find(v1) == scores.end())
+	{
+		scores[v1] = {};
+		qttys[v1] = {};
+	}
 
 	scores[v1][v2] = -1;
 	qttys[v1][v2] = -1;
 }
 
-void calc_score(long root, long req_node, long *score, long *qtty)
+void calc_score_and_qtty(ll root, ll req_node)
 {
-	long new_score = 1;
-	long new_qtty = 1;
-	count++;
+	ll new_qtty = 1;
+	ll new_score = 1;
 
-	//cout << "#################\nroot: " << root << endl; 
-	//cout << "req_node: " << req_node << endl;
-
-
-	// for (long i = 1; i < n + 1; i++)
-	// {
-	// 	//cout << i << " : {";
-	// 	for (long node : not_visited[i])
-	// 	{
-	// 		//cout << node << ", ";
-	// 	}
-	// 	//cout << "}" << endl;
-	// }
-
-	unordered_set<long> aux = visited[req_node];
-
-	for(long child : aux)
+	for(ll child : graph[req_node])
 	{
-		long c_node = child;
-		long c_score = scores[req_node][c_node];
-		long c_qtty = qttys[req_node][c_node];
+		ll c_node = child;
+		ll c_score = scores[req_node][c_node];
+		ll c_qtty = qttys[req_node][c_node];
 
 		if(c_node == root) continue;
-		
-		//cout << "-------------------" << endl;
-		
-		//cout << "c_node: " << c_node << ", visited" << endl;
-
-		//cout << "visited: c_qqty: " << c_qtty << ", c_score: " << c_score << endl;
-
-		//count++;
-
-		new_qtty += c_qtty;
-		new_score += (c_score + c_qtty);
-	}
-
-	aux = not_visited[req_node];
-
-	//for(pair<long, long> child : scores[req_node])
-	for(long child : aux)
-	{
-		long c_node = child;
-		long c_score = scores[req_node][c_node];
-		long c_qtty = qttys[req_node][c_node];
-
-		if(c_node == root) continue;
-
-		////cout << "--------------\nchild: " << c_node << endl;
-		//cout << "-------------------" << endl;
-
-		// for(pair<long, unordered_map<long, long>> el : qttys)
-		// {
-		// 	//cout << el.first << " : {";
-		// 	for(pair<long, long> el2 : el.second)
-		// 	{
-		// 		//cout << " {" << el2.first << " : " << el2.second << "}, ";
-		// 	} 
-
-		// 	//cout << "}" << endl;
-		// }
-		// //cout << req_node << " : {"; 
-		// for(long aux : not_visited[req_node])
-		// {
-		// 	//cout << aux << ", ";
-		// }
-		// //cout << "}" << endl;
-
-		not_visited[req_node].erase(c_node);
-		visited[req_node].insert(c_node);
-
-		////cout << "aqui vai dar pau" << endl;
-
-		//cout << "c_node: " << c_node << ", not_visited" << endl;
-		//cout << "c_qqty: " << c_qtty << ", c_score: " << c_score << endl;
-
-		//count++;
 
 		if(c_score == -1 || c_qtty == -1)
 		{
-			calc_score(req_node, c_node, &c_score, &c_qtty);
-
-			scores[req_node][c_node] = c_score;
-			qttys[req_node][c_node] = c_qtty;
+			calc_score_and_qtty(req_node, c_node);
+			c_score = scores[req_node][c_node];
+			c_qtty = qttys[req_node][c_node];
 		}	
-
+		
+		partial_qttys[req_node] += c_qtty;
+		partial_scores[req_node] += (c_score + c_qtty);
+		
 		new_qtty += c_qtty;
 		new_score += (c_score + c_qtty);
 	}
+	
+	qttys[root][req_node] = new_qtty;
+	scores[root][req_node] = new_score;
+	
+}
 
-	*score = new_score;
-	*qtty = new_qtty;
+void calc_remaning_score_and_qtty(ll root)
+{
+	pair<ll, ll> aux_struct = {root, 0};
+	queue<pair<ll, ll>> next_structs;
+	unordered_set<ll> visited = {root};
+
+	next_structs.push(aux_struct);
+
+	while(!next_structs.empty())
+	{
+		pair<ll, ll> aux_struct = next_structs.front();
+		next_structs.pop();
+
+		ll node = aux_struct.first;
+		ll father = aux_struct.second;
+
+		for(ll child : graph[node])
+		{
+			aux_struct = { child, node };
+			if(visited.find(child) == visited.end()) // not visited
+			{
+				next_structs.push(aux_struct);
+				visited.insert(child);
+			}
+		}
+		
+		if(father == 0) continue;
+
+		ll score_father = scores[0][father];
+		ll score_node = partial_scores[node];
+
+		ll qtty_father = qttys[0][father];
+		ll qtty_node = partial_qttys[node];
+
+		ll new_score = score_father - (score_node + qtty_node);
+		ll new_qtty = qtty_father - qtty_node;
+
+		scores[node][father] = new_score;
+		qttys[node][father] = new_qtty;
+
+		scores[0][node] = new_score + (score_node - qtty_node) + n;
+		qttys[0][node] = n;
+	}
 }
 
 int main()
 {
 	cin >> n;
-	for (long i = 0; i < n - 1; i++)
+	for (ll i = 0; i < n - 1; i++)
 	{
-		long v1, v2;
-		cin >> v1 >> v2;
+		ll v1, v2;
+		cin >> v1 >> v2;		
 
-		add_score(v1 - 1, v2 - 1);
-		add_score(v2 - 1, v1 - 1);
+		add_score(v1, v2);
+		add_score(v2, v1);
 	}
 
-	for (long i = 1; i < n + 1; i++)
+	for (ll i = 1; i <= n; i++)
 	{
-		//cout << i << " : {";
-		for (long node : not_visited[i])
-		{
-			//cout << node << ", ";
-		}
-		//cout << "}" << endl;
+		add_score(0, i);
+
+		partial_scores[i] = 1;
+		partial_qttys[i] = 1;
+		
 	}
 
-	long max_score = -1;
-	for (long i = 0; i < n; i++)
+	calc_score_and_qtty(0, 1);
+	calc_remaning_score_and_qtty(1);
+
+	ll max_score = -1;
+	for(auto el : scores[0])
 	{
-		long new_score, new_qtty;
-		//cout << "==================" << endl;
-		calc_score(i + 1, i + 1, &new_score, &new_qtty);
+		ll new_score = el.second;
 		if(new_score > max_score) max_score = new_score;
 	}
-
 	cout << max_score << endl;
-	cout << count << endl;
-
-
-	// //cout << "-------------------------------" << endl;
-
-	// for(pair<long, unordered_map<long, long>> el : qttys)
-	// {
-	// 	//cout << el.first << " : {";
-	// 	for(pair<long, long> el2 : el.second)
-	// 	{
-	// 		//cout << " {" << el2.first << " : " << el2.second << "}, ";
-	// 	} 
-
-	// 	//cout << "}" << endl;
-	// }
 
 	return 0;
 }
