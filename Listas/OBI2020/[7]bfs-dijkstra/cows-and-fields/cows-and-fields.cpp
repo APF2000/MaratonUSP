@@ -2,13 +2,15 @@
 
 #define debug(VAR) cout << #VAR << " = " << VAR << ", ";
 #define debug_ln(VAR) cout << #VAR << " = " << VAR << endl;
-#define debug_v(v) for(auto el : v) cout << el << ", "; cout << endl;
+#define debug_v(v) cout << #v << " = "; for(auto el : v) cout << el << ", "; cout << endl;
 
 #include <iostream>
 #include <queue>
 #include <unordered_map>
 #include <unordered_set>
 #include <vector>
+
+#define INF 1000 * 1000 * 1000 // greater than 2 * 10^5
 
 using namespace std;
 
@@ -30,25 +32,51 @@ unordered_map<ll, unordered_set<ll>> graph;
 unordered_set<ll> specials;
 ll m, n, k;
 
-vector<ll> djikstra()
+vector<ll> djikstra(ll start)
 {
-	vector<ll> v;
+	vector<ll> dists;
+	for (int i = 0; i < n; i++) dists.push_back(INF); // all nodes are infinitly far away
+	dists[start] = 0;
 
-	return v;
+	unordered_set<ll> visited = {}, nodes_to_visit = {start};
+
+	while (nodes_to_visit.size() > 0)
+	{
+		debug_v(nodes_to_visit);
+		debug_v(visited);
+
+		ll id_node = *(nodes_to_visit.begin());
+		nodes_to_visit.erase(id_node);
+		visited.insert(id_node);
+
+		for(ll adj_node : graph[id_node])
+		{
+			bool was_visited = (visited.find(adj_node) != visited.end());
+			if(!was_visited)
+			{
+				cout << "to be visited: " << adj_node << endl;
+				nodes_to_visit.insert(adj_node);
+			}
+
+			ll old_weight = dists[adj_node];
+			ll new_weight = dists[id_node] + 1;
+
+			debug_ln(adj_node);
+			debug_ln(old_weight);
+			debug_ln(new_weight);
+
+			if(new_weight < old_weight) dists[adj_node] = new_weight;
+			debug_v(dists);
+			cout << "--------------" << endl;
+		}
+	}
+	cout << "==============" << endl;
+
+	return dists;	
 }
 
 int main()
 {
-	// [opcional] calcula djikstra inicial sem conexoes especiais
-	// junta todos os nos especiais e chama de conexoes especiais
-	// enquanto tiverem conexoes especiais:
-	// 		calcula djikstra
-	//		remove conexoes espceiais no meio do caminho
-	//		[opcional] se tiver uma conexao especial e nao-especial ao mesmo tempo:
-	//					retorna o valor do djikstra inicial
-	// 		[opcional] se o novo menor caminho ja eh igual ao menor caminho sem conexoes especiais:
-	//					retorna o valor do djikstra inicial (tambem)
-
 	cin >> n >> m >> k;
 	for (int i = 0; i < k; i++)
 	{
@@ -57,16 +85,20 @@ int main()
 		specials.insert(special);
 	}
 
-	for (int i = 0; i < n; i++)
+	for (int i = 0; i < m; i++)
 	{
 		ll v1, v2;
 		cin >> v1 >> v2;
+
+		// decrement to be 0-indexed
+		v1--;
+		v2--;
 
 		graph[v1].insert(v2);
 		graph[v2].insert(v1);
 	}
 
-	for (int i = 1; i <= m; i++)
+	for (int i = 0; i < n; i++)
 	{
 		cout << i << " : ";
 		for(ll el : graph[i])
@@ -75,6 +107,20 @@ int main()
 		}
 		cout << endl;
 	}
+
+	vector<ll> dists_start 	= djikstra(0);
+	vector<ll> dists_end 	= djikstra(m);
+
+	debug_v(dists_start);
+	debug_v(dists_end);
+
+	vector<ll> dists_diff;
+	for (int i = 0; i < n; i++)
+	{
+		dists_diff.push_back( dists_end[i] - dists_start[i] );
+	}
+
+	debug_v(dists_diff);
 
 	return 0;
 }
