@@ -6,8 +6,13 @@
 
 #include <iostream>
 #include <queue>
+#include <unordered_map>
+#include <unordered_set>
+#include <vector>
 
 using namespace std;
+
+typedef long long ll;
 
 void debug_q(queue<int> q)
 {
@@ -21,6 +26,17 @@ void debug_q(queue<int> q)
 	cout << endl;
 }
 
+unordered_map<ll, unordered_set<ll>> graph;
+unordered_set<ll> specials;
+ll m, n, k;
+
+vector<ll> djikstra()
+{
+	vector<ll> v;
+
+	return v;
+}
+
 int main()
 {
 	// [opcional] calcula djikstra inicial sem conexoes especiais
@@ -32,6 +48,33 @@ int main()
 	//					retorna o valor do djikstra inicial
 	// 		[opcional] se o novo menor caminho ja eh igual ao menor caminho sem conexoes especiais:
 	//					retorna o valor do djikstra inicial (tambem)
+
+	cin >> n >> m >> k;
+	for (int i = 0; i < k; i++)
+	{
+		ll special;
+		cin >> special;
+		specials.insert(special);
+	}
+
+	for (int i = 0; i < n; i++)
+	{
+		ll v1, v2;
+		cin >> v1 >> v2;
+
+		graph[v1].insert(v2);
+		graph[v2].insert(v1);
+	}
+
+	for (int i = 1; i <= m; i++)
+	{
+		cout << i << " : ";
+		for(ll el : graph[i])
+		{
+			cout << el << " ";
+		}
+		cout << endl;
+	}
 
 	return 0;
 }
