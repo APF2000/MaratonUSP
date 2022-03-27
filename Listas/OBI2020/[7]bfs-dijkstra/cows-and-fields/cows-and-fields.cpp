@@ -9,6 +9,7 @@
 #include <unordered_map>
 #include <unordered_set>
 #include <vector>
+#include <algorithm>
 
 #define INF 1000 * 1000 * 1000 // greater than 2 * 10^5
 
@@ -86,6 +87,7 @@ int main()
 	{
 		ll special;
 		cin >> special;
+		special--;
 		specials.insert(special);
 	}
 
@@ -118,13 +120,47 @@ int main()
 	debug_v(dists_start);
 	debug_v(dists_end);
 
-	vector<ll> dists_diff;
+	vector<pair<ll, ll>> dists_diff;
 	for (int i = 0; i < n; i++)
 	{
-		dists_diff.push_back( dists_end[i] - dists_start[i] );
+		bool is_special = (specials.find(i) != specials.end());
+		if(is_special)
+		{
+			ll diff = dists_end[i] - dists_start[i];
+			dists_diff.push_back( {diff, i} );
+		}
 	}
 
-	debug_v(dists_diff);
+	for(auto el : dists_diff)
+	{
+		cout << el.first << " ";
+	}
+	cout << endl;
+	sort(dists_diff.begin(), dists_diff.end());
+
+	for(auto el : dists_diff)
+	{
+		cout << el.first << " ";
+	}
+	cout << endl;
+
+	ll size = dists_diff.size();
+	ll id_node1 = dists_diff[0].second;
+	ll id_node2 = dists_diff[1].second;
+
+	cout << id_node1 << " " << id_node2 << endl;
+
+	// compare dists when node1 and node2 are connected
+	ll dist1 = dists_start[id_node1] + dists_end[id_node2] + 1;
+	ll dist2 = dists_start[id_node2] + dists_end[id_node1] + 1;
+	ll dist3 = dists_start[n - 1];
+
+	debug_ln(dist1);
+	debug_ln(dist2);
+	debug_ln(dist3);
+
+	ll min_dist = min({dist1, dist2, dist3});
+	debug_ln(min_dist);
 
 	return 0;
 }
