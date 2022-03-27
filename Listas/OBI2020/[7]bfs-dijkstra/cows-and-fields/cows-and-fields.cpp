@@ -60,8 +60,7 @@ vector<ll> djikstra(ll start)
 			{
 				cout << "to be visited: " << adj_node << endl;
 				nodes_to_visit.insert(adj_node);
-			}
-						
+			}						
 
 			ll old_weight = dists[adj_node];
 			ll new_weight = dists[id_node] + 1;
