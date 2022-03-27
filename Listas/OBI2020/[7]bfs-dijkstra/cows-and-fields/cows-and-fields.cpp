@@ -66,6 +66,7 @@ vector<ll> djikstra(ll start)
 			ll old_weight = dists[adj_node];
 			ll new_weight = dists[id_node] + 1;
 
+			debug_ln(id_node);
 			debug_ln(adj_node);
 			debug_ln(old_weight);
 			debug_ln(new_weight);
