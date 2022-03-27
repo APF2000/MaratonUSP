@@ -100,6 +100,9 @@ int main()
 		v1--;
 		v2--;
 
+		debug(v1);
+		debug_ln(v2);
+
 		graph[v1].insert(v2);
 		graph[v2].insert(v1);
 	}
