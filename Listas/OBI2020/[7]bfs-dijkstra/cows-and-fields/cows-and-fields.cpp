@@ -17,7 +17,7 @@ using namespace std;
 
 typedef long long ll;
 
-void debug_q(queue<int> q)
+void debug_q(queue<ll> q)
 {
 	while(q.size() != 0)
 	{
@@ -41,17 +41,19 @@ vector<ll> djikstra(ll start)
 	for (int i = 0; i < n; i++) dists[i] = INF; // all nodes are infinitly far away
 	dists[start] = 0;
 
-	unordered_set<ll> nodes_to_visit = {start};
+	queue<ll> nodes_to_visit;
+	nodes_to_visit.push(start);
+
 	vector<bool> visited(n);
 	for (int i = 0; i < n; i++) visited[i] = false; 
 
 	while (nodes_to_visit.size() > 0)
 	{
-		debug_v(nodes_to_visit);
+		debug_q(nodes_to_visit);
 		debug_v(visited);
 
-		ll id_node = *(nodes_to_visit.begin());
-		nodes_to_visit.erase(id_node);
+		ll id_node = nodes_to_visit.front();
+		nodes_to_visit.pop();
 		visited[id_node] = true;
 
 		for(ll adj_node : graph[id_node])
@@ -60,7 +62,7 @@ vector<ll> djikstra(ll start)
 			if(!was_visited)
 			{
 				cout << "to be visited: " << adj_node << endl;
-				nodes_to_visit.insert(adj_node);
+				nodes_to_visit.push(adj_node);
 			}						
 
 			ll old_weight = dists[adj_node];
