@@ -30,15 +30,19 @@ void debug_q(queue<int> q)
 
 unordered_map<ll, unordered_set<ll>> graph;
 unordered_set<ll> specials;
-ll m, n, k;
+ll n, m, k;
 
 vector<ll> djikstra(ll start)
 {
-	vector<ll> dists;
-	for (int i = 0; i < n; i++) dists.push_back(INF); // all nodes are infinitly far away
+	debug(start);
+	
+	vector<ll> dists(n);
+	for (int i = 0; i < n; i++) dists[i] = INF; // all nodes are infinitly far away
 	dists[start] = 0;
 
-	unordered_set<ll> visited = {}, nodes_to_visit = {start};
+	unordered_set<ll> nodes_to_visit = {start};
+	vector<bool> visited(n);
+	for (int i = 0; i < n; i++) visited[i] = false; 
 
 	while (nodes_to_visit.size() > 0)
 	{
@@ -47,11 +51,11 @@ vector<ll> djikstra(ll start)
 
 		ll id_node = *(nodes_to_visit.begin());
 		nodes_to_visit.erase(id_node);
-		visited.insert(id_node);
+		visited[id_node] = true;
 
 		for(ll adj_node : graph[id_node])
 		{
-			bool was_visited = (visited.find(adj_node) != visited.end());
+			bool was_visited = visited[adj_node];
 			if(!was_visited)
 			{
 				cout << "to be visited: " << adj_node << endl;
@@ -109,7 +113,7 @@ int main()
 	}
 
 	vector<ll> dists_start 	= djikstra(0);
-	vector<ll> dists_end 	= djikstra(m);
+	vector<ll> dists_end 	= djikstra(n - 1);
 
 	debug_v(dists_start);
 	debug_v(dists_end);
