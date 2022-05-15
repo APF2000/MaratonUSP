@@ -23,25 +23,25 @@ int main()
     c = ordered[2];
     
     bool possible = false;
-    int ribbons = 0;
+    int max_ribbons = 0;
 
-    for (int i = 0; i <= n / c && !possible; i++)
+    for (int i = 0; i <= n / a; i++)
     {
-        for (int j = 0; j <= n / b && !possible; j++)
+        for (int j = 0; j <= n / b; j++)
         {
-            for (int k = 0; k <= n / a && !possible; k++)
+            for (int k = 0; k <= n / c; k++)
             {
-                int sum = i * c + j * b + k * a;
+                int sum = i * a + j * b + k * c;
                 if(sum == n)
                 {
-                    possible = true;
-                    ribbons = i + j + k;               
+                    int ribbons = i + j + k;  
+                    if(ribbons > max_ribbons) max_ribbons = ribbons;             
                 }
             }
         }
     }
 
-    cout << ribbons << endl;
+    cout << max_ribbons << endl;
 
 	return 0;
 }
