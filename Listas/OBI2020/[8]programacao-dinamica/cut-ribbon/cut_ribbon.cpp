@@ -27,17 +27,22 @@ int main()
 
     for (int i = 0; i <= n / a; i++)
     {
-        for (int j = 0; j <= n / b; j++)
+        int q1 = i * a;
+        for (int j = 0; j <= (n - q1) / b; j++)
         {
-            for (int k = 0; k <= n / c; k++)
-            {
-                int sum = i * a + j * b + k * c;
-                if(sum == n)
-                {
-                    int ribbons = i + j + k;  
-                    if(ribbons > max_ribbons) max_ribbons = ribbons;             
-                }
-            }
+            int q2 = j * b;
+            int rest_n = n - q1 - q2;
+
+            // sum cant fill ribbons
+            if(rest_n % c != 0) continue;
+
+            int k = (rest_n / c);
+            // debug(i);
+            // debug(j);
+            // debug(k);
+
+            int ribbons = i + j + k;  
+            if(ribbons > max_ribbons) max_ribbons = ribbons;          
         }
     }
 
