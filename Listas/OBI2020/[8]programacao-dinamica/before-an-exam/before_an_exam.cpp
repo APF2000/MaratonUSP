@@ -39,7 +39,7 @@ int main()
 	cout << "YES" << endl;
 
 	int time_sum = min_req_time;
-	for (int day = 0; day < days && time_sum != total_req_time; day++)
+	for (int day = 0; day < days; day++)
 	{
 		int delta_time = max_times[day] - min_times[day];
 
