@@ -20,14 +20,14 @@ typedef long long ll;
 
 vector<vector<ll>> mem_paths_with_d, mem_paths_without_d;
 
-void calc_paths(int n, int k, int d, ll *paths_with_d, ll *paths_without_d)
+void calc_paths(int n, int k, int d, ll &paths_with_d, ll &paths_without_d)
 {
 	if(n <= 0) 
 	{
 		cout << "n: " << n << " <= 0" << endl;
 
-		*paths_with_d = 0;
-		*paths_without_d = 0;
+		paths_with_d = 0;
+		paths_without_d = 0;
 		return;
 	}
 
@@ -42,27 +42,29 @@ void calc_paths(int n, int k, int d, ll *paths_with_d, ll *paths_without_d)
 		debug_ln(n);
 		debug_ln(n - i);
 
-		ll (*aux_paths_with_d), (*aux_paths_without_d) ;
-		(*aux_paths_with_d) = 0;
-		(*aux_paths_without_d) = 1;
+		ll &aux_paths_with_d = 0;
+		ll &aux_paths_without_d = 1;
+		// (aux_paths_with_d) = 0;
+		// (aux_paths_without_d) = 1;
 
 		// count for child subtree
 		if(mem_paths_with_d[n - i][i] == BLANK) // works for any of the mems
 		{
 			cout << "-----antes calc" << endl;
-			debug_ln(*aux_paths_with_d);
-			debug_ln(*aux_paths_without_d);
-			calc_paths(n - i, k, d, aux_paths_with_d, aux_paths_without_d);
+			debug_ln(aux_paths_with_d);
+			debug_ln(aux_paths_without_d);
+			calc_paths(n - i, k, d, &aux_paths_with_d, &aux_paths_without_d);
 			//debug_m(mem_paths_with_d);
 			cout << "-----depois calc----" << endl;
-			debug_ln(*aux_paths_with_d);
-			debug_ln(*aux_paths_without_d);
-		debug_ln(i);
-		debug_ln(n);
-		debug_ln(n - i);
+			debug_ln(aux_paths_with_d);
+			debug_ln(aux_paths_without_d);
 
-			mem_paths_with_d[n - i][i] 		= *aux_paths_with_d;
-			mem_paths_without_d[n - i][i]  	= *aux_paths_without_d;
+			debug_ln(i);
+			debug_ln(n);
+			debug_ln(n - i);
+
+			mem_paths_with_d[n - i][i] 		= aux_paths_with_d;
+			mem_paths_without_d[n - i][i]  	= aux_paths_without_d;
 		}
 
 		// sum child subtree to current subtree
@@ -71,18 +73,18 @@ void calc_paths(int n, int k, int d, ll *paths_with_d, ll *paths_without_d)
 			cout << "i == d" << endl;
 			debug_ln(aux_paths_with_d);
 			debug_ln(aux_paths_without_d);
-			debug_ln(*aux_paths_with_d + *aux_paths_without_d);
-			debug_ln((*paths_with_d));
+			debug_ln(aux_paths_with_d + aux_paths_without_d);
+			//debug_ln((*paths_with_d));
 
-			(*paths_with_d) += *aux_paths_with_d + *aux_paths_without_d;
+			(paths_with_d) += aux_paths_with_d + aux_paths_without_d;
 			//*paths_without_d += 0;
 		}
 
-			debug_ln((*paths_with_d));
-			debug_ln((*paths_without_d));
+		// debug_ln((*paths_with_d));
+		// debug_ln((*paths_without_d));
 
-	debug_m(mem_paths_with_d);	
-	debug_m(mem_paths_without_d);	
+		debug_m(mem_paths_with_d);	
+		debug_m(mem_paths_without_d);	
 		//debug_ln(i);
 	}
 }
@@ -107,8 +109,9 @@ int main()
 	debug_m(mem_paths_with_d);	
 	debug_m(mem_paths_without_d);	
 
-	ll paths_with_d, paths_without_d;
-	calc_paths(n, k, d, &paths_with_d, &paths_without_d);
+	ll &paths_with_d = 0;
+	ll &paths_without_d = 0;
+	calc_paths(n, k, d, paths_with_d, paths_without_d);
 
 	debug_m(mem_paths_with_d);	
 	debug_m(mem_paths_without_d);	
