@@ -22,12 +22,17 @@ vector<vector<ll>> mem_paths_with_d, mem_paths_without_d;
 
 void calc_paths(int n, int k, int d, ll *paths_with_d, ll *paths_without_d)
 {
-	if(n <= 0) 
+	if(n < 0)
 	{
-		cout << "n: " << n << " <= 0" << endl;
+		cout << "RIP corsa" << endl;
+	}
 
+	if(n == 0) 
+	{
+		cout << "-----------\n n: " << n << " <= 0" << endl;
+
+		(*paths_without_d) += 1;
 		// *paths_with_d = 0;
-		// *paths_without_d = 0;
 		return;
 	}
 
@@ -50,40 +55,50 @@ void calc_paths(int n, int k, int d, ll *paths_with_d, ll *paths_without_d)
 		// count for child subtree
 		if(mem_paths_with_d[n - i][i] == BLANK) // works for any of the mems
 		{
-			cout << "-----antes calc" << endl;
+			cout << "----- antes calc ---------" << endl;
 			debug_ln(aux_paths_with_d);
 			debug_ln(aux_paths_without_d);
 			calc_paths(n - i, k, d, &aux_paths_with_d, &aux_paths_without_d);
 			//debug_m(mem_paths_with_d);
-			cout << "-----depois calc----" << endl;
-			debug_ln(aux_paths_with_d);
-			debug_ln(aux_paths_without_d);
 
 			debug_ln(i);
 			debug_ln(n);
 			debug_ln(n - i);
 
+			cout << "-----depois calc----" << endl;
+			debug_ln(aux_paths_with_d);
+			debug_ln(aux_paths_without_d);
+
 			mem_paths_with_d[n - i][i] 		= aux_paths_with_d;
 			mem_paths_without_d[n - i][i]  	= aux_paths_without_d;
 		}else{
 			cout << "ja calculado" << endl;
+			aux_paths_with_d = mem_paths_with_d[n - i][i];
+			aux_paths_without_d = mem_paths_without_d[n - i][i];
 		}
+
+
+			debug_ln(aux_paths_with_d);
+			debug_ln(aux_paths_without_d);
 
 		// sum child subtree to current subtree
 		if(i == d) 
 		{
 			cout << "i == d" << endl;
-			debug_ln(aux_paths_with_d);
-			debug_ln(aux_paths_without_d);
 			debug_ln(aux_paths_with_d + aux_paths_without_d);
 			//debug_ln((**paths_with_d));
 
 			(*paths_with_d) += aux_paths_with_d + aux_paths_without_d;
 			//**paths_without_d += 0;
+		}else
+		{
+			(*paths_with_d) += aux_paths_with_d;
+			(*paths_without_d) += aux_paths_without_d;
 		}
 
-		// debug_ln((**paths_with_d));
-		// debug_ln((**paths_without_d));
+
+		debug_ln((*paths_with_d));
+		debug_ln((*paths_without_d));
 
 		debug_m(mem_paths_with_d);	
 		debug_m(mem_paths_without_d);	
