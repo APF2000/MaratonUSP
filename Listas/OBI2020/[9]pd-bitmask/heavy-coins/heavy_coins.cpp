@@ -74,6 +74,7 @@ int max_coins(vector<int>coins, int debt, int n,
             max_coins_qtty = max(max_coins_qtty, coins_qtty);
         }
     }    
+    
 
     return max_coins_qtty + 1;
 }
