@@ -6,9 +6,10 @@
 
 using namespace std;
 
-#define debug(VAR) cout << #VAR << " = " << VAR << ", ";
-#define debug_ln(VAR) cout << #VAR << " = " << VAR << endl;
-#define debug_v(v) cout << #v << " = "; for(auto el : v) cout << el << ", "; cout << endl;
+#define d(VAR) cout << #VAR << " = " << VAR << ", ";
+#define dln(VAR) cout << #VAR << " = " << VAR << endl;
+#define dv(v) cout << #v << " = "; for(auto el : v) cout << el << ", "; cout << endl;
+#define dm(m) cout << #m<< " = "; for(auto v : m) { for(auto el : v) cout << el << ", ";  cout << endl; }
 
 void debug_q(queue<ll> q)
 {
