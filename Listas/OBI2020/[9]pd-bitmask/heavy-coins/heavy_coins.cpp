@@ -9,6 +9,7 @@
 using namespace std;
 
 #define BLANK 1e9
+#define INVALID -1
 
 #define d(VAR) cout << #VAR << " = " << VAR << ", ";
 #define dln(VAR) cout << #VAR << " = " << VAR << endl;
@@ -24,7 +25,17 @@ int max_coins(vector<int>coins, int debt, int n,
     //dm(mem);
 
     if(used_coins.size() == n) return 0;
-    if(debt <= 0) return 0;
+    if(debt == 0) return 0;
+    if(debt < 0)
+    {
+        for(int coind_id : used_coins)
+        {
+            int value = coins[coind_id];
+            if(value <= -debt) return INVALID; 
+        }      
+
+        return 0;
+    }
 
     int max_coins_qtty = 0;
 
@@ -39,7 +50,7 @@ int max_coins(vector<int>coins, int debt, int n,
             // dln(value);
             // dln(debt);
             // dln(i);
-            // dm(mem);
+            //dm(mem);
 
             if(new_debt < 0) 
             {
@@ -55,6 +66,8 @@ int max_coins(vector<int>coins, int debt, int n,
                 aux_used_coins.insert(i);
 
                 coins_qtty = max_coins(coins, debt - value, n, aux_used_coins, mem);
+                if(coins_qtty == INVALID) continue;
+
                 mem[debt - value][i] = coins_qtty;
             }
 
@@ -98,6 +111,7 @@ int main()
         sort(coins.begin(), coins.end());
 
         int result = max_coins(coins, debt, n, {}, mem);
+        dm(mem);
 
         cout << result << endl;
     }
