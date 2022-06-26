@@ -2,6 +2,11 @@
 a.out
 *.exe
 
+# Ignore files without extension
+*
+!/**/
+!*.*
+
 # Google hashcode
 IA/out/
 
