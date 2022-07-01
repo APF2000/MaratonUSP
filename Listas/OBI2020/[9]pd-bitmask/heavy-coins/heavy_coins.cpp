@@ -17,12 +17,9 @@ using namespace std;
 #define dv(v) cout << #v << " = "; for(auto el : v) cout << el << ", "; cout << endl;
 #define dm(m) cout << #m << " = "; for(auto v : m) { for(auto el : v) cout << el << ", ";  cout << endl; }
 
-int max_coins(vector<int>coins, int debt, int n, 
-    unordered_set<int> used_coins, vector<vector<int>> &mem)
+int max_coins(vector<int>coins, int debt, int n)
 {
-    //dln((1 << n));
     int result = 0;
-    dv(coins);
 
     for (int i = 0; i < (1 << n); i++)
     {
@@ -46,84 +43,11 @@ int max_coins(vector<int>coins, int debt, int n,
 
         if( is_max_coins_case && ( is_exact_debt || cant_remove_excess ) )
         {
-
             result = qtty_sum;
-
-            bitset<10> bin(i);
-            cout << bin << endl;
-            dln(result);
-            d(lowest_coin);
-            d(value_sum);
-            dln(qtty_sum);
         }
-
-        // if(!(qtty_sum < result || value_sum < debt))
-        // ) result = qtty_sum;
     }
 
-    dln("--------------------");
-
     return result;
-    
-
-    // d(debt);
-    // d(n);
-    // dv(used_coins);
-    //dm(mem);
-
-    // if(used_coins.size() == n) return 0;
-    // if(debt == 0) return 0;
-    // if(debt < 0)
-    // {
-    //     for(int coind_id : used_coins)
-    //     {
-    //         int value = coins[coind_id];
-    //         if(value <= -debt) return INVALID; 
-    //     }      
-
-    //     return 0;
-    // }
-
-    // int max_coins_qtty = 0;
-
-    // for (int i = n - 1; i >= 0; i--)
-    // {
-    //     bool was_used = (used_coins.find(i) != used_coins.end());
-    //     if(!was_used)
-    //     {
-    //         int value = coins[i];
-    //         int new_debt = debt - value;
-            
-    //         // dln(value);
-    //         // dln(debt);
-    //         // dln(i);
-    //         //dm(mem);
-
-    //         if(new_debt < 0) 
-    //         {
-    //             max_coins_qtty = 0;
-    //             break;
-    //         }
-            
-    //         int coins_qtty = mem[new_debt][i];
-
-    //         if(coins_qtty == BLANK)
-    //         {
-    //             unordered_set<int> aux_used_coins = used_coins;
-    //             aux_used_coins.insert(i);
-
-    //             coins_qtty = max_coins(coins, debt - value, n, aux_used_coins, mem);
-    //             if(coins_qtty == INVALID) continue;
-
-    //             mem[debt - value][i] = coins_qtty;
-    //         }
-
-    //         max_coins_qtty = max(max_coins_qtty, coins_qtty);
-    //     }
-    // }    
-    
-
-    // return max_coins_qtty + 1;
 }
 
 int main()
@@ -143,23 +67,10 @@ int main()
         {
             cin >> coins[j];  
         }
-
-        vector<vector<int>> mem;
-        for (int i = 0; i < debt; i++)
-        {
-            vector<int> aux;
-            for (int j = 0; j < n; j++)
-            {
-                aux.push_back(BLANK);
-            }      
-                
-            mem.push_back(aux);  
-        }
         
         sort(coins.begin(), coins.end());
 
-        int result = max_coins(coins, debt, n, {}, mem);
-        //dm(mem);
+        int result = max_coins(coins, debt, n);
 
         cout << result << endl;
     }
