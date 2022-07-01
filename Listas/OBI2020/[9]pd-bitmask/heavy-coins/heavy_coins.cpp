@@ -5,6 +5,7 @@
 #include <vector>
 #include <algorithm>
 #include <unordered_set>
+#include <bitset>
 
 using namespace std;
 
@@ -21,6 +22,7 @@ int max_coins(vector<int>coins, int debt, int n,
 {
     //dln((1 << n));
     int result = 0;
+    dv(coins);
 
     for (int i = 0; i < (1 << n); i++)
     {
@@ -40,14 +42,26 @@ int max_coins(vector<int>coins, int debt, int n,
 
         bool is_max_coins_case = qtty_sum > result;
         bool is_exact_debt = value_sum == debt;
-        bool cant_remove_excess = (value_sum > debt && value_sum - lowest_coin >= debt);
+        bool cant_remove_excess = (value_sum > debt && value_sum - lowest_coin < debt);
 
         if( is_max_coins_case && ( is_exact_debt || cant_remove_excess ) )
+        {
+
             result = qtty_sum;
+
+            bitset<10> bin(i);
+            cout << bin << endl;
+            dln(result);
+            d(lowest_coin);
+            d(value_sum);
+            dln(qtty_sum);
+        }
 
         // if(!(qtty_sum < result || value_sum < debt))
         // ) result = qtty_sum;
     }
+
+    dln("--------------------");
 
     return result;
     
