@@ -12,10 +12,17 @@ using namespace std;
 #define dv(v) cout << #v << " = "; for(auto el : v) cout << el << ", "; cout << endl;
 #define dm(m) cout << #m << " = "; for(auto v : m) { for(auto el : v) cout << el << ", ";  cout << endl; }
 
-int max_coins(vector<int>coins, int debt, int n)
-{
+vector<int>coins
 
-    return result;
+int query(int id, int l, int r, int ql, int qr)
+{
+    if(ql <= l && qr >= r) return [id];
+    if(qr < l || r < ql) return 0;
+
+    int m = (l + r) / 2; 
+
+    return query(2 * id, l, m, ql, qr) 
+        * query(2 * id + 1, m, r, ql, qr);
 }
 
 int main()
