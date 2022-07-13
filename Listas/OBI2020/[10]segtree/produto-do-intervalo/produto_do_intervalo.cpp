@@ -31,10 +31,6 @@ void build(int id, int l, int r)
     build(r_tree, m + 1, r);
 
     tree[id] = tree[l_tree] * tree[r_tree];  
-    // d(id);
-    // d(l);
-    // dln(r);
-    // dv(tree);
 }
 
 void update(int id, int l, int r, int pos, int value)
@@ -80,22 +76,10 @@ int main()
 
         for (long i = 0; i < n; i++)
         {
-            // int aux;
-            // cin >> aux;
             cin >> values[i];
-            //values.push_back(aux);
         }
 
-        //dv(tree);
-        dv(values);
         build(0, 0, n - 1);
-        dv(tree);
-
-        dln(query(0, 0, n - 1, 0, 1));
-        dln(query(0, 0, n - 1, 3, 4));
-        dln(query(0, 0, n - 1, 0, 4));
-        dln(query(0, 0, n - 1, 1, 3));
-        dln(query(0, 0, n - 1, 1, 1));
         
         for (long i = 0; i < k; i++)
         {
@@ -107,37 +91,25 @@ int main()
                 long pos;
                 int value;
 
-                dln("CHANGE");
-
                 cin >> pos >> value;
                 pos--;
-                d(pos); dln(value);
 
                 update(0, 0, n - 1, pos, value);
-
-                dv(values);
-
-                //values[id - 1] = value;
-            
-                //dv(values);
-
-                // cout << query(0, 1, n - 1, 1, 3) << endl;
-                // cout << query(0, 1, n - 1, 0, values.size()-1) << endl;
-                // cout << query(0, 1, n - 1, 0, 2) << endl;
             }
             else if(cmd == PROD)
             {
                 long i, j;
-                dln("PROD");
 
                 cin >> i >> j;
                 i--, j--;
-                d(i); dln(j);
 
-                dln(query(0, 0, n - 1, i, j));
+                long q = query(0, 0, n - 1, i, j);
+
+                cout << (q > 0 ? '+' : (q < 0 ? '-' : '0') );
             }
         }
-        
+
+        cout << endl;        
     } 
 
 	return 0;
