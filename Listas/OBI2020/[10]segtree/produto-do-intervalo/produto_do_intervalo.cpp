@@ -20,42 +20,52 @@ void build(int id, int l, int r)
     if(l == r)
     {
         tree[id] = values[l];
-    }
-    else
-    {
-        int m = (l + r) / 2;
-        build(2 * id, l, m);
-        build(2 * id + 1, m + 1, r);
-        tree[id] = tree[2 * id] * tree[2 * id + 1];    
-    }
-}
-
-void update(int id, int l, int r, int ql, int qr, int value)
-{
-    if(ql <= l && r <= qr)
-    {
-        tree[id] = value; // verificar
         return;
     }
 
-    if(qr < l || ql > r) return;
+    int m = (l + r) / 2;
+    int l_tree = 2 * id + 1, r_tree = 2 * id + 2;
+
+    // build left and right subtress
+    build(l_tree, l, m);
+    build(r_tree, m + 1, r);
+
+    tree[id] = tree[l_tree] * tree[r_tree];  
+    // d(id);
+    // d(l);
+    // dln(r);
+    // dv(tree);
+}
+
+void update(int id, int l, int r, int pos, int value)
+{
+    if(l == r)
+    {
+        tree[id] = value; 
+        values[pos] = value; 
+        return;
+    }
 
     int m = (l + r) / 2;
-    update(2 * id, l, m, ql, qr, value);
-    update(2 * id + 1, m, r, ql, qr, value);
+    int l_tree = 2 * id + 1, r_tree = 2 * id + 2;
+
+    if(pos <= m) update(l_tree, l, m, pos, value);
+    else update(r_tree, m + 1, r, pos, value);
+    tree[id] = tree[l_tree] * tree[r_tree];
 }
 
 int query(int id, int l, int r, int ql, int qr)
 {
-    if(id >= values.size()) return 1;
+    //if(id >= values.size()) return 1;
 
-    if(ql <= l && qr >= r) return values[id];
+    if(ql <= l && qr >= r) return tree[id];
     if(qr < l || r < ql) return 1;
 
     int m = (l + r) / 2; 
+    int l_tree = 2 * id + 1, r_tree = 2 * id + 2;
 
-    return query(2 * id, l, m, ql, qr) 
-        * query(2 * id + 1, m, r, ql, qr);
+    return query(l_tree, l, m, ql, qr) 
+        * query(r_tree, m + 1, r, ql, qr);
 }
 
 int main()
@@ -80,6 +90,12 @@ int main()
         dv(values);
         build(0, 0, n - 1);
         dv(tree);
+
+        dln(query(0, 0, n - 1, 0, 1));
+        dln(query(0, 0, n - 1, 3, 4));
+        dln(query(0, 0, n - 1, 0, 4));
+        dln(query(0, 0, n - 1, 1, 3));
+        dln(query(0, 0, n - 1, 1, 1));
         
         for (long i = 0; i < k; i++)
         {
@@ -88,14 +104,18 @@ int main()
             cin >> cmd;
             if(cmd == CHANGE)
             {
-                long id;
+                long pos;
                 int value;
 
-                cin >> id >> value;
+                dln("CHANGE");
 
-                update(id, 1, n - 1, 1, n - 1, value);
+                cin >> pos >> value;
+                pos--;
+                d(pos); dln(value);
 
-                //dv(tree);
+                update(0, 0, n - 1, pos, value);
+
+                dv(values);
 
                 //values[id - 1] = value;
             
@@ -107,10 +127,14 @@ int main()
             }
             else if(cmd == PROD)
             {
-                long id;
-                int value;
+                long i, j;
+                dln("PROD");
 
-                cin >> id >> value;
+                cin >> i >> j;
+                i--, j--;
+                d(i); dln(j);
+
+                dln(query(0, 0, n - 1, i, j));
             }
         }
         
