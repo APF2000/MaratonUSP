@@ -52,8 +52,6 @@ void update(int id, int l, int r, int pos, int value)
 
 int query(int id, int l, int r, int ql, int qr)
 {
-    //if(id >= values.size()) return 1;
-
     if(ql <= l && qr >= r) return tree[id];
     if(qr < l || r < ql) return 1;
 
@@ -70,13 +68,15 @@ int main()
 
     while(cin >> n >> k)
     {
-        values = vector<int>(n + 1, 1);
+        values = vector<int>(n, 1);
         tree = vector<int>(4 * (n + 1), 1);
         long prod = 1;
 
         for (long i = 0; i < n; i++)
         {
-            cin >> values[i];
+            int aux;
+            cin >> aux;
+            values[i] = ( !aux ? 0 : ( aux > 0 ? 1 : -1 ) );
         }
 
         build(0, 0, n - 1);
@@ -93,6 +93,7 @@ int main()
 
                 cin >> pos >> value;
                 pos--;
+                value = ( !value ? 0 : ( value > 0 ? 1 : -1 ) );
 
                 update(0, 0, n - 1, pos, value);
             }
@@ -105,7 +106,7 @@ int main()
 
                 long q = query(0, 0, n - 1, i, j);
 
-                cout << (q > 0 ? '+' : (q < 0 ? '-' : '0') );
+                cout << ( !q ? '0' : (q < 0 ? '-' : '+') );
             }
         }
 
