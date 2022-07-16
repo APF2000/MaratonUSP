@@ -40,15 +40,8 @@ void update(long id, long l, long r, long ql, long qr, long winner)
         long pos = l;
         bool is_not_round_winner = (winner != pos); // reached round winner ?
 
-        d(id);
-        d(pos);
-        d(winner);
-        dln(is_not_round_winner);
-
         tree[id] = is_not_round_winner; 
         values[pos] = is_not_round_winner; 
-    
-        dv(tree);
 
         if(is_not_round_winner) bullys[pos] = winner + 1; // 1-based index
 
@@ -58,13 +51,6 @@ void update(long id, long l, long r, long ql, long qr, long winner)
     long m = (l + r) / 2;
     long l_tree = 2 * id + 1, r_tree = 2 * id + 2;
     bool l_all_dead = tree[l_tree], r_all_dead = tree[r_tree];
-    
-    dln(id);
-    // d(ql);
-    // dln(qr);
-    // d(l_tree);
-    // dln(r_tree);
-    dv(tree);
 
     if(!l_all_dead) update(l_tree, l, m, ql, qr, winner);
     if(!r_all_dead) update(r_tree, m + 1, r, ql, qr, winner);
@@ -95,9 +81,6 @@ int main()
     bullys = vector<long>(n);
     
     build(0, 0, n - 1);
-    
-    dv(values);
-    dv(tree);
 
     for (long i = 0; i < m; i++)
     {
@@ -105,15 +88,15 @@ int main()
         cin >> ql >> qr >> winner;
 
         ql--; qr--; winner--;
-        dln(ql);
-        dln(qr);
-        dln(winner);
 
         update(0, 0, n - 1, ql, qr, winner);
-        dln("-----------------")
-    }
+    }    
 
-    dv(bullys);
+    for (long i = 0; i < n; i++)
+    {
+        cout << bullys[i] << " ";
+    }
+    cout << endl;
     
 
 	return 0;
