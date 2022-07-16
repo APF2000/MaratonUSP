@@ -38,23 +38,26 @@ void update(long id, long l, long r, long ql, long qr, long winner)
     if(l == r)
     {
         long pos = l;
-        bool result = (winner != pos); // reached round winner ?
+        bool is_not_round_winner = (winner != pos); // reached round winner ?
 
         d(id);
         d(pos);
         d(winner);
-        dln(result);
+        dln(is_not_round_winner);
 
-        tree[id] = result; 
-        values[pos] = result; 
+        tree[id] = is_not_round_winner; 
+        values[pos] = is_not_round_winner; 
     
         dv(tree);
+
+        if(is_not_round_winner) bullys[pos] = winner + 1; // 1-based index
 
         return;
     }
 
     long m = (l + r) / 2;
     long l_tree = 2 * id + 1, r_tree = 2 * id + 2;
+    bool l_all_dead = tree[l_tree], r_all_dead = tree[r_tree];
     
     dln(id);
     // d(ql);
@@ -63,8 +66,10 @@ void update(long id, long l, long r, long ql, long qr, long winner)
     // dln(r_tree);
     dv(tree);
 
-    update(l_tree, l, m, ql, qr, winner);
-    update(r_tree, m + 1, r, ql, qr, winner);
+    if(!l_all_dead) update(l_tree, l, m, ql, qr, winner);
+    if(!r_all_dead) update(r_tree, m + 1, r, ql, qr, winner);
+
+    // obs: get tree again, because now it's been updated
     tree[id] = tree[l_tree] && tree[r_tree]; // all dead ?
 }
 
@@ -87,6 +92,7 @@ int main()
 
     values = vector<bool>(n, false);
     tree = vector<bool>(4 * n, false);
+    bullys = vector<long>(n);
     
     build(0, 0, n - 1);
     
