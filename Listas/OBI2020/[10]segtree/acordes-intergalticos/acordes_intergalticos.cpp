@@ -12,14 +12,18 @@ using namespace std;
 
 #define MAX 9
 
-vector<long> piano, tree;
+vector<long> piano;
+vector<vector<long>> tree;
 
-// modificar build
 void build(long id, long l, long r)
 {
     if(l == r) // leaf
     {
-        tree[id] = piano[l];
+        long pos = l;
+        vector<long> note_count(MAX, 0);
+        note_count[0] = 1;
+        tree[id] = note_count; // id of most frequent element
+        //piano[l];
         return;
     }
 
@@ -30,7 +34,13 @@ void build(long id, long l, long r)
     build(l_tree, l, m);
     build(r_tree, m + 1, r);
 
-    tree[id] = tree[l_tree] && tree[r_tree]; // all dead 
+    vector<long> l_note_count = tree[l_tree];
+    vector<long> r_note_count = tree[r_tree];
+
+    for (long i = 0; i < MAX; i++)
+    {
+        tree[id][i] = l_note_count[i] + r_note_count[i];
+    }
 }
 
 void update(long id, long l, long r, long ql, long qr, long add_value)
@@ -52,18 +62,18 @@ void update(long id, long l, long r, long ql, long qr, long add_value)
 
     long m = (l + r) / 2;
     long l_tree = 2 * id + 1, r_tree = 2 * id + 2;
-    bool l_all_dead = tree[l_tree], r_all_dead = tree[r_tree];
+    // bool l_all_dead = tree[l_tree], r_all_dead = tree[r_tree];
 
-    // if(!l_all_dead) update(l_tree, l, m, ql, qr, winner);
-    // if(!r_all_dead) update(r_tree, m + 1, r, ql, qr, winner);
+    // // if(!l_all_dead) update(l_tree, l, m, ql, qr, winner);
+    // // if(!r_all_dead) update(r_tree, m + 1, r, ql, qr, winner);
 
-    // obs: get tree again, because now it's been updated
-    tree[id] = tree[l_tree] && tree[r_tree]; // all dead ?
+    // // obs: get tree again, because now it's been updated
+    // tree[id] = tree[l_tree] && tree[r_tree]; // all dead ?
 }
 
 bool query(long id, long l, long r, long ql, long qr)
 {
-    if(ql <= l && qr >= r) return tree[id];
+    //if(ql <= l && qr >= r) return tree[id];
     if(qr < l || r < ql) return true;
 
     long m = (l + r) / 2; 
@@ -104,28 +114,29 @@ int main()
     cin >> n >> m;
 
     piano = vector<long>(n, 1);
-    tree = vector<long>(4 * n, 0);
+    tree = vector<vector<long>>(4 * n, vector<long>(MAX, 0));
     //vector<long>::iterator beg = piano.begin();
     
     build(0, 0, n - 1);
+    dm(tree);
 
-    for (long i = 0; i < m; i++)
-    {
-        long a, b;
-        cin >> a >> b;
+    // for (long i = 0; i < m; i++)
+    // {
+    //     long a, b;
+    //     cin >> a >> b;
 
-        a--; b--;
+    //     a--; b--;
 
-        //piano.data();
+    //     //piano.data();
 
-        // long max_freq = max_element(&(piano[a]), &(piano[b]));
-        long max_freq = val_of_max_freq_el(piano, a, b);
-        dln(max_freq);
+    //     // long max_freq = max_element(&(piano[a]), &(piano[b]));
+    //     long max_freq = val_of_max_freq_el(piano, a, b);
+    //     dln(max_freq);
 
-        //long max_freq = query(0, 0, n - 1, a, b);
+    //     //long max_freq = query(0, 0, n - 1, a, b);
 
-        update(0, 0, n - 1, a, b, max_freq);
-    }    
+    //     update(0, 0, n - 1, a, b, max_freq);
+    // }    
 
     for (long i = 0; i < n; i++)
     {
