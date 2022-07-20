@@ -71,41 +71,54 @@ void update(long id, long l, long r, long ql, long qr, long add_value)
     // tree[id] = tree[l_tree] && tree[r_tree]; // all dead ?
 }
 
-bool query(long id, long l, long r, long ql, long qr)
+long query(long id, long l, long r, long ql, long qr)
 {
-    //if(ql <= l && qr >= r) return tree[id];
-    if(qr < l || r < ql) return true;
+    if(ql <= l && qr >= r) 
+    {
+        vector<long> note_count = tree[id];
+        long max_count = note_count[0];
+        //long max_note = 0; 
+
+        for (long note = 0; note < MAX; note++)
+        {
+            long aux_count = note_count[note];
+            if(aux_count > max_count) 
+            {
+                max_count = aux_count;
+                //max_note = note;
+            }
+        }
+
+        return max_count; 
+    }
+    if(qr < l || r < ql) return 0;
 
     long m = (l + r) / 2; 
     long l_tree = 2 * id + 1, r_tree = 2 * id + 2;
 
-    return query(l_tree, l, m, ql, qr) 
-        && query(r_tree, m + 1, r, ql, qr); // al dead ?
-}
+    vector<long> l_note_count = tree[l_tree];
+    vector<long> r_note_count = tree[r_tree];
+    vector<long> aux_note_count(MAX, 0);
 
-long val_of_max_freq_el(vector<long> v, long beg, long end)
-{
-    vector<long> freqs(MAX, 0);
-
-    for (int i = beg; i <= end; i++)
+    for (long i = 0; i < MAX; i++)
     {
-        long el = v[i];
-        freqs[el]++;
+        aux_note_count[i] = l_note_count[i] + r_note_count[i];
     }
-    
-    long val = v[beg];
-    long max_freq = 0;
-    for (int i = 0; i < MAX; i++)
+
+    long max_count = aux_note_count[0];
+    dln(max_count);
+    //long max_note = 0;
+    for (long note = 0; note < MAX; note++)
     {
-        long aux_freq = freqs[i];
-        if(aux_freq > max_freq) 
+        long aux_count = aux_note_count[note];
+        if(aux_count > max_count) 
         {
-            max_freq = aux_freq; 
-            val = i;
+            max_count = aux_count;
+            //max_note = note;
         }
     }
 
-    return val;
+    return max_count;
 }
 
 int main()
@@ -120,23 +133,24 @@ int main()
     build(0, 0, n - 1);
     dm(tree);
 
-    // for (long i = 0; i < m; i++)
-    // {
-    //     long a, b;
-    //     cin >> a >> b;
+    for (long i = 0; i < m; i++)
+    {
+        long a, b;
+        cin >> a >> b;
 
-    //     a--; b--;
+        //a--; b--;
 
-    //     //piano.data();
+        //piano.data();
 
-    //     // long max_freq = max_element(&(piano[a]), &(piano[b]));
-    //     long max_freq = val_of_max_freq_el(piano, a, b);
-    //     dln(max_freq);
+        // long max_freq = max_element(&(piano[a]), &(piano[b]));
+        // long max_freq = val_of_max_freq_el(piano, a, b);
+        d(a); dln(b)
 
-    //     //long max_freq = query(0, 0, n - 1, a, b);
+        long max_freq = query(0, 0, n - 1, a, b);
+        dln(max_freq);
 
-    //     update(0, 0, n - 1, a, b, max_freq);
-    // }    
+        //update(0, 0, n - 1, a, b, max_freq);
+    }    
 
     for (long i = 0; i < n; i++)
     {
