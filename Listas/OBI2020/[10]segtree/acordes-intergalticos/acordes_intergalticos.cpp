@@ -60,8 +60,8 @@ void update(long id, long l, long r, long ql, long qr, long max_note)
             new_note_count[(note + max_note) % MAX] = aux_note_count[note];
         }
 
-        dv(aux_note_count);
-        dv(new_note_count);
+        // dv(aux_note_count);
+        // dv(new_note_count);
 
         tree[id] = new_note_count;
 
@@ -181,7 +181,7 @@ int main()
         d(a); dln(b)
 
         vector<long> note_count = query(0, 0, n - 1, a, b);
-        dv(note_count);
+        // dv(note_count);
 
         long max_note, max_count = 0;
         for (long note = 0; note < MAX; note++)
@@ -194,13 +194,13 @@ int main()
             }
         }
         max_note++;
-        d(max_note);
-        dln(max_count);
+        // d(max_note);
+        // dln(max_count);
 
         update(0, 0, n - 1, a, b, max_note);
         dv(piano);
-        dm(tree);
-        dln("--------------------------");
+        //dm(tree);
+        // dln("--------------------------");
     }    
 
     for (long i = 0; i < n; i++)
