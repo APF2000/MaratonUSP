@@ -65,8 +65,9 @@ void update(long id, long l, long r, long ql, long qr, long max_note)
 
         tree[id] = new_note_count;
 
-        piano[pos] += max_note;
-        piano[pos] %= MAX;
+        long new_note = (piano[pos] + max_note) % MAX;
+        //piano[pos] = (new_note != 0 ? new_note : 1);
+        piano[pos] = new_note;
 
         return;
     }
