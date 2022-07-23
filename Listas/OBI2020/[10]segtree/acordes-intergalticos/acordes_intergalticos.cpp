@@ -21,7 +21,7 @@ void build(long id, long l, long r)
     {
         long pos = l;
         vector<long> note_count(MAX, 0);
-        note_count[0] = 1;
+        note_count[1] = 1;
         tree[id] = note_count; // id of most frequent element
         //piano[l];
         return;
@@ -193,7 +193,7 @@ int main()
                 max_note = note;
             }
         }
-        max_note++;
+        //max_note++;
         // d(max_note);
         // dln(max_count);
 
