@@ -43,25 +43,47 @@ void build(long id, long l, long r)
     }
 }
 
-void update(long id, long l, long r, long ql, long qr, long add_value)
+void update(long id, long l, long r, long ql, long qr, long max_note)
 {
     if(qr < l || r < ql) return;
 
     if(l == r) // leaf
     {
         long pos = l;
-        // bool is_not_round_winner = (winner != pos); // reached round winner ?
 
-        // tree[id] = is_not_round_winner; 
-        // piano[pos] = is_not_round_winner; 
+        vector<long> aux_note_count = tree[id];
+        vector<long> new_note_count = vector<long>(MAX);
 
-        //if(is_not_round_winner) bullys[pos] = winner + 1; // 1-based index
+        
+        for (long note = 0; note < MAX; note++)
+        {
+            new_note_count[(note + max_note) % MAX] = aux_note_count[note];
+        }
+
+        dv(aux_note_count);
+        dv(new_note_count);
+
+        tree[id] = new_note_count;
+
+        piano[pos] += max_note;
+        piano[pos] %= MAX;
 
         return;
     }
 
     long m = (l + r) / 2;
     long l_tree = 2 * id + 1, r_tree = 2 * id + 2;
+
+    update(l_tree, l, m, ql, qr, max_note);
+    update(r_tree, m + 1, r, ql, qr, max_note);
+
+    vector<long> l_note_count = tree[l_tree];
+    vector<long> r_note_count = tree[r_tree];
+
+    for (long i = 0; i < MAX; i++)
+    {
+        tree[id][i] = l_note_count[i] + r_note_count[i];
+    }
     // bool l_all_dead = tree[l_tree], r_all_dead = tree[r_tree];
 
     // // if(!l_all_dead) update(l_tree, l, m, ql, qr, winner);
@@ -71,54 +93,64 @@ void update(long id, long l, long r, long ql, long qr, long add_value)
     // tree[id] = tree[l_tree] && tree[r_tree]; // all dead ?
 }
 
-long query(long id, long l, long r, long ql, long qr)
+vector<long> query(long id, long l, long r, long ql, long qr)
 {
+    if(qr < l || r < ql) return vector<long>(MAX, 0);
+
     if(ql <= l && qr >= r) 
     {
+    //dln("BATATA2");
         vector<long> note_count = tree[id];
-        long max_count = note_count[0];
+    //dln("BATATA3");
+        //long max_count = note_count[0];
         //long max_note = 0; 
 
-        for (long note = 0; note < MAX; note++)
-        {
-            long aux_count = note_count[note];
-            if(aux_count > max_count) 
-            {
-                max_count = aux_count;
-                //max_note = note;
-            }
-        }
+        // for (long note = 0; note < MAX; note++)
+        // {
+        //     long aux_count = note_count[note];
+        //     if(aux_count > max_count) 
+        //     {
+        //         max_count = aux_count;
+        //         //max_note = note;
+        //     }
+        // }
 
-        return max_count; 
+        return note_count; 
     }
-    if(qr < l || r < ql) return 0;
+
+    //dln("BATATA");
 
     long m = (l + r) / 2; 
     long l_tree = 2 * id + 1, r_tree = 2 * id + 2;
 
-    vector<long> l_note_count = tree[l_tree];
-    vector<long> r_note_count = tree[r_tree];
+    vector<long> l_note_count = query(l_tree, l, m, ql, qr);
+    vector<long> r_note_count = query(r_tree, m + 1, r, ql, qr);
+
+    //dln("BATATA4");
     vector<long> aux_note_count(MAX, 0);
 
-    for (long i = 0; i < MAX; i++)
-    {
-        aux_note_count[i] = l_note_count[i] + r_note_count[i];
-    }
-
-    long max_count = aux_note_count[0];
-    dln(max_count);
-    //long max_note = 0;
+    
+    //dln("BATATA5");
     for (long note = 0; note < MAX; note++)
     {
-        long aux_count = aux_note_count[note];
-        if(aux_count > max_count) 
-        {
-            max_count = aux_count;
-            //max_note = note;
-        }
+        aux_note_count[note] = l_note_count[note] + r_note_count[note];
     }
+    //dln("BATATA6");
 
-    return max_count;
+    // long max_count = aux_note_count[0];
+    // //long max_note = 0;
+    // for (long note = 0; note < MAX; note++)
+    // {
+    //     long aux_count = aux_note_count[note];
+    //     if(aux_count > max_count) 
+    //     {
+    //         max_count = aux_count;
+    //         //max_note = note;
+    //     }
+    // }
+    // dln(max_count);
+
+    return aux_note_count;
 }
 
 int main()
@@ -132,6 +164,7 @@ int main()
     
     build(0, 0, n - 1);
     dm(tree);
+    dv(piano);
 
     for (long i = 0; i < m; i++)
     {
@@ -146,10 +179,27 @@ int main()
         // long max_freq = val_of_max_freq_el(piano, a, b);
         d(a); dln(b)
 
-        long max_freq = query(0, 0, n - 1, a, b);
-        dln(max_freq);
+        vector<long> note_count = query(0, 0, n - 1, a, b);
+        dv(note_count);
 
-        //update(0, 0, n - 1, a, b, max_freq);
+        long max_note, max_count = 0;
+        for (long note = 0; note < MAX; note++)
+        {
+            long aux_count = note_count[note];
+            if(aux_count >= max_count) 
+            {
+                max_count = aux_count;
+                max_note = note;
+            }
+        }
+        max_note++;
+        d(max_note);
+        dln(max_count);
+
+        update(0, 0, n - 1, a, b, max_note);
+        dv(piano);
+        dm(tree);
+        dln("--------------------------");
     }    
 
     for (long i = 0; i < n; i++)
