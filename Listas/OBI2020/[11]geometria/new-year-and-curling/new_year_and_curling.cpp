@@ -21,7 +21,7 @@ int main()
     vector<int> xs(n);
     vector<double> ys(n);
 
-    cout.precision(6);
+    cout.precision(20);
 
     for (int i = 0; i < n; i++)
     {
