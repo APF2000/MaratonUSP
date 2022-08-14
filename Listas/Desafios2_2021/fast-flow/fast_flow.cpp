@@ -132,18 +132,23 @@ ull edmonds_karp()
 			int this_level = level_nodes_to_visit.front();
 			level_nodes_to_visit.pop();
 
-			if(last_level == this_level + 1)
+			// d(last_level);
+			// dln(this_level);
+
+			if(last_level + 1 == this_level)
 			{
 				s_t_path.push_back(node);
+				last_level++;
 				if(node == n - 1) break;
 			}
-			else if(last_level < this_level + 1)
+			else if(last_level > this_level + 1)
 			{
 				dln("ALGO DE MUITO ERRADO NAO ESTA CERTO");
 			}
 
-			d(node);
-			dv(visited);
+			// d(node);
+			// dv(visited);
+			// dv(s_t_path);
 
 			for(int adj_node : u_graph[node])
 			{
@@ -163,6 +168,8 @@ ull edmonds_karp()
 				//d_graph[node].insert(adj_node);
 			}
 		}
+			
+		dv(s_t_path);
 
 		// find out bottleneck capacity
 		ull bottleneck = INF;
@@ -177,6 +184,12 @@ ull edmonds_karp()
 				bottleneck = new_flow;
 			}
 		}
+
+
+	dm(flows);
+		dmap(r_graph_normal);
+		dln("");
+		dmap(r_graph_reverse);
 
 		// change residual flows
 		for(int i = 1; i < s_t_path.size(); i++)
@@ -203,6 +216,9 @@ ull edmonds_karp()
 		}
 	
 	dm(flows);
+	dmap(r_graph_normal);
+	dln("");
+	dmap(r_graph_reverse);
 }
 
 int main()
