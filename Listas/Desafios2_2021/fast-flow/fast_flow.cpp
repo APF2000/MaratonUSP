@@ -111,7 +111,8 @@ ull edmonds_karp()
 	}
 
 
-	// while (true)
+	while (true)
+	{
 		// find shortest s-t-path
 		unordered_set<int> adjs = d_graph[0];
 		unordered_set<int> visited = {};
@@ -168,7 +169,21 @@ ull edmonds_karp()
 				//d_graph[node].insert(adj_node);
 			}
 		}
-			
+		
+		if(s_t_path.back() != n -1)
+		{
+			dln("NAO TEM CAMINHO");
+
+			ull max_flow = 0;
+
+			for(int adj_node : r_graph_normal[0])
+			{
+				max_flow += flows[adj_node][0];
+			}
+
+			return max_flow;
+		}
+		
 		dv(s_t_path);
 
 		// find out bottleneck capacity
@@ -186,7 +201,7 @@ ull edmonds_karp()
 		}
 
 
-	dm(flows);
+		dm(flows);
 		dmap(r_graph_normal);
 		dln("");
 		dmap(r_graph_reverse);
@@ -214,7 +229,8 @@ ull edmonds_karp()
 				flows[node2][node1] -= bottleneck;
 			}
 		}
-	
+	}
+
 	dm(flows);
 	dmap(r_graph_normal);
 	dln("");
@@ -236,7 +252,8 @@ int main()
 	dln(d_graph.size());
 	dmap(d_graph);
 
-	edmonds_karp();
+	ull max_flow = edmonds_karp();
+	dln(max_flow);
 
 	return 0;
 }
