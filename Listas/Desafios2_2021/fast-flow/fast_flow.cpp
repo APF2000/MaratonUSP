@@ -76,20 +76,13 @@ void build_d_graph()
 
 	queue<int> to_visit;
 	to_visit.push(0);
-	//for(int node : adjs) to_visit.push(node);
 
 	// BFS
 	while(!to_visit.empty())
 	{
-		d("TO VISIT: ");
-		dq(to_visit);
-
 		int node = to_visit.front();
 		to_visit.pop();
 		visited.insert(node);
-
-		d(node);
-		dv(visited);
 
 		for(int adj_node : u_graph[node])
 		{
@@ -101,10 +94,6 @@ void build_d_graph()
 
 			to_visit.push(adj_node);
 
-			cout << "a" << endl;
-			d(node);
-			dln(adj_node);
-
 			// arrow goes from node to adj_node
 			d_graph[node].insert(adj_node);
 			nodes_added_to_queue.insert(adj_node);
@@ -115,7 +104,6 @@ void build_d_graph()
 ull edmonds_karp()
 {
 	// prepare residual graph
-	//unordered_map<int, unordered_set<int>> d_graph = d_graph, r_graph_reverse;
 	vector<vector<ull>> flows = capacities;
 
 	for(pair<int, unordered_set<int>> kv : d_graph)
@@ -126,7 +114,6 @@ ull edmonds_karp()
 		for(int adj_id : adj_ids)
 		{
 			flows[adj_id][node_id] = 0;
-			//r_graph_reverse[adj_id].insert(node_id);
 		}
 	}
 
@@ -147,8 +134,6 @@ ull edmonds_karp()
 		// BFS
 		while(!nodes_to_visit.empty())
 		{
-			d("===============\nnodes_to_visit: ");
-			dq(nodes_to_visit);
 
 			int node = nodes_to_visit.front();
 			nodes_to_visit.pop();
@@ -157,34 +142,12 @@ ull edmonds_karp()
 			int this_level = level_nodes_to_visit.front();
 			level_nodes_to_visit.pop();
 
-			// d(last_level);
-			// dln(this_level);
-
 			if(last_level + 1 == this_level)
 			{
 				s_t_path.push_back(node);
 				last_level++;
 				if(node == n - 1) break;
 			}
-			else if(last_level > this_level + 1)
-			{
-				dln("ALGO DE MUITO ERRADO NAO ESTA CERTO");
-			}
-
-			d(node);
-			dv(visited);
-			dv(s_t_path);
-			// dln("maps u: ");
-			// dmap(u_graph);
-			// dln("maps reverse: ");
-			// dmap(r_graph_reverse);
-			dln("maps dgraph: ");
-			dmap(d_graph);
-			dln("end maps");
-			dm(flows);
-			//dm(capacities);
-
-			dln("OLHANDO OS ADJACENTES");
 
 			for(int adj_node : u_graph[node])
 			{
@@ -195,23 +158,11 @@ ull edmonds_karp()
 
 				nodes_to_visit.push(adj_node);
 				level_nodes_to_visit.push(this_level + 1);
-
-				//cout << "a" << endl;
-				d(node);
-				dln(adj_node);
-
-				// arrow goes from node to adj_node
-				//d_graph[node].insert(adj_node);
 			}
 		}
 
-		dv(s_t_path);
-		dln(s_t_path.back());
-		
 		if(s_t_path.back() != n - 1)
 		{
-			dln("NAO TEM CAMINHO");
-
 			ull max_flow = 0;
 
 			for(int adj_node : d_graph[0])
@@ -221,8 +172,6 @@ ull edmonds_karp()
 
 			return max_flow;
 		}
-		
-		dv(s_t_path);
 
 		// find out bottleneck capacity
 		ull bottleneck = INF;
@@ -238,18 +187,9 @@ ull edmonds_karp()
 			}
 		}
 
-
-		// dm(flows);
-		// dmap(d_graph);
-		// dln("");
-		// dmap(r_graph_reverse);
-
 		// change residual flows
 		for(int i = 1; i < s_t_path.size(); i++)
 		{
-			dln("CHANGING FLOW");
-			dv(s_t_path);
-
 			int node1 = s_t_path[i - 1];
 			int node2 = s_t_path[i];
 
@@ -271,30 +211,20 @@ ull edmonds_karp()
 			}
 		}
 	}
-
-	dm(flows);
-	dmap(d_graph);
-	// dln("");
-	// dmap(r_graph_reverse);
 }
 
 int main()
 {
 	cin >> n >> m;
 
-	// itialize capacities with blank
+	// initialize capacities with blank
 	capacities = vector<vector<ull>>(n, vector<ull>(n, BLANK));
 
 	build_u_graph();
 	build_d_graph();
 
-	dm(capacities);
-	dmap(u_graph);
-	dln(d_graph.size());
-	dmap(d_graph);
-
 	ull max_flow = edmonds_karp();
-	dln(max_flow);
+	cout << max_flow << endl;
 
 	return 0;
 }
