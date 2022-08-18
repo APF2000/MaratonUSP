@@ -7,7 +7,7 @@
 #include <queue>
 
 typedef unsigned long long ull;
-#define BLANK -1
+#define BLANK 50
 #define INF 10e9
 
 using namespace std;
@@ -25,6 +25,18 @@ void dmap(unordered_map<int, unordered_set<int>> m)
 		unordered_set<int> linked_to = p.second;
 		dv(linked_to);
 	}
+}
+
+void dq(queue<int> q)
+{
+	while(q.size() != 0)
+	{
+		int el = q.front();
+		q.pop();
+
+		cout << el << ", ";
+	}
+	cout << endl;
 }
 
 int n, m;
@@ -60,14 +72,18 @@ void build_d_graph()
 {
 	unordered_set<int> adjs = u_graph[0];
 
-	unordered_set<int> visited = {};
+	unordered_set<int> visited, nodes_added_to_queue;
 
 	queue<int> to_visit;
 	to_visit.push(0);
 	//for(int node : adjs) to_visit.push(node);
 
+	// BFS
 	while(!to_visit.empty())
 	{
+		d("TO VISIT: ");
+		dq(to_visit);
+
 		int node = to_visit.front();
 		to_visit.pop();
 		visited.insert(node);
@@ -80,6 +96,9 @@ void build_d_graph()
 			if(visited.find(adj_node) != visited.end()) 
 				continue; 
 
+			if(nodes_added_to_queue.find(adj_node) != nodes_added_to_queue.end()) 
+				continue; 
+
 			to_visit.push(adj_node);
 
 			cout << "a" << endl;
@@ -88,6 +107,7 @@ void build_d_graph()
 
 			// arrow goes from node to adj_node
 			d_graph[node].insert(adj_node);
+			nodes_added_to_queue.insert(adj_node);
 		}
 	}
 }
@@ -95,7 +115,7 @@ void build_d_graph()
 ull edmonds_karp()
 {
 	// prepare residual graph
-	unordered_map<int, unordered_set<int>> r_graph_normal = d_graph, r_graph_reverse;
+	//unordered_map<int, unordered_set<int>> d_graph = d_graph, r_graph_reverse;
 	vector<vector<ull>> flows = capacities;
 
 	for(pair<int, unordered_set<int>> kv : d_graph)
@@ -106,7 +126,7 @@ ull edmonds_karp()
 		for(int adj_id : adj_ids)
 		{
 			flows[adj_id][node_id] = 0;
-			r_graph_reverse[adj_id].insert(node_id);
+			//r_graph_reverse[adj_id].insert(node_id);
 		}
 	}
 
@@ -124,8 +144,12 @@ ull edmonds_karp()
 		int last_level = 0;
 		vector<int> s_t_path = {0};
 
+		// BFS
 		while(!nodes_to_visit.empty())
 		{
+			d("===============\nnodes_to_visit: ");
+			dq(nodes_to_visit);
+
 			int node = nodes_to_visit.front();
 			nodes_to_visit.pop();
 			visited.insert(node);
@@ -147,9 +171,20 @@ ull edmonds_karp()
 				dln("ALGO DE MUITO ERRADO NAO ESTA CERTO");
 			}
 
-			// d(node);
-			// dv(visited);
-			// dv(s_t_path);
+			d(node);
+			dv(visited);
+			dv(s_t_path);
+			// dln("maps u: ");
+			// dmap(u_graph);
+			// dln("maps reverse: ");
+			// dmap(r_graph_reverse);
+			dln("maps dgraph: ");
+			dmap(d_graph);
+			dln("end maps");
+			dm(flows);
+			//dm(capacities);
+
+			dln("OLHANDO OS ADJACENTES");
 
 			for(int adj_node : u_graph[node])
 			{
@@ -169,14 +204,17 @@ ull edmonds_karp()
 				//d_graph[node].insert(adj_node);
 			}
 		}
+
+		dv(s_t_path);
+		dln(s_t_path.back());
 		
-		if(s_t_path.back() != n -1)
+		if(s_t_path.back() != n - 1)
 		{
 			dln("NAO TEM CAMINHO");
 
 			ull max_flow = 0;
 
-			for(int adj_node : r_graph_normal[0])
+			for(int adj_node : d_graph[0])
 			{
 				max_flow += flows[adj_node][0];
 			}
@@ -201,18 +239,21 @@ ull edmonds_karp()
 		}
 
 
-		dm(flows);
-		dmap(r_graph_normal);
-		dln("");
-		dmap(r_graph_reverse);
+		// dm(flows);
+		// dmap(d_graph);
+		// dln("");
+		// dmap(r_graph_reverse);
 
 		// change residual flows
 		for(int i = 1; i < s_t_path.size(); i++)
 		{
+			dln("CHANGING FLOW");
+			dv(s_t_path);
+
 			int node1 = s_t_path[i - 1];
 			int node2 = s_t_path[i];
 
-			unordered_set<int> edge_normal = r_graph_normal[node1];
+			unordered_set<int> edge_normal = d_graph[node1];
 
 			// possible pointer exception
 			bool edge_is_normal = ( edge_normal.find(node2) != edge_normal.end() );
@@ -232,9 +273,9 @@ ull edmonds_karp()
 	}
 
 	dm(flows);
-	dmap(r_graph_normal);
-	dln("");
-	dmap(r_graph_reverse);
+	dmap(d_graph);
+	// dln("");
+	// dmap(r_graph_reverse);
 }
 
 int main()
