@@ -3,6 +3,8 @@ import random
 from models import Pic, Slide
 from calculations import *
 
+QTTY_INDIV = 20
+
 # def optimize_original(pics):
 	# verts = [ pic for pic in pics if pic.is_vertical ]
 	# horzs = [ pic for pic in pics if not pic.is_vertical ]
@@ -98,19 +100,44 @@ def init_individual(pics):
 
 	return (genes, slides)
 
+# from genes of parents define genes from children
 def reproduce_parents(p1, p2):
-	cross_over_id = random.randint(0, len(p1))
+	print('reproduce')
+	print(p1, p2)
+	n = len(p1)
+	children = []
 
-	return []
+	for _ in range(QTTY_INDIV // 2):
+		child1, child2 = p1, p2
+
+		cross_over_id = random.randint(0, n)
+
+		print(child1)
+		print(child2)
+
+		print(cross_over_id)
+
+		# swap divided chromossomes
+		aux_child1, aux_child2 = child1, child2
+		child1 = aux_child1[:cross_over_id] + aux_child2[cross_over_id:]
+		child2 = aux_child2[:cross_over_id] + aux_child1[cross_over_id:]
+
+		print(child1)
+		print(child2)
+
+		children += [child1, child2]
+
+	print(children)
+
+	return children
 
 def create_slide_show_from_genes(genes):
 	return []
 
-QTTY_INDIV = 20
 def optimize_genetic(pics):
 
 	indivs = []
-	for i in range(3):
+	for i in range(2):
 		# reset last set of individuals
 		aux_indivs = indivs
 		indivs = []
@@ -119,8 +146,28 @@ def optimize_genetic(pics):
 			if i == 0:
 				genes, slides = init_individual(pics)
 			else:
-				p1 = aux_indivs[0]
-				p2 = aux_indivs[1]
+				best_indiv = aux_indivs[0]
+				best_genes = tuple(best_indiv[0])
+
+				# find second best, but with different genetics
+				sec_best_id = 1
+				for indiv in aux_indivs[1:]:
+					sec_best_genes = tuple(indiv[0])
+
+					# print("compare")
+					# print(best_genes)
+					# print(sec_best_genes)
+
+					# found different individual
+					if sec_best_genes != best_genes:
+						break
+
+					sec_best_id += 1
+				sec_best_indiv = aux_indivs[sec_best_id]
+
+				# get gene from best score individuals
+				p1 = best_indiv[0]
+				p2 = sec_best_indiv[0]
 
 				genes = reproduce_parents(p1, p2)
 				slides = create_slide_show_from_genes(genes)
