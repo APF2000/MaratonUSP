@@ -15,6 +15,8 @@ class Slide:
 	def __init__(self, pics):
 		self.tags = set()
 		self.ids = set()
+
+		# could be 1 or 2 pics
 		for pic in pics:
 			self.tags.update(pic.tags)
 			self.ids.update({pic.id})
