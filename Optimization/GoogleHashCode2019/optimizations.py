@@ -3,20 +3,18 @@ import random
 from models import Pic, Slide
 from calculations import *
 
-QTTY_INDIV = 8
-QTTY_GENERATIONS = 15
+QTTY_INDIV = 2
+QTTY_GENERATIONS = 3
 
 def init_individual(pics):
 	
 	verts = [ pic for pic in pics if pic.is_vertical ]
 	horzs = [ pic for pic in pics if not pic.is_vertical ]
 
-
-
 	###print(verts)
 	###print( horzs)
 
-	print("random shuffle")
+	print(" random shuffle")
 	random.shuffle(verts)
 	###print(verts)
 
@@ -51,7 +49,9 @@ def reproduce_parents(p1, p2):
 	n = len(p1)
 	children = []
 
-	for _ in range(QTTY_INDIV // 2):
+	for id_indiv in range(QTTY_INDIV // 2):
+		print("\nid_indiv: " + str(id_indiv))
+
 		child1, child2 = p1, p2
 
 		cross_over_id = random.randint(0, n)
@@ -101,6 +101,7 @@ def reproduce_parents(p1, p2):
 		# print(repeated_ids1)
 		# print(repeated_ids2)
 
+		print("swap repeated ids")
 		for i in range(len(repeated_ids1)):
 			pos_id1 = child1.index(repeated_ids1[i])
 			pos_id2 = child2.index(repeated_ids2[i])
@@ -167,6 +168,8 @@ def optimize_genetic(pics):
 	pi, p2 = None, None
 
 	for gen in range(QTTY_GENERATIONS):
+		print("------------------------\ngeneration: " + str(gen))
+
 		# reset last set of individuals
 		aux_indivs = indivs
 		indivs = []
@@ -175,7 +178,8 @@ def optimize_genetic(pics):
 
 		if gen == 0:
 			# first random population
-			for _ in range(QTTY_INDIV):
+			for id_indiv in range(QTTY_INDIV):
+				print("id_indiv: " + str(id_indiv))
 				chromo, slide_show = init_individual(pics)
 				chromos.append(chromo)
 				slide_shows.append(slide_show)
@@ -202,7 +206,6 @@ def optimize_genetic(pics):
 		best_indiv = indivs[0]
 		best_chromos = tuple(best_indiv[0])
 
-		print("generation: " + str(gen))
 		print("best indiv score: " + str(best_indiv[2]))
 
 		# find second best, but with different genetics

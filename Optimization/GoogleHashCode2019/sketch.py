@@ -20,7 +20,6 @@ for i in range(n):
 	pics.append( Pic(is_vertical, tags, i) )
 
 ####print(pics)
-####print(upper_bound(pics))
+print("upper bound points: " + str(upper_bound(pics)))
 slide_show = optimize_genetic(pics)
-# print(slide_show)
 print( calc_score_from_slide_show(slide_show) )
