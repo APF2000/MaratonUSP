@@ -4,16 +4,19 @@ from models import Pic, Slide
 from calculations import *
 
 QTTY_INDIV = 20
-QTTY_GENERATIONS = 5
+QTTY_GENERATIONS = 15
 
 def init_individual(pics):
 	
 	verts = [ pic for pic in pics if pic.is_vertical ]
 	horzs = [ pic for pic in pics if not pic.is_vertical ]
 
+
+
 	###print(verts)
 	###print( horzs)
 
+	print("random shuffle")
 	random.shuffle(verts)
 	###print(verts)
 
@@ -43,8 +46,8 @@ def init_individual(pics):
 
 # from genes of parents define genes from children
 def reproduce_parents(p1, p2):
-	print('reproduce')
-	print(p1, p2)
+	# print('reproduce')
+	# print(p1, p2)
 	n = len(p1)
 	children = []
 
@@ -52,6 +55,7 @@ def reproduce_parents(p1, p2):
 		child1, child2 = p1, p2
 
 		cross_over_id = random.randint(0, n)
+		print("cross over id: " + str(cross_over_id))
 
 		# print(child1)
 		# print(child2)
@@ -69,6 +73,7 @@ def reproduce_parents(p1, p2):
 		repeated_ids1 = [ id for id in range(len(child1)) if child1.count(id) > 1 ]
 		repeated_ids2 = [ id for id in range(len(child2)) if child2.count(id) > 1 ]
 
+		print("randomshuffle repeated ids")
 		random.shuffle(repeated_ids1)
 		random.shuffle(repeated_ids2)
 		# print("repeated")
@@ -140,14 +145,14 @@ def optimize_genetic(pics):
 	indivs = []
 	pi, p2 = None, None
 
-	for i in range(QTTY_GENERATIONS):
+	for gen in range(QTTY_GENERATIONS):
 		# reset last set of individuals
 		aux_indivs = indivs
 		indivs = []
 		chromos = []
 		slide_shows = []
 
-		if i == 0:
+		if gen == 0:
 			# first random population
 			for _ in range(QTTY_INDIV):
 				chromo, slide_show = init_individual(pics)
@@ -155,11 +160,11 @@ def optimize_genetic(pics):
 				slide_shows.append(slide_show)
 		else:
 			chromos = reproduce_parents(p1, p2)
-			print("qtty: " + str(len(chromos)))
+			#print("qtty: " + str(len(chromos)))
 			for chromo in chromos:
-				print("new chromossome: " + str(chromo))
+				#print("new chromossome: " + str(chromo))
 				slide_show = create_slide_show_from_chromo(chromo, pics)
-				print(str(slide_show))
+				#print(str(slide_show))
 				slide_shows.append(slide_show)
 
 		for j in range(len(slide_shows)):
@@ -175,6 +180,9 @@ def optimize_genetic(pics):
 
 		best_indiv = indivs[0]
 		best_chromos = tuple(best_indiv[0])
+
+		print("generation: " + str(gen))
+		print("best indiv score: " + str(best_indiv[2]))
 
 		# find second best, but with different genetics
 		sec_best_id = 1
@@ -206,8 +214,10 @@ def optimize_genetic(pics):
 		# for indiv in indivs:
 		# 	print(indiv)
 	
+	best_indiv_of_all = indivs[0]
+	best_slide_show_of_all = best_indiv_of_all[1]
 
-	return []#indivs[0]
+	return best_slide_show_of_all
 
 
 # def optimize_original(pics):
