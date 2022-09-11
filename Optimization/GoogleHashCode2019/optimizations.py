@@ -3,7 +3,7 @@ import random
 from models import Pic, Slide
 from calculations import *
 
-QTTY_INDIV = 20
+QTTY_INDIV = 8
 QTTY_GENERATIONS = 15
 
 def init_individual(pics):
@@ -62,6 +62,7 @@ def reproduce_parents(p1, p2):
 
 		# print(cross_over_id)
 
+		print("swap")
 		# swap divided chromossomes
 		aux_child1, aux_child2 = child1, child2
 		child1 = aux_child1[:cross_over_id] + aux_child2[cross_over_id:]
@@ -70,12 +71,32 @@ def reproduce_parents(p1, p2):
 		# print(child1)
 		# print(child2)	
 
-		repeated_ids1 = [ id for id in range(len(child1)) if child1.count(id) > 1 ]
-		repeated_ids2 = [ id for id in range(len(child2)) if child2.count(id) > 1 ]
+		print("calculating repeated ids")
+		count_ids1 = {}
+		for gene in child1:
+			count_ids1[gene] = count_ids1.get(gene, 0) + 1
+
+		count_ids2 = {}
+		for gene in child2:
+			count_ids2[gene] = count_ids2.get(gene, 0) + 1
+
+		#print(count_ids1)
+		repeated_ids1 = [ id for id in range(len(child1)) if count_ids1.get(id, 0) > 1 ]
+		repeated_ids2 = [ id for id in range(len(child2)) if count_ids2.get(id, 0) > 1 ]
+
+		# print(repeated_ids1)
+
+		# repeated_ids1 = [ id for id in range(len(child1)) if child1.count(id) > 1 ]
+		# repeated_ids2 = [ id for id in range(len(child2)) if child2.count(id) > 1 ]
+
+		# print(len(repeated_ids1))
+		# print(len(repeated_ids2))
+
 
 		print("randomshuffle repeated ids")
 		random.shuffle(repeated_ids1)
 		random.shuffle(repeated_ids2)
+
 		# print("repeated")
 		# print(repeated_ids1)
 		# print(repeated_ids2)
