@@ -4,66 +4,7 @@ from models import Pic, Slide
 from calculations import *
 
 QTTY_INDIV = 20
-
-# def optimize_original(pics):
-	# verts = [ pic for pic in pics if pic.is_vertical ]
-	# horzs = [ pic for pic in pics if not pic.is_vertical ]
-
-	# ###print(verts)
-	# ###print( horzs)
-
-	# random.shuffle(verts)
-	# ###print(verts)
-
-	# horzs = [ Slide( [horz] ) for horz in horzs]
-	# new_verts = []
-	# for i in range(0, len(verts), 2):
-	# 	vert1 = verts[i]
-	# 	vert2 = verts[i + 1]
-	# 	new_verts.append( Slide( [vert1, vert2] ) )
-
-	# verts = new_verts
-	# ###print(verts)
-	# ###print(horzs)
-
-	# slides = horzs + verts
-
-	# random.shuffle(slides)
-	# last_slide = slides[0]
-	# slides = slides[1:]
-	# ##print(slides)
-	# ##print(last_slide)
-
-	# slide_show = [last_slide]
-	# random.shuffle(slides)
-	# #print(len(slides))
-	# #print(last_slide)
-
-    # # greedy search for best next slide
-	# while len(slides) != 0:
-	# 	# slide_to_remove = None
-	# 	# max_score = -1
-	# 	# for slide in slides:
-	# 	# 	pass
-	# 	sub_slides = random.sample(slides, min(len(slides), 20))
-	# 	#print(sub_slides)
-	# 	new_score = -1
-	# 	new_slide = None
-	# 	for slide in sub_slides:
-	# 		score = calc_score(last_slide.tags, slide.tags)
-	# 		if score > new_score:
-	# 			new_slide = slide
-	# 			new_score = score
-
-	# 	slides.remove(slide)
-	# 	slide_show.append(new_slide)
-	# #slide_show = slides
-	
-	# ##print('batata')	
-
-	# #print(slide_show)
-
-	# return slide_show
+QTTY_GENERATIONS = 5
 
 def init_individual(pics):
 	
@@ -155,16 +96,16 @@ def reproduce_parents(p1, p2):
 
 def create_slide_show_from_chromo(chromo, pics):
 
-	print("-----------------------")
-	print(chromo)
+	# print("-----------------------")
+	# print(chromo)
 
 	last_vert_pic = None
 	slide_show = []
 	for gene in chromo:
-		print(pics)
-		#print("id_gene: " + str(id_gene))
-		print("gene: " + str(gene))
-		print()
+		# print(pics)
+		# #print("id_gene: " + str(id_gene))
+		# print("gene: " + str(gene))
+		# print()
 
 		pic = pics[gene]
 		pics_in_slide = [ pic ]
@@ -177,70 +118,88 @@ def create_slide_show_from_chromo(chromo, pics):
 				pics_in_slide.append( last_vert_pic )
 				last_vert_pic = None
 
-		print("slide show before: ")
-		for slide in slide_show:
-			print(slide)
+		# print("slide show before: ")
+		# for slide in slide_show:
+		# 	print(slide)
 
 		slide_show.append( Slide(pics_in_slide) )
 
-		print("slide show after: ")
-		for slide in slide_show:
-			print(slide)
+		# print("slide show after: ")
+		# for slide in slide_show:
+		# 	print(slide)
 	
-	print(chromo)
-	print("new slide show: ")
-	for slide in slide_show:
-		print(slide)
+	# print(chromo)
+	# print("new slide show: ")
+	# for slide in slide_show:
+	# 	print(slide)
 
 	return slide_show
 
 def optimize_genetic(pics):
 
 	indivs = []
-	for i in range(2):
+	pi, p2 = None, None
+
+	for i in range(QTTY_GENERATIONS):
 		# reset last set of individuals
 		aux_indivs = indivs
 		indivs = []
+		chromos = []
+		slide_shows = []
 
-		for _ in range(QTTY_INDIV):
-			if i == 0:
-				chromos, slides = init_individual(pics)
-			else:
-				best_indiv = aux_indivs[0]
-				best_chromos = tuple(best_indiv[0])
+		if i == 0:
+			# first random population
+			for _ in range(QTTY_INDIV):
+				chromo, slide_show = init_individual(pics)
+				chromos.append(chromo)
+				slide_shows.append(slide_show)
+		else:
+			chromos = reproduce_parents(p1, p2)
+			print("qtty: " + str(len(chromos)))
+			for chromo in chromos:
+				print("new chromossome: " + str(chromo))
+				slide_show = create_slide_show_from_chromo(chromo, pics)
+				print(str(slide_show))
+				slide_shows.append(slide_show)
 
-				# find second best, but with different genetics
-				sec_best_id = 1
-				for indiv in aux_indivs[1:]:
-					sec_best_chromos = tuple(indiv[0])
+		for j in range(len(slide_shows)):
+			slide_show = slide_shows[j]
+			chromo = chromos[j]
 
-					# print("compare")
-					# print(best_chromos)
-					# print(sec_best_chromos)
+			score =  calc_score_from_slide_show( slide_show )
+			indivs.append( ( chromo, slide_show, score ) )
 
-					# found different individual
-					if sec_best_chromos != best_chromos:
-						break
+		
+		# sort by score
+		indivs.sort(key = lambda indiv : indiv[2], reverse = True)
 
-					sec_best_id += 1
-				sec_best_indiv = aux_indivs[sec_best_id]
+		best_indiv = indivs[0]
+		best_chromos = tuple(best_indiv[0])
 
-				# get gene from best score individuals
-				p1 = best_indiv[0]
-				p2 = sec_best_indiv[0]
+		# find second best, but with different genetics
+		sec_best_id = 1
+		for indiv in indivs[1:]:
+			sec_best_chromos = tuple(indiv[0])
 
-				chromos = reproduce_parents(p1, p2)
-				for chromo in chromos:
-					slides = create_slide_show_from_chromo(chromo, pics)
+			# print("compare")
+			# print(best_chromos)
+			# print(sec_best_chromos)
 
-			score =  calc_score_from_slide_show( slides )
-			indivs.append( ( chromos, slides, score ) )
+			# found different individual
+			if sec_best_chromos != best_chromos:
+				break
+
+			sec_best_id += 1
+		sec_best_indiv = indivs[sec_best_id]
+
+		# get chromossome from best score individuals
+		p1 = best_indiv[0]
+		p2 = sec_best_indiv[0]
+
 
 		# for indiv in indivs:
 		# 	print(indiv)
 		
-		# sort by score
-		indivs.sort(key = lambda indiv : indiv[2], reverse = True)
 
 		# print()
 
@@ -249,4 +208,65 @@ def optimize_genetic(pics):
 	
 
 	return []#indivs[0]
+
+
+# def optimize_original(pics):
+	# verts = [ pic for pic in pics if pic.is_vertical ]
+	# horzs = [ pic for pic in pics if not pic.is_vertical ]
+
+	# ###print(verts)
+	# ###print( horzs)
+
+	# random.shuffle(verts)
+	# ###print(verts)
+
+	# horzs = [ Slide( [horz] ) for horz in horzs]
+	# new_verts = []
+	# for i in range(0, len(verts), 2):
+	# 	vert1 = verts[i]
+	# 	vert2 = verts[i + 1]
+	# 	new_verts.append( Slide( [vert1, vert2] ) )
+
+	# verts = new_verts
+	# ###print(verts)
+	# ###print(horzs)
+
+	# slides = horzs + verts
+
+	# random.shuffle(slides)
+	# last_slide = slides[0]
+	# slides = slides[1:]
+	# ##print(slides)
+	# ##print(last_slide)
+
+	# slide_show = [last_slide]
+	# random.shuffle(slides)
+	# #print(len(slides))
+	# #print(last_slide)
+
+    # # greedy search for best next slide
+	# while len(slides) != 0:
+	# 	# slide_to_remove = None
+	# 	# max_score = -1
+	# 	# for slide in slides:
+	# 	# 	pass
+	# 	sub_slides = random.sample(slides, min(len(slides), 20))
+	# 	#print(sub_slides)
+	# 	new_score = -1
+	# 	new_slide = None
+	# 	for slide in sub_slides:
+	# 		score = calc_score(last_slide.tags, slide.tags)
+	# 		if score > new_score:
+	# 			new_slide = slide
+	# 			new_score = score
+
+	# 	slides.remove(slide)
+	# 	slide_show.append(new_slide)
+	# #slide_show = slides
+	
+	# ##print('batata')	
+
+	# #print(slide_show)
+
+	# return slide_show
 
