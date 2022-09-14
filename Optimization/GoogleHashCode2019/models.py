@@ -6,10 +6,12 @@ class Pic:
 		self.id = id
 
 	def __str__(self):
-		return str(self.tags)
+		#return str(self.tags)
+		return str(self.id)
 
 	def __repr__(self):
-		return str(self.tags)
+		#return str(self.tags)
+		return str(self.id)
 
 class Slide:
 	def __init__(self, pics):
@@ -23,10 +25,12 @@ class Slide:
 		self.pics = pics
 
 	def __str__(self):
-		return str(self.tags)
+		#return str(self.tags)
+		return str(self.pics)
 
 	def __repr__(self):
-		return str(self.tags)
+		#return str(self.tags)
+		return str(self.pics)
 
 	# def has_verticals(self):
 	# 	return ( len(self.pics) > 1 )

@@ -21,5 +21,5 @@ for i in range(n):
 
 ####print(pics)
 print("upper bound points: " + str(upper_bound(pics)))
-slide_show = optimize_genetic(pics)
+slide_show = optimize_genetic(pics, True)
 print( calc_score_from_slide_show(slide_show) )
