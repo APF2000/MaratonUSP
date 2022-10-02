@@ -2,6 +2,7 @@
 import random
 from models import Pic, Slide
 from calculations import *
+import numpy as np
 
 QTTY_INDIV = 30
 QTTY_GENERATIONS = 30
@@ -42,20 +43,60 @@ def init_individual(pics):
 
 	return (chromos, slides)
 
+def rank_worst_pair_of_genes(indiv, pics):
+
+	slide_show = create_slide_show_from_chromo(indiv, pics)
+
+	rank = []
+	for id_pair in range(len(slide_show) - 1):
+		slide1 = slide_show[id_pair]
+		slide2 = slide_show[id_pair + 1]
+
+		score = calc_score(slide1.tags, slide2.tags)
+
+		rank.append( (score, id_pair) )
+
+	# print("rank before: ", rank)
+	rank.sort()
+	# print("rank after: ", rank)
+
+	return [el[1] for el in rank]
+
+def calculate_decreasing_probability_to_rank(rank, biggest_prob):
+	# triangular probability distribution
+	n = len(rank)
+	probs = []
+	smallest_prob = (2 / n) - biggest_prob
+	for i in range(n):
+		prob = biggest_prob - (biggest_prob - smallest_prob) * i / (n - 1)
+		probs.append(prob)
+	
+	return probs
+
 # from genes of parents define genes from children
-def reproduce_parents(p1, p2):
+def reproduce_parents(p1, p2, pics):
 	# print('reproduce')
 	# print(p1, p2)
 	n = len(p1)
 	children = [p1, p2]
+
+	rank_p1 = np.array( rank_worst_pair_of_genes(p1, pics) )
+	rank_p2 = np.array( rank_worst_pair_of_genes(p2, pics) )
+
+	prob_p1 = calculate_decreasing_probability_to_rank(rank_p1, 1.8 / n)
+	prob_p2 = calculate_decreasing_probability_to_rank(rank_p2, 1.8 / n)
+
+	#numbers_until_n = np.array( range(n) )
 
 	for id_indiv in range((QTTY_INDIV // 2) - 1):
 		# print("\nid_indiv: " + str(id_indiv))
 
 		child1, child2 = p1, p2
 
-		cross_over_id = random.randint(0, n)
-		# print("cross over id: " + str(cross_over_id))
+		cross_over_id1 = np.random.choice(rank_p1, p=prob_p1)
+		cross_over_id2 = np.random.choice(rank_p2, p=prob_p2)
+		# cross_over_id = random.randint(0, n)
+		print("cross over ids: ", cross_over_id1, cross_over_id2)
 		
 		# print("CHILDS ANTES DO SWAP")
 		# print("CH1")
@@ -66,10 +107,16 @@ def reproduce_parents(p1, p2):
 		# print(cross_over_id)
 
 		# print("swap")
-		# swap divided chromossomes
+		# swap divided chromossomes (part 1)
 		aux_child1, aux_child2 = child1, child2
-		child1 = aux_child1[:cross_over_id] + aux_child2[cross_over_id:]
-		child2 = aux_child2[:cross_over_id] + aux_child1[cross_over_id:]
+		child1 = aux_child1[:cross_over_id1] + aux_child2[cross_over_id1:]
+		child2 = aux_child2[:cross_over_id1] + aux_child1[cross_over_id1:]
+
+		# swap divided chromossomes (part 2)
+		aux_child1, aux_child2 = child1, child2
+		child1 = aux_child1[:cross_over_id2] + aux_child2[cross_over_id2:]
+		child2 = aux_child2[:cross_over_id2] + aux_child2[cross_over_id2:]
+
 		# print("CHILDS POS SWAP")
 		# print("CH1")
 		# print(sorted(child1))
@@ -79,7 +126,7 @@ def reproduce_parents(p1, p2):
 		# print(child1)
 		# print(child2)	
 
-		# print("calculating repeated ids")
+		print("------\ncalculating repeated ids")
 		count_ids1 = {}
 		for gene in child1:
 			count_ids1[gene] = count_ids1.get(gene, 0) + 1
@@ -88,18 +135,16 @@ def reproduce_parents(p1, p2):
 		for gene in child2:
 			count_ids2[gene] = count_ids2.get(gene, 0) + 1
 
-		#print(count_ids1)
+		# print(count_ids1, count_ids1)
 		repeated_ids1 = [ id for id in range(len(child1)) if count_ids1.get(id, 0) > 1 ]
 		repeated_ids2 = [ id for id in range(len(child2)) if count_ids2.get(id, 0) > 1 ]
 
-		# print(repeated_ids1)
+		print(repeated_ids1, len(repeated_ids1))
+		print(repeated_ids2, len(repeated_ids2))
+		# print(len(repeated_ids2))
 
 		# repeated_ids1 = [ id for id in range(len(child1)) if child1.count(id) > 1 ]
 		# repeated_ids2 = [ id for id in range(len(child2)) if child2.count(id) > 1 ]
-
-		# print(len(repeated_ids1))
-		# print(len(repeated_ids2))
-
 
 		# print("randomshuffle repeated ids")
 		random.shuffle(repeated_ids1)
@@ -216,7 +261,7 @@ def optimize_genetic(pics, should_first_gen=False):
 					chromos.append(chromo)
 					slide_shows.append(slide_show)
 		else:
-			chromos = reproduce_parents(p1, p2)
+			chromos = reproduce_parents(p1, p2, pics)
 			#print("qtty: " + str(len(chromos)))
 			for chromo in chromos:
 				#print("new chromossome: " + str(chromo))
