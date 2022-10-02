@@ -1,6 +1,5 @@
 
 import random
-from tkinter import commondialog
 from models import Pic, Slide
 from calculations import *
 
@@ -51,36 +50,36 @@ def reproduce_parents(p1, p2):
 	children = [p1, p2]
 
 	for id_indiv in range((QTTY_INDIV // 2) - 1):
-		print("\nid_indiv: " + str(id_indiv))
+		# print("\nid_indiv: " + str(id_indiv))
 
 		child1, child2 = p1, p2
 
 		cross_over_id = random.randint(0, n)
-		print("cross over id: " + str(cross_over_id))
+		# print("cross over id: " + str(cross_over_id))
 		
-		print("CHILDS ANTES DO SWAP")
-		print("CH1")
-		print(sorted(child1))
-		print("CH2")
-		print(sorted(child2))
+		# print("CHILDS ANTES DO SWAP")
+		# print("CH1")
+		# print(sorted(child1))
+		# print("CH2")
+		# print(sorted(child2))
 
 		# print(cross_over_id)
 
-		print("swap")
+		# print("swap")
 		# swap divided chromossomes
 		aux_child1, aux_child2 = child1, child2
 		child1 = aux_child1[:cross_over_id] + aux_child2[cross_over_id:]
 		child2 = aux_child2[:cross_over_id] + aux_child1[cross_over_id:]
-		print("CHILDS POS SWAP")
-		print("CH1")
-		print(sorted(child1))
-		print("CH2")
-		print(sorted(child2))
+		# print("CHILDS POS SWAP")
+		# print("CH1")
+		# print(sorted(child1))
+		# print("CH2")
+		# print(sorted(child2))
 
 		# print(child1)
 		# print(child2)	
 
-		print("calculating repeated ids")
+		# print("calculating repeated ids")
 		count_ids1 = {}
 		for gene in child1:
 			count_ids1[gene] = count_ids1.get(gene, 0) + 1
@@ -102,19 +101,19 @@ def reproduce_parents(p1, p2):
 		# print(len(repeated_ids2))
 
 
-		print("randomshuffle repeated ids")
+		# print("randomshuffle repeated ids")
 		random.shuffle(repeated_ids1)
 		random.shuffle(repeated_ids2)
 
-		print("repeated")
+		# print("repeated")
 		repeated_ids1.sort()
 		repeated_ids2.sort()
-		print(repeated_ids1)
-		print(repeated_ids2)
+		# print(repeated_ids1)
+		# print(repeated_ids2)
 
-		print("swap repeated ids")
-		print("Len 1:", len(repeated_ids1))
-		print("Len 2:",len(repeated_ids2))
+		# print("swap repeated ids")
+		# print("Len 1:", len(repeated_ids1))
+		# print("Len 2:",len(repeated_ids2))
 		for i in range(len(repeated_ids1)):
 			pos_id1 = child1.index(repeated_ids1[i])
 			pos_id2 = child2.index(repeated_ids2[i])
@@ -176,15 +175,15 @@ def create_slide_show_from_chromo(chromo, pics):
 	return slide_show
 
 def create_chromo_from_slide_show(slide_show):
-	print("create chromo from slide show")
+	# print("create chromo from slide show")
 	chromo = []
-	print("SD")
-	print(slide_show)
+	# print("SD")
+	# print(slide_show)
 	for slide in slide_show:
 		for pic in slide.pics:
 			chromo.append(pic.id)
-	print("CH")
-	print(chromo)
+	# print("CH")
+	# print(chromo)
 	return chromo
 
 def optimize_genetic(pics, should_first_gen=False):
@@ -204,7 +203,7 @@ def optimize_genetic(pics, should_first_gen=False):
 		if (gen == 0):
 			if(should_first_gen):
 				for id_indiv in range(QTTY_INDIV):
-					print("id_indiv: " + str(id_indiv))
+					# print("id_indiv: " + str(id_indiv))
 					slide_show = optimize_original(pics)
 					chromo = create_chromo_from_slide_show(slide_show)
 					chromos.append(chromo)
@@ -212,7 +211,7 @@ def optimize_genetic(pics, should_first_gen=False):
 			else:
 				# first random population
 				for id_indiv in range(QTTY_INDIV):
-					print("id_indiv: " + str(id_indiv))
+					# print("id_indiv: " + str(id_indiv))
 					chromo, slide_show = init_individual(pics)
 					chromos.append(chromo)
 					slide_shows.append(slide_show)
@@ -318,7 +317,8 @@ def optimize_original(pics):
 		# for slide in slides:
 		# 	pass
 		sub_slides = random.sample(slides, min(len(slides), 20))
-		#print(sub_slides)
+		# print("sub slides:")
+		# print(sub_slides)
 		new_score = -1
 		new_slide = None
 		for slide in sub_slides:
@@ -327,8 +327,17 @@ def optimize_original(pics):
 				new_slide = slide
 				new_score = score
 
-		slides.remove(slide)
+		# print("\n----------------------------\nindex slide: ", slides.index(slide))
+		# print("actual slide: ", slides[slides.index(slide)])
+
+		# print("size slides before: ", len(slides))
+		# print("removing slide: ", slide)
+		slides.remove(new_slide)
+		# print("size slides after: ", len(slides))
+		# if len(slides) <= 20:
+		# 	print("slides: ", slides)
 		slide_show.append(new_slide)
+		last_slide = new_slide
 	#slide_show = slides
 	
 	##print('batata')	
