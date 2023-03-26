@@ -1,3 +1,6 @@
+
+.vscode/*
+
 # C compile outputs
 a.out
 *.exe
@@ -152,3 +155,38 @@ cython_debug/
 
 #arquivos trolls MacOS
 .DS_Store
+
+# robot framework
+tmp
+build
+dist
+target
+venv*
+.venv*
+.env
+*~
+MANIFEST
+atest/results
+utest/jasmine-results
+.idea
+.vscode
+.*project
+*.pyc
+*$py.class
+ext-lib
+*.iml
+.DS_Store
+doc/api/_build
+doc/libraries/*.html
+doc/libraries/*.json
+doc/userguide/RobotFrameworkUserGuide.html
+src/robotframework.egg-info
+log.html
+output.xml
+report.html
+__pycache__
+.classpath
+.settings
+.jython_cache
+.mypy_cache/
+*.xml

@@ -24,6 +24,13 @@
 				}
 			],
 			"preLaunchTask": "C/C++: g++.exe arquivo de build ativo"
-		}
+		},
+		{
+            "name": "RobotCode: Run Current",
+            "type": "robotcode",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "target": "${file}"
+		},
 	]
 }
